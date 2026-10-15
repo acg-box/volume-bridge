@@ -1,0 +1,248 @@
+# Monorepo workspace tasks.
+
+[config]
+default_to_workspace = false
+skip_core_tasks      = true
+
+# Check
+# | task      | type      | cwd |
+# | --------- | --------- | --- |
+# | check     | composite |     |
+# | typecheck | command   |     |
+
+[tasks.check]
+clear = true
+dependencies = [
+	"typecheck",
+	"lint",
+	"test",
+]
+
+[tasks.typecheck]
+args = [
+	"node_modules/typescript/bin/tsc",
+	"--noEmit",
+	"--project",
+	"tsconfig.json",
+]
+command = "node"
+
+# Format
+# | task                 | type      | cwd |
+# | -------------------- | --------- | --- |
+# | fmt                  | composite |     |
+# | fmt-rust             | command   |     |
+# | fmt-toml             | command   |     |
+# | fmt-typescript       | command   |     |
+
+[tasks.fmt]
+dependencies = [
+	"fmt-rust",
+	"fmt-toml",
+	"fmt-typescript",
+]
+
+[tasks.fmt-rust]
+args = [
+	"run",
+	"nightly",
+	"cargo",
+	"fmt",
+	"--all",
+]
+command = "rustup"
+
+[tasks.fmt-toml]
+args = [
+	"-c",
+	"git ls-files -z -- '*.toml' | xargs -0 taplo fmt",
+]
+command = "sh"
+
+[tasks.fmt-typescript]
+args = [
+	"node_modules/oxfmt/bin/oxfmt",
+	"scripts",
+	"package.json",
+	"tsconfig.json",
+	".oxfmtrc.json",
+	".oxlintrc.json",
+]
+command = "node"
+
+# Lint
+# | task                  | type      | cwd |
+# | --------------------- | --------- | --- |
+# | lint                  | composite |     |
+# | lint-fix              | composite |     |
+# | lint-fix-rust         | command   |     |
+# | lint-fix-typescript   | command   |     |
+# | lint-fix-vstyle       | composite |     |
+# | lint-fix-vstyle-rust  | command   |     |
+# | lint-rust             | command   |     |
+# | lint-typescript       | command   |     |
+# | lint-vstyle           | composite |     |
+# | lint-vstyle-rust      | command   |     |
+
+[tasks.lint]
+dependencies = [
+	"lint-rust",
+	"lint-typescript",
+	"lint-vstyle",
+]
+
+[tasks.lint-fix]
+dependencies = [
+	"lint-fix-rust",
+	"lint-fix-typescript",
+	"lint-fix-vstyle",
+]
+
+[tasks.lint-fix-rust]
+args = [
+	"clippy",
+	"--fix",
+	"--allow-dirty",
+	"--locked",
+	"--all-features",
+	"--all-targets",
+	"--workspace",
+	"--",
+	"-D",
+	"clippy::all",
+	"-D",
+	"clippy::too_many_lines",
+	"-D",
+	"clippy::unwrap_used",
+	"-D",
+	"clippy::use_self",
+	"-D",
+	"clippy::wildcard_imports",
+	"-D",
+	"missing-docs",
+	"-D",
+	"unused-crate-dependencies",
+	"-D",
+	"warnings",
+]
+command = "cargo"
+
+[tasks.lint-fix-typescript]
+args = [
+	"node_modules/oxlint/bin/oxlint",
+	"--fix",
+	"scripts",
+]
+command = "node"
+
+[tasks.lint-fix-vstyle]
+dependencies = [
+	"lint-fix-vstyle-rust",
+]
+
+[tasks.lint-fix-vstyle-rust]
+args = [
+	"--locked",
+	"vstyle",
+	"tune",
+	"--language",
+	"rust",
+	"--workspace",
+	"--all-features",
+	"--strict",
+]
+command = "cargo"
+
+[tasks.lint-rust]
+args = [
+	"clippy",
+	"--locked",
+	"--all-features",
+	"--all-targets",
+	"--workspace",
+	"--",
+	"-D",
+	"clippy::all",
+	"-D",
+	"clippy::too_many_lines",
+	"-D",
+	"clippy::unwrap_used",
+	"-D",
+	"clippy::use_self",
+	"-D",
+	"clippy::wildcard_imports",
+	"-D",
+	"missing-docs",
+	"-D",
+	"unused-crate-dependencies",
+	"-D",
+	"warnings",
+]
+command = "cargo"
+
+[tasks.lint-typescript]
+args = [
+	"node_modules/oxlint/bin/oxlint",
+	"scripts",
+]
+command = "node"
+
+[tasks.lint-vstyle]
+dependencies = [
+	"lint-vstyle-rust",
+]
+
+[tasks.lint-vstyle-rust]
+args = [
+	"--locked",
+	"vstyle",
+	"curate",
+	"--language",
+	"rust",
+	"--workspace",
+	"--all-features",
+	"--strict",
+]
+command = "cargo"
+
+# List
+# | task                  | type    | cwd |
+# | --------------------- | ------- | --- |
+# | list-template-markers | command |     |
+
+[tasks.list-template-markers]
+args = [
+	"scripts/list-template-markers.ts",
+]
+command = "node"
+
+# Test
+# | task            | type      | cwd |
+# | --------------- | --------- | --- |
+# | test            | composite |     |
+# | test-rust       | command   |     |
+# | test-typescript | command   |     |
+
+[tasks.test]
+clear = true
+dependencies = [
+	"test-rust",
+	"test-typescript",
+]
+
+[tasks.test-rust]
+args = [
+	"nextest",
+	"run",
+	"--locked",
+	"--workspace",
+	"--all-targets",
+	"--all-features",
+]
+command = "cargo"
+
+[tasks.test-typescript]
+args = [
+	"--test",
+]
+command = "node"
