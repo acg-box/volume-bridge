@@ -4,22 +4,12 @@ resolver = "3"
 
 [workspace.package]
 authors     = ["acgxv <xv@acg.box>"]
-description = "description_placeholder"
+description = "Native macOS volume control through a HAL driver and headless service."
 edition     = "2024"
-homepage    = "https://hack.ink/name_placeholder"
+homepage    = "https://github.com/acg-box/volume-bridge"
 license     = "GPL-3.0-only"
-repository  = "https://github.com/hack-ink/name_placeholder"
+repository  = "https://github.com/acg-box/volume-bridge"
 version     = "0.1.0"
 
 [profile.release]
 lto = "thin"
-
-[workspace.dependencies]
-# crates.io
-clap               = { version = "4.6", features = ["derive"] }
-color-eyre         = { version = "0.6" }
-directories        = { version = "6.0" }
-tracing            = { version = "0.1" }
-tracing-appender   = { version = "0.2" }
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-vergen-gitcl       = { version = "10.0", features = ["cargo", "vcs_info"] }

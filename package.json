@@ -1,5 +1,5 @@
 {
-  "name": "name-placeholder-workspace",
+  "name": "volume-bridge-workspace",
   "private": true,
   "license": "GPL-3.0-only",
   "type": "module",
@@ -9,6 +9,11 @@
     "oxlint": "1.77.0",
     "oxlint-tsgolint": "7.0.2001",
     "typescript": "7.0.2"
+  },
+  "overrides": {
+    "oxfmt": {
+      "tinypool": "~2.1.2"
+    }
   },
   "devEngines": {
     "packageManager": {

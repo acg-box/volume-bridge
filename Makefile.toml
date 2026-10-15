@@ -13,6 +13,7 @@ skip_core_tasks      = true
 [tasks.check]
 clear = true
 dependencies = [
+	"build-native",
 	"typecheck",
 	"lint",
 	"test",
@@ -226,6 +227,7 @@ command = "node"
 [tasks.test]
 clear = true
 dependencies = [
+	"test-native",
 	"test-rust",
 	"test-typescript",
 ]
@@ -245,4 +247,24 @@ command = "cargo"
 args = [
 	"--test",
 ]
+command = "node"
+
+[tasks.build]
+dependencies = ["build-native", "build-rust"]
+
+[tasks.build-native]
+args    = ["scripts/native.ts", "build"]
+command = "node"
+
+[tasks.build-rust]
+args    = ["build", "--release", "--locked", "-p", "volume-bridge"]
+command = "cargo"
+
+[tasks.test-native]
+args         = ["scripts/native.ts", "test"]
+command      = "node"
+dependencies = ["build-native"]
+
+[tasks.sign]
+args    = ["scripts/native.ts", "sign"]
 command = "node"

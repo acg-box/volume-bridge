@@ -1,182 +1,89 @@
-<div align="center">
+# VolumeBridge
 
-# name_placeholder
+Native macOS volume controls for a fixed-volume display output. VolumeBridge is
+a HAL audio driver and a headless background service. It has no app, menu bar
+item, input audio device, or kernel extension.
 
-description_placeholder
+**Status: local prototype, verified on one Apple Silicon Mac.** See the
+[validation record](docs/validation.md) for the tested scope and remaining limits.
 
-[![License](https://img.shields.io/badge/License-GPLv3%20only-blue.svg)](https://spdx.org/licenses/GPL-3.0-only.html)
-[![Docs](https://img.shields.io/docsrs/name_placeholder)](https://docs.rs/name_placeholder)
-[![Release](https://github.com/hack-ink/name_placeholder/actions/workflows/release.yml/badge.svg)](https://github.com/hack-ink/name_placeholder/actions/workflows/release.yml)
-[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/hack-ink/name_placeholder)](https://github.com/hack-ink/name_placeholder/tags)
-[![GitHub last commit](https://img.shields.io/github/last-commit/hack-ink/name_placeholder?color=red&style=plastic)](https://github.com/hack-ink/name_placeholder)
+The first target is an LG ULTRAGEAR+ connected to an Apple Silicon Mac by USB-C.
+macOS reports this connection as DisplayPort audio. The new output is named
+**LG ULTRAGEAR+ · VolumeBridge**. Select that output to use system volume and mute
+controls. The original LG output remains available.
 
-</div>
+VolumeBridge changes the software audio level. The installer first saves the
+monitor's hardware volume, mutes the bridge, sets a low software level, and
+calibrates the monitor to 100%. It verifies the hardware value before it unmutes.
+This prevents an old monitor setting from limiting the system slider's range.
+The first prototype supports stereo, 32-bit
+floating-point PCM at 48 kHz. It includes buffering and does not claim zero latency.
 
-## Feature Highlights
+## Build and check
 
-### TODO
-
-TODO
-
-## Status
-
-TODO
-
-## Workspace Posture
-
-- `apps/name_placeholder/` owns the default Rust CLI application package.
-- `scripts/` owns repository-maintenance TypeScript programs that run directly on
-  the pinned Node.js runtime.
-- `packages/` is reserved for reusable shared packages across Rust,
-  JavaScript/TypeScript, Python, Swift, or other language toolchains.
-- The root `Cargo.toml` is a Rust workspace manifest and owns shared metadata,
-  profiles, and dependency versions.
-- The root `package.json`, `package-lock.json`, and `tsconfig.json` own the
-  TypeScript script toolchain and its exact development dependencies.
-- `openwiki/` is the authoritative repository knowledge and agent-routing surface.
-
-## Usage
-
-### Installation
-
-#### Build from Source
-
-```sh
-# Clone the repository.
-git clone https://github.com/hack-ink/name_placeholder
-cd name_placeholder
-
-# To install rustup on macOS and Unix without selecting a global default
-# toolchain, run the following command. This repository's rust-toolchain.toml
-# selects stable with the minimal profile for ordinary Rust commands.
-#
-# On Windows, download rustup-init.exe from `https://rustup.rs` and run it with
-# `--default-toolchain none`; rust-toolchain.toml still selects stable minimal.
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain none
-
-# Install the necessary dependencies. (Unix only)
-# Using Ubuntu as an example, this really depends on your distribution.
-sudo apt-get update
-sudo apt-get install <DEPENDENCIES>
-
-# Build the default Rust app, and the binary will be available at `target/release/name_placeholder`.
-cargo build --release -p name_placeholder --locked
-
-# Install the default Rust app from the workspace.
-cargo install --path apps/name_placeholder --locked --force
-
-# If you are a macOS user and want to have a `name_placeholder.app`, run the following command.
-# Install `cargo-bundle` to pack the binary into an app.
-cargo install cargo-bundle
-# Pack the app, and the it will be available at `target/release/bundle/osx/name_placeholder.app`.
-cd apps/name_placeholder
-cargo bundle --release
-```
-
-#### Download Pre-built Binary
-
-- **macOS**
-    - Download the latest pre-built binary from [GitHub Releases](https://github.com/hack-ink/name_placeholder/releases/latest).
-- **Windows**
-    - TODO
-- **Unix**
-    - TODO
-
-### Configuration
-
-#### TODO
-
-TODO
-
-### Interaction
-
-TODO
-
-### Update
-
-TODO
-
-## Development
-
-`rust-toolchain.toml` selects the stable toolchain with the minimal profile and
-installs Clippy for the repository lint gate. Rust formatting remains a separate
-nightly rustfmt invocation through `rustup run nightly`.
-
-Install the exact TypeScript development graph without running package lifecycle
-scripts:
+Use the host Xcode toolchain, stable Rust with Clippy, cargo-make, cargo-nextest,
+nightly rustfmt, cargo-vstyle, CMake, and the Node/npm versions in this repository.
+Do not change global tool versions to build this project.
 
 ```sh
 npm ci --ignore-scripts
-```
-
-List tracked template markers before adopting the template:
-
-```sh
-cargo make list-template-markers
-```
-
-Correct repository formatting when needed:
-
-```sh
+cargo make build
+cargo make check
 cargo make fmt
 ```
 
-Run the repository source-validation gate:
+Native artifacts are written to `target/native/`. The service and diagnostic CLI
+are written to `target/release/volume-bridge`.
+
+## Local installation
+
+Sign with an existing certificate in the local keychain:
 
 ```sh
-cargo make check
+VOLUMEBRIDGE_SIGN_ID='YOUR EXISTING SIGNING IDENTITY' cargo make sign
+mkdir -p work
+./target/release/volume-bridge devices > work/baseline.devices.json
+sudo node scripts/install.ts install
 ```
 
-`typecheck` runs TypeScript's `tsc --noEmit`. `lint` runs Clippy for Rust
-static analysis, Oxlint, and vstyle. `test` runs Rust tests with nextest and
-the TypeScript integration tests. `check` combines these three validation
-groups; formatting remains independent and is corrected with `cargo make fmt`.
+Installation restarts Core Audio and briefly interrupts sound. The service runs
+as the invoking user. Its launch definition is in `/Library/LaunchDaemons`; the
+driver is in `/Library/Audio/Plug-Ins/HAL`. No system security setting is changed.
+Keep machine-specific device identifiers and receipts out of Git.
 
-### Architecture
+Connect the target LG before installation. Calibration must pass; an unsupported
+or unreadable DDC/CI interface fails preflight before installed files change.
+The first calibration starts system volume at approximately 2%. Increase it
+gradually. Updates preserve system volume if the monitor is still calibrated.
+Uninstall restores the saved hardware volume before it restores the output.
 
-This template starts as a workspace-first monorepo:
+Keep the monitor's own volume at 100% while using VolumeBridge. Use the output
+with the VolumeBridge suffix for playback. The original LG output bypasses
+software attenuation. A monitor reset or an OSD volume change requires another
+installation calibration. DDC calibration currently uses private Apple Silicon
+IOAV interfaces, which can change in macOS updates. The audio driver itself uses
+the HAL plugin API.
 
-- runnable products belong under `apps/`
-- repository-maintenance programs belong under `scripts/`
-- reusable packages belong under `packages/`
-- repository-native checks are exposed through `Makefile.toml`
-- durable architecture, runbook, and routing notes belong under `openwiki/`
+```sh
+./target/release/volume-bridge devices
+./target/release/volume-bridge status
+```
 
-## Support Me
+Remove the prototype and restore the recorded output:
 
-If you find this project helpful and would like to support its development, you can buy me a coffee!
+```sh
+sudo node scripts/install.ts uninstall
+```
 
-Your support is greatly appreciated and motivates me to keep improving this project.
+## Source and evidence
 
-- **Fiat**
-    - [Ko-fi](https://ko-fi.com/hack_ink)
-    - [Afdian](https://afdian.com/a/hack_ink)
-- **Crypto**
-    - **Bitcoin**
-        - `bc1pedlrf67ss52md29qqkzr2avma6ghyrt4jx9ecp9457qsl75x247sqcp43c`
-    - **Ethereum**
-        - `0x3e25247CfF03F99a7D83b28F207112234feE73a6`
-    - **Polkadot**
-        - `156HGo9setPcU2qhFMVWLkcmtCEGySLwNqa3DaEiYSWtte4Y`
+- [Architecture](docs/architecture.md)
+- [Validation scope and results](docs/validation.md)
+- [Dependency evidence](docs/dependencies.md)
+- [Template adoption](docs/template-adoption.md)
 
-Thank you for your support!
+The repository was created with GitHub's template operation from
+[`acg-box/vibe-mono`](https://github.com/acg-box/vibe-mono).
 
-## Appreciation
-
-We would like to extend our heartfelt gratitude to the following projects and contributors:
-
-- The Rust community for their continuous support and development of the Rust ecosystem.
-
-## Additional Acknowledgements
-
-- TODO
-
----
-
-<div align="right">
-
-### License
-
-<sup>Licensed under [GPL-3.0-only](LICENSE).</sup>
-
-</div>
+The project retains the template's GPL-3.0-only license. Vendored libASPL code
+retains its MIT and Apple sample-code notices. See `vendor/libaspl/UPSTREAM.md`.

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+  <key>CFBundleExecutable</key><string>VolumeBridge</string>
+  <key>CFBundleIdentifier</key><string>com.acgbox.volumebridge.driver</string>
+  <key>CFBundleName</key><string>VolumeBridge</string>
+  <key>CFBundlePackageType</key><string>BNDL</string>
+  <key>CFBundleVersion</key><string>0.1.0</string>
+  <key>CFBundleShortVersionString</key><string>0.1.0</string>
+  <key>CFPlugInFactories</key><dict>
+    <key>39B9D421-BAB1-43A8-B8D3-090F8900D121</key><string>VolumeBridgeFactory</string>
+  </dict>
+  <key>CFPlugInTypes</key><dict>
+    <key>443ABAB8-E7B3-491A-B985-BEB9187030DB</key><array><string>39B9D421-BAB1-43A8-B8D3-090F8900D121</string></array>
+  </dict>
+  <key>AudioServerPlugIn_MachServices</key><array><string>com.acgbox.volumebridge.service</string></array>
+  <key>sandboxSafe</key><true/>
+</dict></plist>
