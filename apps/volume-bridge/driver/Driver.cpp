@@ -36,8 +36,8 @@ class Handler final : public aspl::ControlRequestHandler,
                       public aspl::IORequestHandler,
                       public aspl::DriverRequestHandler {
  public:
-  Handler(std::shared_ptr<aspl::Device> device, std::shared_ptr<PersistentVolume> volume)
-      : device_(std::move(device)), volume_(std::move(volume)) {
+  explicit Handler(std::shared_ptr<PersistentVolume> volume)
+      : volume_(std::move(volume)) {
     void* memory = mmap(nullptr, sizeof(bridge::Ring), PROT_READ | PROT_WRITE,
                         MAP_ANON | MAP_SHARED, -1, 0);
     if (memory != MAP_FAILED) ring_ = new (memory) bridge::Ring();
@@ -50,12 +50,9 @@ class Handler final : public aspl::ControlRequestHandler,
     xpc_connection_set_event_handler(connection_, ^(xpc_object_t event) {
       if (xpc_get_type(event) == XPC_TYPE_DICTIONARY) {
         const bool available = xpc_dictionary_get_bool(event, "available");
-        device_->SetIsAlive(available);
-        device_->SetIsHidden(!available);
+        if (!available) ring_->relayEnabled.store(0);
       } else if (event == XPC_ERROR_CONNECTION_INTERRUPTED || event == XPC_ERROR_CONNECTION_INVALID) {
         ring_->relayEnabled.store(0);
-        device_->SetIsAlive(false);
-        device_->SetIsHidden(true);
       }
     });
     xpc_connection_resume(connection_);
@@ -94,7 +91,6 @@ class Handler final : public aspl::ControlRequestHandler,
     xpc_connection_send_message(connection_, message);
     xpc_release(message);
   }
-  std::shared_ptr<aspl::Device> device_;
   std::shared_ptr<PersistentVolume> volume_;
   bridge::Ring* ring_ = nullptr;
   dispatch_queue_t queue_ = nullptr;
@@ -127,7 +123,7 @@ std::shared_ptr<aspl::Driver> createDriver() {
   device->AddMuteControlAsync(mute);
   stream->AttachVolumeControl(volume);
   stream->AttachMuteControl(mute);
-  auto handler = std::make_shared<Handler>(device, volume);
+  auto handler = std::make_shared<Handler>(volume);
   device->SetControlHandler(handler);
   device->SetIOHandler(handler);
   auto plugin = std::make_shared<aspl::Plugin>(context);

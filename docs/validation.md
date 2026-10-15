@@ -1,5 +1,28 @@
 # Validation
 
+## Package work for 0.2.0
+
+Status: package artifacts built; live installation acceptance is incomplete.
+The destination uses only the bundled binary and macOS system utilities. Dynamic
+link inspection found only Apple system libraries. The build and repository
+checks pass with seven Rust tests, two native tests, and two TypeScript tests.
+
+The local packages contain payload code signed with an Apple Development identity.
+The product archives are unsigned and not notarized. Developer ID distribution
+trust has not been verified.
+
+A real Installer run with only system directories in PATH exposed an audio-device
+identity bug. Commands now resolve stable UIDs in the process that sets the
+property. Installation audio operations also use the desktop user session.
+Further testing encountered Core Audio enumeration timeouts while the desktop
+was locked. The original display volume was restored, the test driver was removed
+from the HAL load directory, and recovery evidence was retained outside Git.
+Unlock and complete installation, update, removal, recovery, and runtime checks
+before distributing a release. Do not infer successful installation from the
+package build or unit tests.
+
+## Prototype 0.1.0 evidence
+
 Recorded on 2026-10-15 with macOS 27.2, an Apple Silicon Mac, and one LG
 ULTRAGEAR+ connected by USB-C. This is prototype acceptance for that combination.
 

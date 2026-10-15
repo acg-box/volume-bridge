@@ -9,6 +9,7 @@
 #include <Security/Security.h>
 #include <dispatch/dispatch.h>
 #include <sys/mman.h>
+#include <signal.h>
 #include <unistd.h>
 #include <xpc/xpc.h>
 #include <array>
@@ -73,6 +74,15 @@ uint32_t outputChannels(AudioDeviceID id) {
   uint32_t count = 0;
   for (UInt32 i = 0; i < list->mNumberBuffers; ++i) count += list->mBuffers[i].mNumberChannels;
   return count;
+}
+AudioDeviceID resolveDevice(const char* identifier) {
+  char* end = nullptr;
+  const auto number = strtoul(identifier, &end, 10);
+  if (*identifier && end && !*end && number <= UINT32_MAX) return static_cast<AudioDeviceID>(number);
+  for (const auto id : devices()) {
+    if (textProperty(id, kAudioDevicePropertyDeviceUID) == identifier) return id;
+  }
+  return kAudioObjectUnknown;
 }
 AudioDeviceID defaultOutput() {
   AudioDeviceID id = 0;
@@ -261,6 +271,8 @@ void powerThread() {
 }
 void listDevices() {
   NSMutableArray* result = [NSMutableArray array];
+  AudioDeviceID systemOutput = 0;
+  readProperty(kAudioObjectSystemObject, kAudioHardwarePropertyDefaultSystemOutputDevice, systemOutput);
   for (auto id : devices()) {
     const auto channels = outputChannels(id);
     if (!channels) continue;
@@ -272,6 +284,7 @@ void listDevices() {
     [result addObject:@{ @"id":@(id), @"name":@(textProperty(id,kAudioObjectPropertyName).c_str()),
       @"uid":@(textProperty(id,kAudioDevicePropertyDeviceUID).c_str()), @"channels":@(channels),
       @"default":@(id == defaultOutput()), @"volume":@(volume), @"mute":@(mute),
+      @"system_default":@(id == systemOutput),
       @"volume_writable":@(writable(id,kAudioHardwareServiceDeviceProperty_VirtualMainVolume)),
       @"transport":@(transport), @"sample_rate":@(format.mSampleRate), @"format_flags":@(format.mFormatFlags),
       @"bits_per_channel":@(format.mBitsPerChannel) }];
@@ -406,6 +419,16 @@ extern "C" int bridge_select(uint32_t id) {
   return status;
 }
 extern "C" int bridge_command(int argc, const char* const* argv) {
+  // HAL calls can stall while the audio server changes devices. Bound each
+  // short-lived diagnostic/installer client so the transaction can recover.
+  if (argc < 2 || strcmp(argv[1], "tone")) {
+    signal(SIGALRM, [](int) {
+      constexpr char message[] = "Audio operation timed out.\n";
+      write(STDERR_FILENO, message, sizeof(message) - 1);
+      _exit(124);
+    });
+    alarm(20);
+  }
   @autoreleasepool {
     if ((argc == 3 || argc == 4) && !strcmp(argv[1], "monitor-volume")) {
       int value = -1;
@@ -419,9 +442,15 @@ extern "C" int bridge_command(int argc, const char* const* argv) {
     }
     if (argc >= 2 && !strcmp(argv[1], "devices")) { listDevices(); return 0; }
     if (argc >= 2 && !strcmp(argv[1], "status")) return requestStatus();
-    if (argc >= 3 && !strcmp(argv[1], "select")) return bridge_select(static_cast<uint32_t>(strtoul(argv[2],nullptr,10)));
+    if (argc == 3 && !strcmp(argv[1], "select-system")) {
+      const auto id = resolveDevice(argv[2]);
+      if (!outputChannels(id)) return kAudioHardwareBadDeviceError;
+      auto address = property(kAudioHardwarePropertyDefaultSystemOutputDevice);
+      return AudioObjectSetPropertyData(kAudioObjectSystemObject, &address, 0, nullptr, sizeof(id), &id);
+    }
+    if (argc >= 3 && !strcmp(argv[1], "select")) return bridge_select(resolveDevice(argv[2]));
     if (argc >= 4 && (!strcmp(argv[1],"volume") || !strcmp(argv[1],"mute"))) {
-      const auto id = static_cast<uint32_t>(strtoul(argv[2],nullptr,10));
+      const auto id = resolveDevice(argv[2]);
       const bool isVolume = !strcmp(argv[1],"volume");
       auto address = property(isVolume ? kAudioHardwareServiceDeviceProperty_VirtualMainVolume : kAudioDevicePropertyMute, kAudioObjectPropertyScopeOutput);
       if (isVolume) {
@@ -432,7 +461,7 @@ extern "C" int bridge_command(int argc, const char* const* argv) {
       return AudioObjectSetPropertyData(id,&address,0,nullptr,sizeof(value),&value);
     }
     if (argc >= 4 && !strcmp(argv[1], "tone")) {
-      const auto id = static_cast<uint32_t>(strtoul(argv[2],nullptr,10));
+      const auto id = resolveDevice(argv[2]);
       const double seconds = strtod(argv[3],nullptr);
       if (!std::isfinite(seconds) || seconds<=0 || seconds>120) return 2;
       AudioStreamBasicDescription format{};

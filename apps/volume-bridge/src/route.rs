@@ -30,7 +30,7 @@ pub const fn should_relay(route: Route) -> bool {
 
 #[cfg(test)]
 mod tests {
-	use crate::Route;
+	use crate::route::{self, Route};
 
 	fn selected() -> Route {
 		Route {
@@ -45,23 +45,23 @@ mod tests {
 
 	#[test]
 	fn switch_to_another_output_stops_relay() {
-		assert!(crate::should_relay(selected()));
-		assert!(!crate::should_relay(Route { selected: 9, ..selected() }));
-		assert!(crate::should_relay(selected()));
+		assert!(route::should_relay(selected()));
+		assert!(!route::should_relay(Route { selected: 9, ..selected() }));
+		assert!(route::should_relay(selected()));
 	}
 
 	#[test]
 	fn missing_driver_target_or_source_stops_relay() {
-		assert!(!crate::should_relay(Route { connected: false, ..selected() }));
-		assert!(!crate::should_relay(Route { target: 0, ..selected() }));
-		assert!(!crate::should_relay(Route { source_active: false, ..selected() }));
-		assert!(!crate::should_relay(Route { proxy: 0, selected: 0, ..selected() }));
+		assert!(!route::should_relay(Route { connected: false, ..selected() }));
+		assert!(!route::should_relay(Route { target: 0, ..selected() }));
+		assert!(!route::should_relay(Route { source_active: false, ..selected() }));
+		assert!(!route::should_relay(Route { proxy: 0, selected: 0, ..selected() }));
 	}
 
 	#[test]
 	fn wake_does_not_override_another_output() {
-		assert!(!crate::should_relay(Route { sleeping: true, ..selected() }));
-		assert!(crate::should_relay(selected()));
-		assert!(!crate::should_relay(Route { selected: 9, sleeping: false, ..selected() }));
+		assert!(!route::should_relay(Route { sleeping: true, ..selected() }));
+		assert!(route::should_relay(selected()));
+		assert!(!route::should_relay(Route { selected: 9, sleeping: false, ..selected() }));
 	}
 }
