@@ -60,7 +60,8 @@ jobs:
         with:
           tool: cargo-make@0.37.24,cargo-nextest@0.9.143
       - name: Install the repository lint tool
-        run: cargo install --locked vibe-style --version 0.2.5
+        # v0.2.5 needs Git metadata that its crates.io archive does not contain.
+        run: cargo install --locked --git https://github.com/acg-box/vibe-style --rev 3f39ce57b54def2cdd95a330faae299f5eb55014 vibe-style
       - name: Recheck source, test, and build without credentials
         run: |
           git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
