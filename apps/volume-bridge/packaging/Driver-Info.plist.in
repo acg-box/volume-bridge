@@ -5,8 +5,8 @@
   <key>CFBundleIdentifier</key><string>com.acgbox.volumebridge.driver</string>
   <key>CFBundleName</key><string>VolumeBridge</string>
   <key>CFBundlePackageType</key><string>BNDL</string>
-  <key>CFBundleVersion</key><string>0.2.0</string>
-  <key>CFBundleShortVersionString</key><string>0.2.0</string>
+  <key>CFBundleVersion</key><string>0.2.1</string>
+  <key>CFBundleShortVersionString</key><string>0.2.1</string>
   <key>CFPlugInFactories</key><dict>
     <key>39B9D421-BAB1-43A8-B8D3-090F8900D121</key><string>VolumeBridgeFactory</string>
   </dict>

@@ -49,6 +49,11 @@ product archives, submits them to Apple, and binds each response to its upload
 hash. It requires Accepted status, a matching notarization log without errors,
 valid stapled tickets, and Gatekeeper acceptance.
 
+The signing keychain stays in the search list until packaging finishes.
+The user's original default keychain remains selected during packaging.
+The signer restores the original search list and default before it removes the
+temporary keychain, including when packaging fails.
+
 The Linux publisher receives only the final assets, public source metadata, and
 the ephemeral workflow token. It uses the repository's `release` environment,
 with reviewer `acgxv`, self-review permitted, and tag deployment policy `v*`.

@@ -262,9 +262,11 @@ export async function withSigning<T>(work: (context: SigningContext) => Promise<
       ['set-key-partition-list', '-S', 'apple-tool:,apple:', '-s', '-k', password, keychain],
       true,
     );
-    // Only the partition-list operation needs the temporary default. Keep
-    // normal applications on their original keychains during notarization.
-    restore();
+    // codesign needs this keychain in the search list, even with --keychain.
+    // Restore the user's default now and keep the signing chain discoverable
+    // until the signing operation completes. The finally block restores both.
+    capture('/usr/bin/security', ['list-keychains', '-d', 'user', '-s', ...savedList, keychain]);
+    capture('/usr/bin/security', ['default-keychain', '-d', 'user', '-s', savedDefault]);
     const identities = capture('/usr/bin/security', [
       'find-identity',
       '-v',
