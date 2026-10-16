@@ -62,6 +62,9 @@ The source validator enforces stable tag syntax more narrowly than `v*`.
 
 The publisher first validates the local assets. It creates or reuses a draft,
 uploads exactly the three assets, and checks their metadata and downloaded bytes.
+GitHub can assign temporary `untagged-` browser URLs to draft assets. The publisher
+downloads drafts by authenticated asset ID and verifies their bytes. After
+publication, it requires the canonical tag URL for every public asset.
 It rechecks the remote annotated tag, main ancestry, and version advance before
 publication. It downloads the public files and verifies them after publication.
 An already public same-tag rerun is read-only and verifies the existing files.

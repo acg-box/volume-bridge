@@ -1,6 +1,6 @@
 # VolumeBridge
 
-**Package status: no GitHub Release is published. The 0.2.1 candidate keeps the signing keychain discoverable on CI. The local 0.2.0 candidate is Developer ID signed, notarized, and stapled; its update, removal, and fresh-install checks passed on the tested Mac.**
+**Downloads:** [GitHub Releases](https://github.com/acg-box/volume-bridge/releases).
 
 Use native macOS volume controls with a fixed-volume LG display. VolumeBridge
 contains a HAL audio driver and a background service. It has no app or menu bar

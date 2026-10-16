@@ -1,5 +1,19 @@
 # Validation
 
+## CI distribution checks for 0.2.1
+
+Recorded on 2026-10-16. The [v0.2.1 release run](https://github.com/acg-box/volume-bridge/actions/runs/38859914425)
+passed source validation, native checks, compilation, Developer ID signing,
+notarization, stapling, and Gatekeeper assessment on the macOS 26 runner.
+Its source is `d15c1ea35c0c79e1a78de502ed43c03d12f8b9c4`.
+
+Publication stopped while the release was a draft because the verifier expected
+canonical public URLs for draft assets. GitHub supplied temporary `untagged-`
+URLs. The corrected verifier downloaded all three retained draft assets through
+the authenticated asset API and matched their sizes, hashes, and manifest to the
+CI artifact. It made no release changes. This is draft verification, not public
+release acceptance or hardware acceptance of the CI-built packages.
+
 ## Developer ID release preparation for 0.2.0
 
 Recorded on 2026-10-16. Both product archives and all bundled Mach-O components
@@ -10,8 +24,8 @@ timestamps and the Developer ID Installer certificate chain.
 The final packages contain the reconnect fix from source revision
 `5b099058938b0d6063a1dc586488b690c20e7b16`. Both received Accepted status,
 matching notarization logs without issues, valid stapled tickets, and Gatekeeper
-acceptance. Credential-free GitHub macOS CI also passed at that revision. No public
-release or version tag has been published.
+acceptance. Credential-free GitHub macOS CI also passed at that revision. At the
+time of this local record, no public release or version tag had been published.
 
 | Final artifact | SHA-256 | Apple submission |
 | --- | --- | --- |

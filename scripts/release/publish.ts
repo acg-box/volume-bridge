@@ -93,7 +93,7 @@ function recheckSource(source: Source, advance: boolean): void {
     throw new Error('The candidate must advance every other remote stable tag and release.');
 }
 
-function verifyRemote(
+export function verifyRemote(
   release: Record<string, unknown>,
   source: Source,
   localManifest?: Manifest,
@@ -121,9 +121,13 @@ function verifyRemote(
     for (const asset of assets) {
       const name = text(asset.name);
       const url = `https://github.com/${repository}/releases/download/${source.tag}/${name}`;
-      if (asset.state !== 'uploaded' || asset.browser_download_url !== url)
+      if (
+        asset.state !== 'uploaded' ||
+        (release.draft === false && asset.browser_download_url !== url)
+      )
         throw new Error('Unexpected release asset URL or upload state.');
-      // Drafts need authenticated API downloads. Public assets use their public URL.
+      // Draft browser URLs can use an opaque untagged slug. Download drafts by
+      // authenticated asset ID; require canonical tag URLs after publication.
       const bytes = release.draft
         ? execFileSync(
             'gh',
@@ -224,7 +228,7 @@ function publish(source: Source, directory: string): void {
   console.log(`Published and verified: ${text(actual.html_url)}`);
 }
 
-if (process.argv[2] === '--dry-run') {
+if (import.meta.main && process.argv[2] === '--dry-run') {
   const directory = resolve(text(process.argv[3]));
   const name = text(process.argv[4]);
   const candidate = record(JSON.parse(readFileSync(resolve(directory, name), 'utf8')) as unknown);
@@ -235,7 +239,7 @@ if (process.argv[2] === '--dry-run') {
   };
   validateAssets(directory, source);
   console.log('Local release assets passed validation. No GitHub requests were made.');
-} else {
+} else if (import.meta.main) {
   if (process.argv.length !== 2)
     throw new Error('Usage: publish.ts [--dry-run DIRECTORY MANIFEST]');
   publish(workflowSource(), resolve(root, 'artifacts'));
