@@ -270,7 +270,7 @@ args    = ["scripts/native.ts", "sign"]
 command = "node"
 
 [tasks.build-package]
-args         = ["scripts/package.ts", "release"]
+args         = ["scripts/release/sign.ts"]
 command      = "node"
 dependencies = ["build"]
 

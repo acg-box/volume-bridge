@@ -50,16 +50,17 @@ cargo make fmt
 VOLUMEBRIDGE_SIGN_ID='YOUR EXISTING CODE SIGNING IDENTITY' cargo make build-package-local
 ```
 
-Local packages are written to `target/packages/local/`. For a signed and
-notarized release, configure existing Developer ID Application and Installer
-identities plus a notary keychain profile, then run `cargo make build-package`.
-See [packaging](docs/packaging.md) for the release variables and validation.
+Local packages are written to `target/packages/local/`. The release workflow
+uses the shared ACG Developer ID certificates and notarization API key. It builds
+and checks the source before it supplies credentials to the signing process.
+See [release](docs/release.md) for the credential names and publication process.
 
 ## Evidence and scope
 
 - [Architecture](docs/architecture.md)
 - [Validation](docs/validation.md)
 - [Packaging and recovery](docs/packaging.md)
+- [Signing and releases](docs/release.md)
 - [Dependencies](docs/dependencies.md)
 - [Template adoption](docs/template-adoption.md)
 

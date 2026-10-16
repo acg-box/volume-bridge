@@ -56,15 +56,25 @@ Use `cargo make build-package-local` with `VOLUMEBRIDGE_SIGN_ID` for local tests
 The payload is code signed, but the local product archives are not distribution
 signed or notarized. A local package is not proof of Gatekeeper acceptance.
 
-A release uses `cargo make build-package` and requires:
-
-- `VOLUMEBRIDGE_SIGN_ID`: an existing Developer ID Application identity.
-- `VOLUMEBRIDGE_INSTALLER_SIGN_ID`: an existing Developer ID Installer identity.
-- `VOLUMEBRIDGE_NOTARY_PROFILE`: an existing notarytool keychain profile name.
+A release uses the seven credential names in [Signing and releases](release.md).
+Run `cargo make build` and `cargo make check` before credentials are supplied.
+Then run `node scripts/release/sign.ts` in the credential injection process.
+`cargo make build-package` is a convenience task for an already configured local
+release environment; CI keeps the build and credential steps separate.
 
 The release path signs code with hardened runtime and a timestamp, signs each
 product archive, submits it to Apple, staples the ticket, and checks Gatekeeper.
 It fails if any step fails. Credentials and signing keys stay outside the repository.
+The signer imports the two identities into a temporary keychain. It restores the
+original keychain list and default before waiting for Apple. It removes the
+temporary credentials when the process exits.
+
+An interrupted submission leaves the exact package, source identity, upload hash,
+and Apple submission ID in `target/packages/release/`. Keep these files together.
+Use the same source revision and run `node scripts/release/sign.ts --resume` with
+the same credential injection to query the existing submissions. This command
+does not rebuild or upload a second copy. Do not remove this directory while
+Apple is processing the packages.
 
 Apple describes these requirements in
 [Packaging Mac software for distribution](https://developer.apple.com/documentation/xcode/packaging-mac-software-for-distribution)

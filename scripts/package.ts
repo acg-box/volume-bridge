@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import {
   chmodSync,
   cpSync,
+  existsSync,
   mkdirSync,
   readdirSync,
   readFileSync,
@@ -9,15 +10,21 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import { notarize, verifyCode } from './release/macos.ts';
+import { packageNames, readVersion, record } from './release/contract.ts';
 
 const root = resolve(import.meta.dirname, '..');
 const mode = process.argv[2];
 if (mode !== 'local' && mode !== 'release')
   throw new Error('Usage: node scripts/package.ts local|release');
 const local = mode === 'local';
+const resume = process.argv[3] === '--resume';
+if (process.argv.length > (resume ? 4 : 3) || (process.argv[3] && !resume) || (local && resume))
+  throw new Error('Usage: node scripts/package.ts local|release [--resume]');
 const codeIdentity = process.env.VOLUMEBRIDGE_SIGN_ID;
 const installerIdentity = process.env.VOLUMEBRIDGE_INSTALLER_SIGN_ID;
 const notaryProfile = process.env.VOLUMEBRIDGE_NOTARY_PROFILE;
+const keychain = process.env.VOLUMEBRIDGE_KEYCHAIN;
 if (!codeIdentity)
   throw new Error('Set VOLUMEBRIDGE_SIGN_ID to an existing code-signing identity.');
 if (
@@ -40,7 +47,7 @@ if (capture('/usr/bin/uname', ['-m']) !== 'arm64')
 const binary = resolve(root, 'target/release/volume-bridge');
 const driver = resolve(root, 'target/native/VolumeBridge.driver');
 const version = capture(binary, ['--version']);
-if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error('Invalid build version.');
+if (readVersion() !== version) throw new Error('Source and binary versions differ.');
 const driverVersion = capture('/usr/bin/plutil', [
   '-extract',
   'CFBundleVersion',
@@ -51,8 +58,25 @@ const driverVersion = capture('/usr/bin/plutil', [
 ]);
 if (driverVersion !== version) throw new Error('Driver and service versions must match.');
 const stage = resolve(root, 'target/packages', mode);
-rmSync(stage, { recursive: true, force: true });
-mkdirSync(stage, { recursive: true });
+const source = { version, commit: capture('git', ['rev-parse', 'HEAD']) };
+if (resume) {
+  const original = record(
+    JSON.parse(readFileSync(resolve(stage, 'source.json'), 'utf8')) as unknown,
+  );
+  if (original.version !== version)
+    throw new Error('Cannot resume packages from a different product version.');
+  // Resume the exact signed bytes; do not relabel them with the current checkout.
+  // The asset writer separately binds the retained source to the workflow source.
+  console.log(`Retaining original package source: ${String(original.commit)}`);
+} else {
+  if (!local && existsSync(stage))
+    throw new Error(
+      'Release staging exists. Use --resume for the same submission, or archive it before a new build.',
+    );
+  rmSync(stage, { recursive: true, force: true });
+  mkdirSync(stage, { recursive: true });
+  writeFileSync(resolve(stage, 'source.json'), JSON.stringify(source));
+}
 
 function sign(path: string, identifier: string): void {
   run('/usr/bin/codesign', [
@@ -64,9 +88,11 @@ function sign(path: string, identifier: string): void {
     local ? '--timestamp=none' : '--timestamp',
     '--identifier',
     identifier,
+    ...(keychain ? ['--keychain', keychain] : []),
     path,
   ]);
   run('/usr/bin/codesign', ['--verify', '--strict', path]);
+  if (!local) verifyCode(path, identifier);
 }
 
 function copyRustLicenses(destination: string): void {
@@ -182,24 +208,30 @@ function buildPackage(remove: boolean): string {
     resources,
   ];
   if (!local && installerIdentity) args.push('--sign', installerIdentity, '--timestamp');
+  if (keychain) args.push('--keychain', keychain);
   run('/usr/bin/productbuild', [...args, output]);
-  if (!local && notaryProfile) {
-    run('/usr/bin/xcrun', [
-      'notarytool',
-      'submit',
-      output,
-      '--keychain-profile',
-      notaryProfile,
-      '--wait',
-    ]);
-    run('/usr/bin/xcrun', ['stapler', 'staple', output]);
-    run('/usr/bin/xcrun', ['stapler', 'validate', output]);
-    run('/usr/sbin/spctl', ['--assess', '--type', 'install', '--verbose=2', output]);
-  }
   return output;
 }
 
-const packages = [buildPackage(false), buildPackage(true)];
+const packages = resume
+  ? packageNames(version).map((name) => resolve(stage, name))
+  : [buildPackage(false), buildPackage(true)];
+if (!local && notaryProfile) {
+  const controller = new AbortController();
+  const cancel = () => controller.abort();
+  process.once('SIGINT', cancel);
+  process.once('SIGTERM', cancel);
+  try {
+    const evidence = await Promise.all(
+      packages.map((file) => notarize(file, notaryProfile, keychain, controller.signal)),
+    );
+    writeFileSync(resolve(stage, 'notarization.json'), JSON.stringify(evidence, null, 2));
+  } finally {
+    controller.abort();
+    process.removeListener('SIGINT', cancel);
+    process.removeListener('SIGTERM', cancel);
+  }
+}
 for (const path of packages) console.log(`Package: ${path}`);
 if (local)
   console.log(

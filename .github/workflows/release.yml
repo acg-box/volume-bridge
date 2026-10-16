@@ -1,0 +1,128 @@
+name: Release
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      commit: ${{ steps.source.outputs.commit }}
+      version: ${{ steps.source.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - run: git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
+      - id: source
+        run: node scripts/release/source.ts
+      - name: Check release contracts without credentials
+        run: |
+          npm ci --ignore-scripts
+          node --test
+
+  package:
+    needs: source
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      MACOSX_DEPLOYMENT_TARGET: '14.0'
+      VOLUMEBRIDGE_RELEASE_COMMIT: ${{ needs.source.outputs.commit }}
+      VOLUMEBRIDGE_RELEASE_VERSION: ${{ needs.source.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+        with:
+          cache: false
+          rustflags: ''
+      - uses: taiki-e/install-action@c44f6b046f1c29ae5918b1e0bfdbb2f1813836fd # v2.84.1
+        with:
+          tool: cargo-make@0.37.24,cargo-nextest@0.9.143
+      - name: Install the repository lint tool
+        run: cargo install --locked vibe-style --version 0.2.5
+      - name: Recheck source, test, and build without credentials
+        run: |
+          git fetch --no-tags origin '+refs/heads/main:refs/remotes/origin/main'
+          node scripts/release/source.ts
+          test "$RUNNER_ARCH" = ARM64
+          npm ci --ignore-scripts
+          cargo make check
+          cargo make build
+      - name: Sign and notarize both packages
+        env:
+          ACG_MACOS_DEVELOPER_ID_APPLICATION_P12_BASE64: ${{ secrets.ACG_MACOS_DEVELOPER_ID_APPLICATION_P12_BASE64 }}
+          ACG_MACOS_DEVELOPER_ID_APPLICATION_P12_PASSWORD: ${{ secrets.ACG_MACOS_DEVELOPER_ID_APPLICATION_P12_PASSWORD }}
+          ACG_MACOS_DEVELOPER_ID_INSTALLER_P12_BASE64: ${{ secrets.ACG_MACOS_DEVELOPER_ID_INSTALLER_P12_BASE64 }}
+          ACG_MACOS_DEVELOPER_ID_INSTALLER_P12_PASSWORD: ${{ secrets.ACG_MACOS_DEVELOPER_ID_INSTALLER_P12_PASSWORD }}
+          ACG_MACOS_NOTARY_API_KEY_ID: ${{ secrets.ACG_MACOS_NOTARY_API_KEY_ID }}
+          ACG_MACOS_NOTARY_API_ISSUER_ID: ${{ secrets.ACG_MACOS_NOTARY_API_ISSUER_ID }}
+          ACG_MACOS_NOTARY_API_PRIVATE_KEY_P8: ${{ secrets.ACG_MACOS_NOTARY_API_PRIVATE_KEY_P8 }}
+        run: node scripts/release/sign.ts
+      - name: Bind final assets to the validated source
+        run: node scripts/release/assets.ts
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: signed-packages
+          path: target/release-assets/*
+          if-no-files-found: error
+          retention-days: 7
+      - name: Retain exact submissions for recovery
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: notarization-recovery
+          path: |
+            target/packages/release/VolumeBridge-*.pkg
+            target/packages/release/Uninstall-VolumeBridge-*.pkg
+            target/packages/release/*.json
+          if-no-files-found: ignore
+          retention-days: 7
+
+  publish:
+    needs: [source, package]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: release
+    permissions:
+      contents: write
+    env:
+      VOLUMEBRIDGE_RELEASE_COMMIT: ${{ needs.source.outputs.commit }}
+      VOLUMEBRIDGE_RELEASE_VERSION: ${{ needs.source.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: signed-packages
+          path: artifacts
+      - name: Validate, publish, and download public assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/release/publish.ts

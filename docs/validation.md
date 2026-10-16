@@ -1,5 +1,23 @@
 # Validation
 
+## Developer ID release preparation for 0.2.0
+
+Recorded on 2026-10-16. Both product archives and all bundled Mach-O components
+pass the Developer ID signature checks for team `4N949UKQ55`. The payload uses
+hardened runtime and secure timestamps. Both product signatures have trusted
+timestamps and the Developer ID Installer certificate chain.
+
+The signing process successfully authenticated to Apple's notarization service
+with the shared Developer Team Key. Both packages were submitted. Accepted status,
+stapled tickets, and Gatekeeper acceptance remain pending. No public release or
+version tag has been published.
+
+The release adapter passed `cargo make check`: seven Rust tests, two native
+tests, seven TypeScript tests, type checking, and lint. The new release tests
+cover source and version binding, annotated tags, main ancestry, asset tampering,
+and a publisher dry-run without network tools. These results do not establish
+GitHub release workflow acceptance.
+
 ## Local package validation for 0.2.0
 
 Recorded on 2026-10-15 with macOS 27.2, an Apple Silicon Mac, and one LG
@@ -43,9 +61,9 @@ gap-free acoustic playback. The two transition resynchronizations discard
 buffered audio, as described in the architecture.
 
 The local packages contain payload code signed with an Apple Development identity.
-The product archives are unsigned and not notarized. Developer ID Application,
-Developer ID Installer, and notarization credentials are not available on this
-host. No public release was published.
+The local product archives are unsigned and not notarized. Distribution
+credentials were not yet available during this local validation. The separate
+Developer ID preparation record above describes the later signing work.
 
 | Artifact | SHA-256 |
 | --- | --- |
