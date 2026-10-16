@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ba95dbec2b69830779592f9842455d189f60b31934fb7861dde69794b8a597c7",
+  "claims": [
+    {
+      "id": "claim_c336034629a24c8cb4bb33478e3d9690",
+      "statement": "The driver publishes the LG ULTRAGEAR+ · VolumeBridge output as stereo 48 kHz floating-point PCM with attached native volume and mute controls.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/driver/Driver.cpp#L117-L146",
+          "version": "repo-lines-v1:sha256:92374753ab44b7c1237efbdf828124fc8ac9fd037f9b97dfea429256ee1ea5d0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwOTk0ZThhY2ZkZGU5NmQ2ZGJkODM0ZmNiNjU5MDdkNjE4NTAyMGYyNzgwYzE0NTFhZDkyMTgzMWEwMmUxYzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0YTEwZDQ2OTZhNmEzMGE5MjQ2NDAxMjM5NGNiN2I0Y2Q1YmY5YmJlODY5Yzk2MWE0MjIwMmQ1M2U3Zjk5ZWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRiODFmZWM3NzdiNmJiOGNlNDBhZTZkMWFlNWJiZjM4YmI4ZWIwMDNjMTNlYTg1NzVjNTlhOWVlNmYxNGZhZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkOTY1YjgzZTUwYjRhODU0N2M5ZmQyMjFmZDBjOWQwZWUxOWYyNTUzZTY5ZTJkZGZjYTgwZDkzMjZlMzc0ZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3a258aa1d7264cba9d6c13217231ed5a",
+      "statement": "SoftwareVolume applies gain from the reported decibel value, produces exact silence at raw zero, and clamps processed samples to the interval from -1 to 1.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/driver/SoftwareVolume.hpp#L6-L16",
+          "version": "repo-lines-v1:sha256:e0fe7d89afd1930f766987f76a05f8b054bdc69f26b45efc32e9844b7e3be6b4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjM2YwMzc4N2E3NTdmYjc0YjRiMTZkMjAyNDMwYjdmNDYyMjY5NjNhZDJiODg4OGYyZGQ4YTQ3NzdhMGRhNzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4NGFkOWFiMWJjMDIyODE2OTc5YzdjYTM3MmQ4ZmQ5ODdkMzMzN2Q5NDZhYmZhNDQ0NTQ2OTkwNzc1MjRlNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFhMWQxYTYzMzkwMjI5Yzc5ODM0N2U4M2EwNDA1NDQxYzk0MDAwMzUyODRhZDE2OGMxYmY2Y2RmMWQ3MGEzNzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a18fd82d2e1a47cea43f7fb9615ea654",
+      "statement": "The shared-memory protocol uses a 16384-frame single-writer single-reader ring with atomic cursors; full writes drop new frames and count the drops.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/native/Protocol.hpp#L10-L65",
+          "version": "repo-lines-v1:sha256:6aeb90c85ffa6f9cd72904639b4e3ef7888d1fcc4128d542d90c292bda559cb6:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxY2Q2ZGQwMjUzYzMxNTI1NjVmN2Q2NWUzZDBjMWZhYjhjZmExYTFjNGY0OTQ0Y2M4ODM4MjExZDhmZjZkNTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0Njg5N2UyYTEzOThiNTA0MWY3MGJhMjQ5NGU0MTFhOWJlZDZkMTdhYWJiNzdkODRkOTI1MDM5YzQwMGJkODAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiNzI0Y2Y2ZTg0MDM4OTkwMzc2YTgyMjA1MjY5MTExYTdlNWNiZmQxMTgyMDQ1NjZmY2VjNTI5YmM0MTJlMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0YTNlNzVkYTcwY2RmZDE4ODNhMzYyM2VlODBiOWJmNTE4MjcxM2YyZmI5MDc2NjIwNTBiOTk1ODE1ODUyM2YifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2588787f786844b6abf16de41a6943cc",
+      "statement": "The physical render callback clears output first, waits for a 1024-frame prefill, discards queues over 4096 frames, and returns to prefill after an underrun.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/native/Protocol.hpp#L12-L16",
+          "version": "repo-lines-v1:sha256:556b56f8885190b221433a8283f029eb1795abbe0e267d72a348ed64d67b17f0:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODRiOTFkMjExMWE4YzZjYmQ4ZjdlZGVhNzlmZDJhM2U0MjFkZWYyMmJhNDRjNTc4OTc4MDlmMjI1YjQ5MjE5MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDMyYzFjZTNiOGNhYTU4MWE2M2FiY2MwMzk2NjA0ZWQ5OTgzOTgwZTg0OTQ2ZjBjMGI5YjBhZWYwNzhiNWZmNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDIzOTk2NGUyMTQ5M2JkOGNjNzg3OGIyN2RlODQ0NjRlMzliYmZmNDE4NzQ3Nzg1MWU1NjJkZTFmZDExNDUzMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzFjM2ZiYzQ0ZDJmYmNjNTVlZGMzMWQ3YTA4YzVkNzBhYWJiZGNkY2YwODFkMmZiZTU5NmZjYWNhNjIxZjBjNyJ9"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/native/Service.mm#L218-L254",
+          "version": "repo-lines-v1:sha256:f0124a3fce81d29271eae661060f3f54d6daa28f8a02bb7ebb848a9bea476267:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1NGQ5NWUyNTAyMjY4NWFiNTljM2I0YzQwNjQ1ZmM3ZGNiM2E2N2Q0Mzk1OGMxMjY4NWY1ZWRhYjA3NmFlZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0ZWVlZDUxOTIxMjVhZjEzNjRjM2EyZWZmM2FjN2U3ZjRiYjIwZWVjNDljMjg5ZWUwMzZiMjg2NTY4NmEyNGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRhNjQ2Yjk5YTEwM2VjOTIxZTY0ZTYwOGIzZjliOTUxNjZlMGQ4ZjAyMDEyNzEwMjEwYzRiNTBlNzI3ODgyZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhMmNkYzdiZmQxN2ZkMjc3Njg1ZjBjOTQ5ZGYzZTQxODRmZDc0NTk0NzkxMjA0MjVjMDc1N2JkM2E1MGVmMTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_42cf8e1ce86746188c3179bd9546bb59",
+      "statement": "The service rejects physical streams that are not 48 kHz 32-bit floating-point linear PCM and enables producer writes only after the physical AudioDeviceStart succeeds.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/native/Service.mm#L373-L401",
+          "version": "repo-lines-v1:sha256:9750ba426e6515a3b30421086aabec436935d971b938de8fdc969830b1a6e603:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzYzUxOWQ4MzJiNmYxMjI5Mzk2ZDVhNWJiZDU4ZWRmMTFkZGY1M2U0NGJmY2UzODJkNTQ1OTZlYjc0OTA0ZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlmNTMwNjhmZmJkOWQ3Y2RkN2VhZjYwYThlNmJiMmM0ZDNlMzgyOWZhZjA4ODFmMDlhMWNkMmVjYWVmMmFkOWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU4YzAzZTZlNTIzZDM0NDNiNGUxYzg4ZWNiZGM1MTllNDQxZmQxYTVmMjNkZGVmMjNiYTY1OWNhZTQzN2IyOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNGRmOGRiNjA5ZTM0N2U0OWQwZmZiYTE1ZjRjMjYxY2UxZWQzNzQ0YzQwMTFkZTczNzgwNzRiNDMyY2M4OWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_646aad91048d4040986ae24c279f2008",
+      "statement": "The native volume test checks all keyboard steps for monotonic gain, exact zero and unity endpoints, low-step attenuation, and consistency with reported decibels.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/tests/native/volume.cpp#L6-L24",
+          "version": "repo-lines-v1:sha256:8dc517a7a6da9b1cc490826bc256c79f65dd2b5178932d72ff16079317a9cb8e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiODUzNDFkMmExYzg4YzQ5NzEwYWZhOWMyZTdiZWE4OTdjMzk1ZTRkYWQ2YzZhNzkwMmEwNGYxMDJkZWQ1MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczNTQ4ZjYxZWRlZjlkYTMxYjVjNjM2YjIzNjg2OTZiMzNiMDg2MzhiN2U0NmU4ZDNhYzZkN2Y2Zjk2MjYxNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T06:30:02.662Z"
+  }
+}

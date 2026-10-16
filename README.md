@@ -1,73 +1,107 @@
+<div align="center">
+
 # VolumeBridge
 
-**Package status: no GitHub Release is published. The 0.2.1 candidate keeps the signing keychain discoverable on CI. The local 0.2.0 candidate is Developer ID signed, notarized, and stapled; its update, removal, and fresh-install checks passed on the tested Mac.**
+Native macOS volume control for a fixed-volume LG display, with a HAL driver and a background service.
 
-Use native macOS volume controls with a fixed-volume LG display. VolumeBridge
-contains a HAL audio driver and a background service. It has no app or menu bar
-item. It does not add a microphone, input audio device, or kernel extension.
+[![License](https://img.shields.io/badge/License-GPLv3%20only-blue.svg)](https://spdx.org/licenses/GPL-3.0-only.html)
+[![Docs](https://img.shields.io/badge/docs-OpenWiki-blue)](openwiki/quickstart.md)
+[![Release](https://github.com/acg-box/volume-bridge/actions/workflows/release.yml/badge.svg)](https://github.com/acg-box/volume-bridge/actions/workflows/release.yml)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/acg-box/volume-bridge)](https://github.com/acg-box/volume-bridge/tags)
+[![GitHub last commit](https://img.shields.io/github/last-commit/acg-box/volume-bridge?color=red&style=plastic)](https://github.com/acg-box/volume-bridge)
 
-The current target is one LG ULTRAGEAR+ connected to an Apple Silicon Mac by
-USB-C. The output appears as **LG ULTRAGEAR+ · VolumeBridge**. The original LG
-output remains available. The audio path supports stereo float PCM at 48 kHz.
+</div>
 
-## Install and remove
+## Feature Highlights
 
-Open the installation `.pkg` in Finder and follow the macOS Installer. Keep the
-LG connected and stay signed in to your desktop. The package needs administrator
-authorization. It does not need Xcode, Rust, Node, Python, Homebrew, or a network
-connection on the destination Mac.
+### Native Volume Controls
 
-The installer saves the original output and display volume. It mutes the bridge,
-sets low software volume, calibrates the monitor to 100%, and verifies the result
-before it unmutes. The first installation selects VolumeBridge. An update
-preserves the existing software volume and selected output. Audio pauses briefly
-while Core Audio restarts. No system security setting is changed.
+Use the macOS volume keys, slider, and mute control with **LG ULTRAGEAR+ · VolumeBridge**. No app or menu bar item is required.
 
-Keep the monitor's own volume at 100% and use the macOS volume keys or slider.
-After an OSD volume change or monitor reset, run the installation package again
-to recalibrate. The original LG output bypasses software attenuation.
+### Installation and Recovery
 
-Open **Uninstall VolumeBridge.pkg** to remove it. Keep the same display connected.
-Removal restores the saved hardware volume before it restores the original output
-and removes the driver and service. If the display cannot be reached, removal
-stops before it changes the installation. A restoration receipt remains at
-`/Library/Logs/VolumeBridge-uninstall.json`.
+Install a compiled package with Finder. Automatic calibration starts at low volume, and the removal package restores the saved monitor volume.
 
-Packages with `-local` in the filename are development packages. They are not
-Developer ID signed or notarized and are not public release installers.
+## Status
 
-## Build
+This prototype targets one LG ULTRAGEAR+ connected by USB-C to an Apple Silicon Mac. See the [acceptance record](openwiki/verification/acceptance.md) for the tested scope and limitations.
 
-Build-time tools are the host Xcode toolchain, the repository's Rust and Node/npm
-versions, CMake, cargo-make, cargo-nextest, cargo-vstyle, and nightly rustfmt.
-These tools are not part of the installation payload.
+## Workspace Posture
 
-```sh
-npm ci --ignore-scripts
-cargo make build
-cargo make check
-cargo make fmt
-VOLUMEBRIDGE_SIGN_ID='YOUR EXISTING CODE SIGNING IDENTITY' cargo make build-package-local
-```
+- [apps/volume-bridge/](apps/volume-bridge/) owns the Rust service, installer, Apple SDK adapter, and HAL driver.
+- [scripts/](scripts/) owns build, packaging, and release programs.
+- [packages/](packages/) is reserved for reusable workspace packages.
+- [Cargo.toml](Cargo.toml) owns shared Rust metadata and dependencies.
+- [package.json](package.json) and [package-lock.json](package-lock.json) own the pinned TypeScript toolchain.
+- [openwiki/](openwiki/quickstart.md) is the authoritative architecture, operations, and validation guide.
 
-Local packages are written to `target/packages/local/`. The release workflow
-uses the shared ACG Developer ID certificates and notarization API key. It builds
-and checks the source before it supplies credentials to the signing process.
-See [release](docs/release.md) for the credential names and publication process.
+## Usage
 
-## Evidence and scope
+### Installation
 
-- [Architecture](docs/architecture.md)
-- [Validation](docs/validation.md)
-- [Packaging and recovery](docs/packaging.md)
-- [Signing and releases](docs/release.md)
-- [Dependencies](docs/dependencies.md)
-- [Template adoption](docs/template-adoption.md)
+#### Build from Source
 
-This remains a prototype. It has a bounded audio queue and does not claim zero
-latency. DDC calibration uses private Apple Silicon IOAV interfaces. Longer
-playback, other display models, and other macOS versions need separate acceptance.
+Follow the [OpenWiki build guide](openwiki/development/build-and-dependencies.md) with the repository-selected tools.
 
-The public repository was created from
-[`acg-box/vibe-mono`](https://github.com/acg-box/vibe-mono). It retains the
-GPL-3.0-only license. Vendored code retains its own license notices.
+#### Download Pre-built Packages
+
+Download the installation and removal packages from [GitHub Releases](https://github.com/acg-box/volume-bridge/releases). Follow the [installation guide](openwiki/workflows/installation-and-recovery.md) on the destination Mac.
+
+### Configuration
+
+The installer records the original display volume and calibrates the monitor. See [calibration and recovery](openwiki/workflows/installation-and-recovery.md).
+
+### Interaction
+
+Select **LG ULTRAGEAR+ · VolumeBridge** in macOS and use native volume controls. See [audio behavior](openwiki/architecture/audio-and-control.md) and [output switching](openwiki/architecture/device-lifecycle.md).
+
+### Update
+
+Open the next installation package with the original display connected. See [updates and removal](openwiki/workflows/installation-and-recovery.md).
+
+## Development
+
+Use the [build and test guide](openwiki/development/build-and-dependencies.md) for repository commands and dependencies. CI builds, signs, notarizes, and uploads release packages through the [release workflow](openwiki/operations/releases.md).
+
+### Architecture
+
+Start with the [OpenWiki quickstart](openwiki/quickstart.md), then follow the audio, device lifecycle, installation, and release pages. Detailed project documentation is maintained in OpenWiki.
+
+## Support Me
+
+If you find this project helpful and would like to support its development, you can buy me a coffee!
+
+Your support is greatly appreciated and motivates me to keep improving this project.
+
+- **Fiat**
+    - [Ko-fi](https://ko-fi.com/hack_ink)
+    - [Afdian](https://afdian.com/a/hack_ink)
+- **Crypto**
+    - **Bitcoin**
+        - `bc1pedlrf67ss52md29qqkzr2avma6ghyrt4jx9ecp9457qsl75x247sqcp43c`
+    - **Ethereum**
+        - `0x3e25247CfF03F99a7D83b28F207112234feE73a6`
+    - **Polkadot**
+        - `156HGo9setPcU2qhFMVWLkcmtCEGySLwNqa3DaEiYSWtte4Y`
+
+Thank you for your support!
+
+## Appreciation
+
+We would like to extend our heartfelt gratitude to the following projects and contributors:
+
+- The Rust community for their continuous support and development of the Rust ecosystem.
+
+## Additional Acknowledgements
+
+- TODO
+
+---
+
+<div align="right">
+
+### License
+
+<sup>Licensed under [GPL-3.0-only](LICENSE).</sup>
+
+</div>
