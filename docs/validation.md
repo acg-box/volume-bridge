@@ -8,9 +8,10 @@ hardened runtime and secure timestamps. Both product signatures have trusted
 timestamps and the Developer ID Installer certificate chain.
 
 The signing process successfully authenticated to Apple's notarization service
-with the shared Developer Team Key. Both packages were submitted. Accepted status,
-stapled tickets, and Gatekeeper acceptance remain pending. No public release or
-version tag has been published.
+with the shared Developer Team Key. Both initial packages received Accepted status,
+matching notarization logs without issues, valid stapled tickets, and Gatekeeper
+acceptance. The later reconnect fix requires a new package build and submission.
+No public release or version tag has been published.
 
 The release adapter passed `cargo make check`: seven Rust tests, two native
 tests, seven TypeScript tests, type checking, and lint. The new release tests
@@ -23,17 +24,37 @@ An actual Developer ID package update preserved output selections, software
 volume, mute, and the original hardware-volume receipt. The signed uninstall
 restored the original hardware volume and output and removed the owned runtime.
 A subsequent fresh installation returned success but did not satisfy the
-immediate low-volume assertion. Its exact initial readback was not retained, so
-that result remains unclassified.
+immediate low-volume assertion. A later direct measurement established that 0.02
+quantizes to approximately 0.02126736 on this control. The old test upper bound of
+0.021 was too narrow. The corrected check accounts for the control's quantization;
+the volume curve itself did not change.
 
 A repeat cycle encountered 20-second Core Audio device-enumeration timeouts after
 removal. The desktop was unlocked. Automatic rollback retained its transaction
 when enumeration also timed out during recovery. The same query later succeeded
 once after a server restart, then timed out again. A bounded stack sample showed
 Core Audio plug-in-list processing. System logs also reported a load failure for
-another installed HAL driver; causality has not been established. This blocks
-installation acceptance for the signed candidate. Do not infer readiness from
-the successful earlier local-package cycles below.
+Apple's `ParrotAudioPlugin.driver`. Its macOS signing authority, system package
+receipt, and binary hash match the protected macOS template. It is an OS component,
+not an additional user-installed application. It was not modified. The earlier
+third-party classification was incorrect; causality has not been established. This blocks
+unqualified installation acceptance for that initial candidate.
+
+Recovery reset only the verified VolumeBridge driver host and Core Audio, then
+restored the service, original output, software volume 0.19140625, mute off, and
+hardware calibration 100/100. The original receipt still holds hardware volume
+5/100. A silent PCM check resumed callbacks with zero underruns and dropped
+frames. The preserved failed transaction was moved to the local recovery evidence
+after this readback. Parrot was not modified.
+
+The driver also retained a permanently invalid XPC connection if it loaded before
+the service name existed. It now recreates that connection on its existing timer.
+On this Mac, the corrected driver connected after delayed service registration
+without changing its host PID. It also reconnected after service removal and
+registration with the same host PID. Silent PCM resumed without added underruns
+or dropped frames, and the original output settings were restored. This confirms
+the connection repair; it does not establish the cause of the earlier Core Audio
+plug-in-list loop.
 
 ## Local package validation for 0.2.0
 

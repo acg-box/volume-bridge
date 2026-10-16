@@ -46,21 +46,12 @@ class Handler final : public aspl::ControlRequestHandler,
     if (!ring_) return kAudioHardwareUnspecifiedError;
     volume_->restore();
     queue_ = dispatch_queue_create("com.acgbox.volumebridge.driver.ipc", DISPATCH_QUEUE_SERIAL);
-    connection_ = xpc_connection_create_mach_service(bridge::ServiceName, queue_, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
-    xpc_connection_set_event_handler(connection_, ^(xpc_object_t event) {
-      if (xpc_get_type(event) == XPC_TYPE_DICTIONARY) {
-        const bool available = xpc_dictionary_get_bool(event, "available");
-        if (!available) ring_->relayEnabled.store(0);
-      } else if (event == XPC_ERROR_CONNECTION_INTERRUPTED || event == XPC_ERROR_CONNECTION_INVALID) {
-        ring_->relayEnabled.store(0);
-      }
-    });
-    xpc_connection_resume(connection_);
     memory_ = xpc_shmem_create(ring_, sizeof(bridge::Ring));
     token_ = mach_absolute_time();
     timer_ = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue_);
     dispatch_source_set_timer(timer_, DISPATCH_TIME_NOW, 2 * NSEC_PER_SEC, NSEC_PER_SEC / 4);
     dispatch_source_set_event_handler(timer_, ^{
+      if (!connection_) connect();
       xpc_object_t message = xpc_dictionary_create(nullptr, nullptr, 0);
       xpc_dictionary_set_string(message, "op", "attach");
       xpc_dictionary_set_uint64(message, "token", token_);
@@ -84,12 +75,35 @@ class Handler final : public aspl::ControlRequestHandler,
     if (ring_->relayEnabled.load(std::memory_order_acquire)) ring_->push(samples, frames);
   }
  private:
+  void connect() {
+    // A missing launchd service makes the connection permanently invalid.
+    // Recreate it on the existing timer after installation or service restart.
+    connection_ = xpc_connection_create_mach_service(bridge::ServiceName, queue_, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
+    const auto connection = connection_;
+    xpc_connection_set_event_handler(connection, ^(xpc_object_t event) {
+      if (connection_ != connection) return;
+      if (xpc_get_type(event) == XPC_TYPE_DICTIONARY) {
+        if (!xpc_dictionary_get_bool(event, "available")) ring_->relayEnabled.store(0);
+      } else if (event == XPC_ERROR_CONNECTION_INTERRUPTED || event == XPC_ERROR_CONNECTION_INVALID) {
+        ring_->relayEnabled.store(0);
+        if (event == XPC_ERROR_CONNECTION_INVALID) {
+          connection_ = nullptr;
+          xpc_release(connection);
+        }
+      }
+    });
+    xpc_connection_resume(connection);
+  }
   void notifyActivity() {
-    if (!connection_) return;
-    auto message = xpc_dictionary_create(nullptr, nullptr, 0);
-    xpc_dictionary_set_string(message, "op", "activity");
-    xpc_connection_send_message(connection_, message);
-    xpc_release(message);
+    // Connection replacement and sends share one queue. PCM callbacks do not
+    // access the connection or allocate messages.
+    dispatch_async(queue_, ^{
+      if (!connection_) return;
+      auto message = xpc_dictionary_create(nullptr, nullptr, 0);
+      xpc_dictionary_set_string(message, "op", "activity");
+      xpc_connection_send_message(connection_, message);
+      xpc_release(message);
+    });
   }
   std::shared_ptr<PersistentVolume> volume_;
   bridge::Ring* ring_ = nullptr;

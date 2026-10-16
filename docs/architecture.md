@@ -14,6 +14,13 @@ memory handle over XPC. Audio samples stay on this Mac. The service accepts driv
 connections only from an Apple-signed audio host. Status clients must match the
 service's own code-signing requirement. No microphone or loopback input is added.
 
+The driver retries registration every two seconds. If the service name does not
+exist yet, XPC invalidates that connection permanently. The driver releases it
+and creates a new connection on the next timer event. Connection replacement and
+activity messages use the same serial queue. The PCM callback does not access
+the connection. Loading the driver before the service is registered must recover
+without restarting the driver host.
+
 Client HAL API calls are forbidden inside the driver. The service is a separate
 HAL client and sends audio only to the configured physical LG device UID. It runs
 that output only while the proxy is the default output and the target is present.
