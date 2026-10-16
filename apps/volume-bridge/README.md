@@ -1,4 +1,4 @@
 # VolumeBridge runtime
 
-This package contains the Rust service, the Apple SDK adapter, and the HAL driver.
-Use the commands in the repository README. It does not produce a GUI application.
+See the [OpenWiki guide](../../openwiki/quickstart.md) for the runtime architecture,
+build commands, installation, and validation.

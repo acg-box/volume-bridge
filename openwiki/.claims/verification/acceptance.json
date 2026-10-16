@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:0152bc519a9978ded7523aa4986117d864af7ababb186681792fd2de2ca62824",
+  "claims": [
+    {
+      "id": "claim_90b42be769d8462f8d867de4c86a1eac",
+      "statement": "Native ring tests cover full-ring drop accounting, wraparound, empty reads, and ordered concurrent single-producer single-consumer transfer.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/tests/native/ring.cpp#L7-L37",
+          "version": "repo-lines-v1:sha256:a01ad497b9c121efdf8b12c9a1a8e171438a6e930a57b03350dbf87c35e2cc7e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiODUzNDFkMmExYzg4YzQ5NzEwYWZhOWMyZTdiZWE4OTdjMzk1ZTRkYWQ2YzZhNzkwMmEwNGYxMDJkZWQ1MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5NThiZDI2YTc1NWZkZDM2NGYxYjIxNGY5OTNkYTY4OTc1ZTY3MDM5ODM5ODBlMDE0ZTUzMjAwYjAzZDZjYmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiMTFiYzg2ZWY0ZDNlMWQ2YjI2MmY0YTA2NmI2ZGEwODdiNDZmYWQ2Zjc4ODI4MDFiMDkwY2Y0ZDA5MmNhYjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b1317f0b75fb4d229b1c890f34b88f0d",
+      "statement": "Calibration tests require mute and low software volume before hardware maximum, preserve an already calibrated update's volume, and prevent unmute after a hardware error.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/src/installer/calibration.rs#L67-L91",
+          "version": "repo-lines-v1:sha256:bb3bc1900e2bc47a2593b346840c0a4d5adcfb7387a7e8b5c9f07f4855d50bf5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzNWI0ZmQ2YjE3MDRhMzdhYzRiYjQxNGNhM2ZmN2Y1MTEwNmFiYTVlMDE4NTdlOTM2ZGI0MzlmZTA4NzY0MzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZjJmZjVmZWVjNjBmNTg3YzhmYWU0ZTg3ZjgwOWE2NjFjZmZlZDZiNDdhYWU1ZjZkNmEyNjUzYWE4OTUyZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_86591aa52a2c495b9120233983fb9805",
+      "statement": "The receipt compatibility test accepts the original prototype receipt format.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/src/installer/model.rs#L77-L96",
+          "version": "repo-lines-v1:sha256:0058fb94cb838adbbc70b60c493a0d4be13c2265fea530c78845e8d02c262afb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1Y2Y1ZmMyM2YyYTZkMjNjM2VhNTFlNzJmNWU4OTZjNzU1NWZiYWEwNWNkNWIxZWExODJiZjk2MThhOGU4MWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkMGZmNGUyZDVkMDI2YjJiYTE4MjRkZmQ1NWZkODRiMzY2MTQyZjllNTE1NmM1ZDAwOWMzMWNmNDQzNjgwMjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4c142db1a15f4b9cae2c14b09e3e3962",
+      "statement": "Release contract tests reject ambiguous versions, altered or extra assets, mismatched source identity, lightweight tags, and invalid ancestry, and exercise a publisher dry-run without network tools.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/contract.test.ts#L50-L183",
+          "version": "repo-lines-v1:sha256:8fb20acd544d53e9ddfbb39a5bd6fd1520c0bb660555b9477770632e9fd2838a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmMmJiNjMyY2Q1MTljN2ViYjllYTc0MDMwYmQ4NWJkMTNjZTJhYTQ2MDhlZGYxZjBlY2YwNDIzNTBjY2FhMjc3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmNmY1YjQwYjE1ODQ1N2QxNzg2NGYyMTc5MDc4NmRkNWEyZWNkYjY0YjY2YTY1MWY3ODhkNGUyNWNkMzMwM2QyIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1YWEyMjdhM2ViMDBmNTVlY2YwMmYwMmRjZTA0N2VmYjEyM2U2YzFkN2Q5MjUxNDE4MGM2YjRjMjk0NjFmN2VjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d142ae4b7e2478bbefbb27757a6bfed",
+      "statement": "The publisher regression test accepts temporary draft URLs and canonical public URLs while rejecting public draft URLs, incomplete upload state, incorrect digests, and tampered bytes.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/publish.test.ts#L87-L108",
+          "version": "repo-lines-v1:sha256:50a77a5f629d73b60a2bc213dcc8c57124c4c3fa0510e2d6666460491581ff75:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA2NTk1ZjRlZTVmZjYzZDUwOTUwNDE5ZGMzNDQxNDUxMzg1MWRjOTczNmZkMTdhNGY3YmZhOTMwYjI2MWI2ZjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2ZjViNDBiMTU4NDU3ZDE3ODY0ZjIxNzkwNzg2ZGQ1YTJlY2RiNjRiNjZhNjUxZjc4OGQ0ZTI1Y2QzMzAzZDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBlYWI3MWIzMzVlYTU1OGMzMTRjOGU3MDQ1Yjg1ZDQyNzMyMWQ5ZDg1ZjlkYmVlYThhODk5ZjcxNzcyNDFjMzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T06:30:02.662Z"
+  }
+}

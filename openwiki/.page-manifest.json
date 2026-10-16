@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/audio-and-control.md": {
+      "gitHead": "c8245e621c5e50ce92786d3dfc7ae7c78d66dcca",
+      "sourceFingerprint": "sha256:0b066c5df7702795bea97aaea2b9cc9c8468ba2e0a4339f209b6da4d8eb14194",
+      "pageVersion": "sha256:ba95dbec2b69830779592f9842455d189f60b31934fb7861dde69794b8a597c7",
+      "completedBy": "codex",
+      "completedRunId": "12768996-0b05-4bc6-a61c-ab3e16e6061e"
+    },
+    "/openwiki/architecture/device-lifecycle.md": {
+      "gitHead": "c8245e621c5e50ce92786d3dfc7ae7c78d66dcca",
+      "sourceFingerprint": "sha256:0b066c5df7702795bea97aaea2b9cc9c8468ba2e0a4339f209b6da4d8eb14194",
+      "pageVersion": "sha256:9a14ff7470292c054c8df5e43d4314a79310424c5f24054921c9a8131ec31858",
+      "completedBy": "codex",
+      "completedRunId": "12768996-0b05-4bc6-a61c-ab3e16e6061e"
+    },
+    "/openwiki/development/build-and-dependencies.md": {
+      "gitHead": "c8245e621c5e50ce92786d3dfc7ae7c78d66dcca",
+      "sourceFingerprint": "sha256:0b066c5df7702795bea97aaea2b9cc9c8468ba2e0a4339f209b6da4d8eb14194",
+      "pageVersion": "sha256:6bc5ca19d057cd1a8e3ba5a9cacbbaffdaa2394c7a0c10647c22d3d607f16f7a",
+      "completedBy": "codex",
+      "completedRunId": "12768996-0b05-4bc6-a61c-ab3e16e6061e"
+    },
+    "/openwiki/operations/releases.md": {
+      "gitHead": "c8245e621c5e50ce92786d3dfc7ae7c78d66dcca",
+      "sourceFingerprint": "sha256:0b066c5df7702795bea97aaea2b9cc9c8468ba2e0a4339f209b6da4d8eb14194",
+      "pageVersion": "sha256:3bf70026a15bbdbb37458449832b4f166276a11d85aa3e9c0b4a419f86bb504e",
+      "completedBy": "codex",
+      "completedRunId": "12768996-0b05-4bc6-a61c-ab3e16e6061e"
+    },
+    "/openwiki/quickstart.md": {
+      "gitHead": "c8245e621c5e50ce92786d3dfc7ae7c78d66dcca",
+      "sourceFingerprint": "sha256:0b066c5df7702795bea97aaea2b9cc9c8468ba2e0a4339f209b6da4d8eb14194",
+      "pageVersion": "sha256:0d6c5eb0447da9683d4549ebaaa9396df187ae30505fb5424f4626ae2b1c13e2",
+      "completedBy": "codex",
+      "completedRunId": "12768996-0b05-4bc6-a61c-ab3e16e6061e"
+    },
+    "/openwiki/verification/acceptance.md": {
+      "gitHead": "c8245e621c5e50ce92786d3dfc7ae7c78d66dcca",
+      "sourceFingerprint": "sha256:0b066c5df7702795bea97aaea2b9cc9c8468ba2e0a4339f209b6da4d8eb14194",
+      "pageVersion": "sha256:0152bc519a9978ded7523aa4986117d864af7ababb186681792fd2de2ca62824",
+      "completedBy": "codex",
+      "completedRunId": "12768996-0b05-4bc6-a61c-ab3e16e6061e"
+    },
+    "/openwiki/workflows/installation-and-recovery.md": {
+      "gitHead": "c8245e621c5e50ce92786d3dfc7ae7c78d66dcca",
+      "sourceFingerprint": "sha256:0b066c5df7702795bea97aaea2b9cc9c8468ba2e0a4339f209b6da4d8eb14194",
+      "pageVersion": "sha256:2bd04f4fa9b37bddb516d7ec1363d7be1bcead85064ccdc113ac95261966516f",
+      "completedBy": "codex",
+      "completedRunId": "12768996-0b05-4bc6-a61c-ab3e16e6061e"
+    }
+  }
+}

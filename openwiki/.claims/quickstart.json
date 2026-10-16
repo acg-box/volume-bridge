@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:0d6c5eb0447da9683d4549ebaaa9396df187ae30505fb5424f4626ae2b1c13e2",
+  "claims": [
+    {
+      "id": "claim_48d97973bc394040994dcbd34dc48550",
+      "statement": "VolumeBridge installs a HAL driver and a launchd background service that runs as the installing user, rather than an application UI.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/CMakeLists.txt#L13-L21",
+          "version": "repo-lines-v1:sha256:81d16dbfd61952fd63d5167137cfb2c7dc4c2ec64c0907f973b6bd3e6ef8ec9d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzAzMGI2YTRkOWUzNmMyMWEyMjMxNzJhMDhiZDk4ZmJjNDE4OGQ2NTgwN2VjMTM4NGIzMDVjYmNlMmI5MWNhNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTNjNGEwMDQyZTQ3MWYxMDZhNzE3YjAxN2VjZmIyMGUxYzIzYWU5NWEzOTcwMDE2NzNlZDRmZDE0NWVjNzczYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGI2MTQxMzU3ZmU3ZjgxMTZlYWJkNWNiODUxNDkxOTVkMzhmYTg5ODgxYWMyODA1NDU2ZjZkM2IzYWUyZTE0OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGY4YTBhNmIyZGYzZGY1OGM1NWQwY2YyZDZjMmUyY2E1NDhmY2M3ODIwYmJjM2ZjZDVkMTVlYTZkMmJjZTQwNyJ9"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L169-L206",
+          "version": "repo-lines-v1:sha256:3d7fa8be51b2800f840dac01e6ebdbbe2146b1a0a8cefdd6116e47cdb24a7b14:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiMjIyYTlmYTI0OTk3Yjc5ODYxNGZkNjE3MWQ5MzBmMGQxZDk0YzdjMTBjMWU5YjRlMzEzNDkxMzE5OTU2MzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmZDA4MWI1MmUyZDJhOTY5MzYzYTA3ZjYzMmE1ZWM5NTU4NDE1NTM2ZTY0ZDBiYzAzMWU2YTZlNGJkZDRmNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiMDgzOGVlNDU5Yzc5ODZhNTU2OWRiODdjYTlkZjE2NmQyZjMzZDM4ODc4ZDg2ZGMwZTc4MGRlOWI4NTMyOTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhOTE3NWFhZmIwM2I0YzA1ODhlNDFiOTI5OWE1ZGY1NTMxZjI3ZjNkY2ZkMTBlNGZlYmQwMWQ3NzVhZWY0OTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_997fbebfe507414c8e1c75d81e4c924b",
+      "statement": "The installer saves the original hardware volume and uses mute and low software gain before calibrating hardware to maximum.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L104-L134",
+          "version": "repo-lines-v1:sha256:a102e36fe71e67fc713100804beb2c7890ccb92483a42e01bde1e02a3b79984e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3MTBjOTY0MjJlNzMyMGI2NmRjNWM5MjViZGZiZjJlMjIwMGJkYjhiMTNkNTk3NzRhYjlkNmE0MjVjZTljNTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwNjczNzQ5ZTUwOWYwMjAxY2FlNTk3YWNhZjQ1YWNlMDQ5YzIxMWExYjViNDNkOTkwOTk5YTkwM2RiMTc3NDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg2Yzc0Y2QxODg3N2UwMWNiZGQzZDU2YTA2MjBjN2ZiOWU3YzAxMDRiZDg1ZWZjMTg0ZmI1MzRmZTU3MTJjNjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFjN2UyODMzZmE3ZTU3YzQyZDU2NDc2MGZjOTU3NjE0NTkwNzZkYjI5ZDBkYWZkNjYzN2ZmNzZlYzVlMDM3NjkifQ"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/src/installer/calibration.rs#L10-L26",
+          "version": "repo-lines-v1:sha256:299b5acf8a0a227a54f879f207d688ae3bc275bac3294abacdae4c542056a8c3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkODdmM2FiMGEwYTc2M2Q4ZGQ5ZDQ4MWM0MTY3NTg2MzE3YWQ1ZGJkNmUyMWEyZjQxOTM1ZTgyM2ZhZTkzMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1ZWYyYzQ3ZGI3NmJkM2EwMzA1NDllOWY5M2IxYzYzNjQxODU2ZTg4NGNkZGM3YjJmMjAwODQ0MjI0NGFlMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiYzk4ZDZiMGRjNDkyYzUwMTZkZjEwODA1YTNhNTRlYjljMTg0YTVhNjEzN2U3ZjRiZWNmYTBjMjIwNTUwZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef3f46bbffbc435dbddf305bb0c13d51",
+      "statement": "The removal transaction restores saved monitor volume before removing the driver and service runtime.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L261-L292",
+          "version": "repo-lines-v1:sha256:ed4a2a6a98bd6a3a812236a733b1d9ba1bd8b670dc7045e5318e234a0e2ac973:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxNGQ4NDhkYmIyNzIzMDI4Zjg4ZDNhODU2ZDBjNWUxMmMzOWY5Y2MwYmRhZGQ4ZGFjMDBjOGY3YmQ4ZjJkNjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNWFlMGY1YmU1MGRmYmE2NGIyYjFkZmZkY2Q0ZDRkZjAwMzBkYjgxNzRlMmU4ZGYzNDZlNTdiMTJhOTEyYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxYmUzNWQzZWU5ZGFiM2Y3ZGFhOTkxY2RkN2ViYzNjYmJjYjQzYzIxYTFiNTE0ZmM3MDQ5NDNiZTFjOTY3ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe4049f10c4a4a2694cb924610ddb8b7",
+      "statement": "Product archives declare ARM64 architecture and macOS 14.0 as their installation compatibility target.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/package.ts#L182-L195",
+          "version": "repo-lines-v1:sha256:fae07ee786a6ea02246274ad7249023938577df70fa75177ec54fca35badf248:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjMzExZDA0ZTYzY2Q3Mjg4YjAzN2JlYzEzOTA3YmY0YTYyZWE0MDZjYTEwNjQ3OGRkZjcwMmI5MmUyOTcwZWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1OGM3ZmI0ZTRmYmQzY2MyMmYyNjZlNGE0NmUzYTQwNTc4NTEzNmFjYTJiZTNkYzhkNThiMDJiOWJiZTU1NjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdiMDdiODNkNWZmMDkzNjdlMWMzOTU3OWI2NzRhZmQyYmJlZjY0ZTBiYzBkOTM3YzNjNzUwZWU4ZWZmOGQ3ZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY3MjdhZWU5NmE0NDA3YzdjZjA4NjE0OTMzOWZjNDY5NjI5NmUwNmY2ZmE1NjVmOTNjZTM0OTc4NzhiNTFiZDIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T06:30:02.662Z"
+  }
+}

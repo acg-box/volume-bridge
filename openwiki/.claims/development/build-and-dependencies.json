@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6bc5ca19d057cd1a8e3ba5a9cacbbaffdaa2394c7a0c10647c22d3d607f16f7a",
+  "claims": [
+    {
+      "id": "claim_2b29154a8e5a413fb44ec37a14f1c207",
+      "statement": "The check task builds native targets and combines TypeScript type checking, lint, and native, Rust, and Node tests; formatting is a separate task using nightly rustfmt.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile.toml#L13-L54",
+          "version": "repo-lines-v1:sha256:09f413a59d59f0579d8d04fbd3e17f9887fea20ffe39517f7c0a066ee6941029:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwNzBkOTYzZmQyYmQyYzNmMzExYTU0YTZmMDVkZTFlYmVlNmQwNmYxY2Y2MTY2NzA4Mzc1YzRjZGI1NjdmZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5Zjc4ZWRlMjdiODI0NGMyOWE4MjljM2JkZGNkNDk0MzNkOWZjNjViMGJjNDRmNGFjNmY0YmUyNGI3NjIwNjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhYTQzYTNiYmUyNzQyNDE1NGZiMDAzYzA0ODkxNTJiNzNmMjk3NWVhZDdjYWIzYzA4YmYyNTI5ZjFlYjY1MzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3ZDZjNDFlODA1YmI4NzNhYzU5MzRhODk0OGNmM2RkM2U1NmZjMDAzOGE0Yzk2Y2JlMWE5NDQ0Nzc0ZWJiZjIifQ"
+        },
+        {
+          "resource": "repo://Makefile.toml#L227-L266",
+          "version": "repo-lines-v1:sha256:2e6cf7e97e38785fb54b99b32718d988d9ad5e165fdf22e894ec37fe3e80aa41:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk2ZDEyOWJlM2JjYjg2ZDhlMWY1YTc4ZmQwOTFhYjFkNGZjYjA3ZDRlZmQ3ZmY0MjViOGM5ODg1Yzk5ODE3ZTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3MmQ0YmVjMjZlNjY2OWM2NjRmOTM0ZGNmMzdlODA3MjU1YjU3NTRiNzQyMmI0MzBiMDFhOGNjOTMzN2U5ZGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI4ZDYxODMxZTcwNGM0NThjYWMwOWQ0NmMwM2M3Y2M1OWViMWVkNGIwZTIxMDE4NmE0NWI0MzU1ZWIzZDgxNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1ODdjY2ExMjI4YjBiOGU5YTYwMGU1MGY2MWFiNWFkM2Y4YTAxZGU1ZWJlNTdhNDI4MmU3M2ZkMTM4MGVmZDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c528a0b6d7024583aa29d5168e046806",
+      "statement": "The native build uses C++17 and a macOS 14 deployment target, compiles vendored libASPL, and produces the HAL module, static native adapter, and ring and volume tests.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/CMakeLists.txt#L1-L31",
+          "version": "repo-lines-v1:sha256:848fd163ee2a9e071dd72751aad36f0cd0f17453c875f61efa132fbcb83e5130:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZGM1ZDVkYzYzZjllMmE5NGEyMGI1Y2M0MjU5NmU3MTlkZTU5MmQ0MjI3MDUzYmJjODc4MTBhZjRmMWU2YWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZDVjNGY4NDcxYmUzZGYxMjg5NDMyYTAxY2E2Y2QwMGQ5OGY3MmNiNTUzNmZkYmI5ZDU0YzFjMDBhOTU4NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_10db31ffacbb451a89300b6cfb399a93",
+      "statement": "The Rust build links the repository-built native adapter with the C++ runtime and the CoreAudio, CoreFoundation, Foundation, Security, and IOKit frameworks.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/build.rs#L4-L17",
+          "version": "repo-lines-v1:sha256:be48b9a8f2edaf358cb5891b2d0c900273b0e1831984bd62c66c780dc2a901fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwYjllZWU5MWJjMGIxYTc3YjVmMjI0ZmQ2OTQ1ZjNkZWMyMzRlNTU5NmI5NDc1YzkwYzVhZWM5ZTZhZTIwYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmZGQ1ZTZlNDljN2ZmODVlZmZlODVmZTc2NWU4ZmYxYWFhMzg4OTJmNWViZTYxODQ1YTQ2ZjUxODFkNjMzNDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3OTI3YjY1YjFiYWU0ZWU0ODI2ZjZhN2YzZWVjNGQ5ZDkzNjllMGM5MjcwODcwODU2ZGQzODBiMDhkNDY1YmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b1798dacfb4740e6a75423d06cbd6fde",
+      "statement": "Package metadata selects Node 26.8.1 and npm 11.19.0 and applies a tinypool ~2.1.2 override under oxfmt.",
+      "evidence": [
+        {
+          "resource": "repo://package.json#L13-L34",
+          "version": "repo-lines-v1:sha256:6ba9377b4acb9804e1c7a0504f9c37264a80f31bc1296b6936386179d388b3f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ODMyYjIxZjYxYmMzY2EwYmU0MTUxNjk4M2YyOGUyZTFiMDRjYjlhNzUxMjY5ODBiMmRiZTUwN2MwOTc2ODkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2ZjZmMGJiYjkxZGM3NzVlZDg1NjVhNzU1NTBkZGMzMDhjZDUzN2U4NjBiMDg2ZjY5ZGRhZTc3MDI1YmVmYTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1NDc4ZjY4YTdmZTE3NWQ5MGM4ZmQzMzIzMTM1N2Y0YjA0ZjFmMGZhNmQwNzI1OTIwYWI5ZjcxYzlkODU4NjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7512db82dfe44b229a0201fe9e51cef2",
+      "statement": "PR and main CI use macos-26 with read-only contents permission, pinned cargo-make and cargo-nextest, a specific vibe-style Git revision, and credential-free check and build commands.",
+      "evidence": [
+        {
+          "resource": "repo://.github/workflows/ci.yml#L1-L43",
+          "version": "repo-lines-v1:sha256:f63e270bd535a440776766220c757cbcb9c53ca1cb987caf17c8729c6fd51fd1:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyY2FiNmMzY2Y1M2RjNzUxYTg4OTVkNzhjYWE1NTdiN2U4Y2YxMTI2ZjM4Y2Q2ZDY4MTVlNTFmMmRjNGM0NmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZmJlYWEzZmY2ZGU3ODEzOTk5M2Y2YzkxNTkwMzA4ZjgxMzM1Y2ZjYTUyNDk0YjFiYzc1ZGFkNWU5MTllMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_685a4649bd3f496da90d1f62c9fc580f",
+      "statement": "libASPL is vendored at revision 633e0f70203edd87d320fc5a3cae901e1363aac5 with documented compatibility edits and preserved upstream license notices.",
+      "evidence": [
+        {
+          "resource": "repo://vendor/libaspl/UPSTREAM.md#L1-L19",
+          "version": "repo-lines-v1:sha256:1b25cf38315467030145c151fce58f5756e5e96c5458ae89c68ec4710db06ea4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyZjNiOTU0MWQwZDA3NWZkZjQzZjY5ZWJjM2Q0ZDE2MTFiZTkyZTY0NmU3OTY2OWY1ZmE1MmRjNGI5MGU1MTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiYWUzNmM2YzM1OTE1ODA0ZTE1NWI3M2MyZjI0MWFjNmI3MmEyODMyNGY2N2YzYjQ2MGFhZGNjYzgwYzg2MmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzYTdiZjE2NjM4ZDkxMzA2MWVmMDYzZWY3ZmI5YWE4MTY1MWMzMDAyMDY0MmYyMmZhY2EwMmVmNjZlMTQ3NjQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T06:30:02.662Z"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9a14ff7470292c054c8df5e43d4314a79310424c5f24054921c9a8131ec31858",
+  "claims": [
+    {
+      "id": "claim_c027e6426a5244179dcd8c9eb6900e48",
+      "statement": "The route predicate enables relay only when the proxy and target exist, the proxy is selected, the driver is connected, the source is active, and the system is awake.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/src/route.rs#L20-L29",
+          "version": "repo-lines-v1:sha256:b9bc7ffeb335f713e2201e303bae9824bd5da348dc3dbd757f98490f92b60920:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4ZWRmMGQ2ZjBmN2ZhOGY5ZTcxYzMzNzdmNWIyMzUzMTA5OGMzZGNlNWQwYzYzNDY0OWE5Yjg5ZTk0YTRkYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFkMTFlMjE3ZTQyMGZiZjlkZWQwMDgwYWExOTJlNmFhOGVkYTBhZGM3YTgzNjVhMTBjOTRiYjVjNDVkYWU3ZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiYzk4ZDZiMGRjNDkyYzUwMTZkZjEwODA1YTNhNTRlYjljMTg0YTVhNjEzN2U3ZjRiZWNmYTBjMjIwNTUwZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_25273d1c7daf43b99095b36c4535c79d",
+      "statement": "Native discovery matches the saved target UID and additionally requires the Core Audio DisplayPort transport and GSM manufacturer.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/native/Service.mm#L110-L126",
+          "version": "repo-lines-v1:sha256:91cef5dc2314485027ed6cef2e870674196145558f3089b81d19b5f29af56e73:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliZTk3Y2ZmN2Y5NGU0NjNkM2M2MjFhNTVmNTk3NmYyZTQ4MjNlYzZjNTdiMDA5OTljYzAzMjc0NDNkMGM5NmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3ZTU3ODhkNWQ5ZDczZDI0YTgxZGJjMGE1YTc0YmZhODJjOWMzYjNhZjk5ZTUyYWY3OTZlOTBiNDY4YThhM2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJlNTNhYThjMWM0NmNkMjllZTUwMjQ5NzdjNzZmNTQxMjJmNjQ0NmVmZTFiNWNmZjI4OGEzYzg5ODg5MDJhMTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFhZDIxYzQwMDZjYWI3NDRjYTE3Njc0YWI1Y2NmNjdmOTY3NTVjNzg5YTgyODM0MmQ0YjNjYThiMjgxMzM1NzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_35dc34e9d8c6454cacb733b2bc6f8362",
+      "statement": "Driver attachment requires an Apple-anchored audio host, while status requests require the service's designated code-signing requirement; new shared-memory attachments are checked for size, magic, and version.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/native/Service.mm#L144-L215",
+          "version": "repo-lines-v1:sha256:15f6afa19938660c916b853511b1837fcf498116dbe4f54b0e05f1b727b4d263:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkMzZmYjU0YzhkYTNjNmU3ZjIwZTNhYTVjZWIyMTBmMmEyNWMyNmJiZjIyYzM1NTFkNTdlZDA1ZmFiMmY3MDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhM2U0NmY5NDI3NmI2ZjZmNGVkMWYwMmFmNzhiZWY2YTJlZTFjNDM5ZGQ1NTg0Yjk3Mzk0ODMxMzIxNGQyYjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBjZjY3Y2RkYzRlNTFjZTkwOWQ3NmFlZjNmNDg5ODAzOTM0NTI4ZjZjNjNmYzdlYjI2NWFlNmI1NGRhN2FiMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlMmVlMGI0N2NlYzZiNWZhMmYwMTI0MGJmOTg0OTAxNzg5NzhiY2I0MjQ1MzI0OTE1ZjBlZWUyZmM1M2NiN2QifQ"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/native/Service.mm#L336-L342",
+          "version": "repo-lines-v1:sha256:64276a9a161a6c0e824384ac36165c351074d801535010bd6f3776f91f17d093:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRmYzY0YTE3YTUwMjE0MmY5ZWI4Y2ZlMzBhNmMyZjg1NTM2YzI2NmY1OWUxM2M5YTcxMTU1YjljOWZkMDhiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTBjOTg5NDg2ODE2MTYxM2M5MjBkNjNiZDNkMDA0NjA0ODFkYTJkNTMxMjZmNDI1ZGI0ODFlOWNlNzE0MWM4MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGVhMTMzYjBjY2M1YmIwYzNlMGYwYmJlZGQ1ODcxOGUzNTZiOTVlMmNmMzQwZWIwODFlYmU1ZjAzNDRmMGZhMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjcwNjI2NDQ4ODg3OWEyNjA0NDUxMGZlZDhiZTFmMTVmNjUyMTEzMzc1MWY4NDIzMGEzNGFkZjFkODQwNjRjYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f700c2107dce468199eb3f89a803f3b7",
+      "statement": "The driver releases permanently invalid XPC connections and recreates them on its two-second timer; connection sends and activity notifications share a serial queue outside PCM callbacks.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/driver/Driver.cpp#L45-L105",
+          "version": "repo-lines-v1:sha256:e8dcb12cef6d9377dee31a8e4c65815bf286590f9612689f103fa8c6a2071500:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1YzQxYTg4OTBmY2E3NzE3ZmEwMTM4NjRhMzdlZDEyOGQwODE3YTc3MmE2N2ZjYzYxYjMwMjhhOGRhZDgwZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2NDFiODMwYjYxOThiN2E5MzdmNTZlMTgyYTZhOTE0OGQ0MmJhOWNhZGI3MTc1MDk5YzBhMGQ4Zjk3MDg0ZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlOGI1NTIxNWJmMTIzNmYwNzY2NWZkNTliOTRlNjViODcyNWFkOTkwNWZmZDE3MDE0OWMwYWU5ZDVkOTNmNTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYmU1MTAyMTgxMjdkNmIyNWZlZGFlZTI1Yjg2YjE0OTRiMDJhZGFiNjhlYjJhMWJkYmQ1YjBmYTgxMTI2MmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f7c85f12021c448c825e4afe93614a8a",
+      "statement": "The Rust controller resets rendering on wake or driver-generation changes, gives wake enumeration a fifteen-second grace period, and falls back to built-in output only if an unavailable proxy remains selected.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/src/main.rs#L84-L154",
+          "version": "repo-lines-v1:sha256:7f30a479f46a0bee20e2d8a3623cc8805961378b6fb77ba6ac652ac5fccea8f2:eyJzZWxlY3RlZExpbmVDb3VudCI6NzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5MGFmOGUwNjNjODI1Y2FmNDg1Y2U5NDI1NjQ2NmFkMzFiM2Q1ODI2NWNkMjZlNTEwOTFhMTQ4ZTY4ODgwMmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0ZWZjNDk0MThkMjZkY2YxMjliMjJhNmFhMjExMDhjZWVjMzc2NzdhMzJkMDhlOWQ1ZmVlMzVkZGE2NmJiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxYmUzNWQzZWU5ZGFiM2Y3ZGFhOTkxY2RkN2ViYzNjYmJjYjQzYzIxYTFiNTE0ZmM3MDQ5NDNiZTFjOTY3ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1M2JkYTBjMTExMWRmNzAwYjlkMjQzMWFjMjQ2MjJhN2Q5OTMwYzI4YzBkZTIzMzRlNDM3YTk2ZTgxNjVhOGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f9593c6ccb034946ad46cc070ceb3d64",
+      "statement": "Status replies expose routing, lifecycle, frame, and queue counters, and the status client stops waiting after five seconds.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/native/Service.mm#L101-L108",
+          "version": "repo-lines-v1:sha256:b783fa8cef109ec91e3d09f7717e4dfc6afc4b9bb072e1c561ee167a33e4b06e:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmQyYTg2N2MyYWY5ODE1MmRjODIyZTI5NzBlMDQ0Nzc0MGJkYTVhZjIyMjIxZWI0MTA4YmY1NTM2Y2YzMmMxZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJhNDQzN2MxZWFhYjIzN2VhYWMwNjY0YmYzNzBmZjBlNTNjZjhmZmVkOGQ3NTgzNTU1ZTBiMGJiNmFiNDhiZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzQyMmJmZTM1MjE0M2Y2MTJkMzk3M2ZjYTZiNDgwODlkMjViOTM1YjQ4NmU4MmI4YzQ0NzI3ZjRkNTQ4YWM2OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjRiM2JlOTA0YWNlM2M0NDY4NjQ5ZDRlZTk0M2FjNjgwNzc3ODg4ZGZjMDgyY2IxN2QyM2Y0NjFjZDNmMTRlMSJ9"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/native/Service.mm#L294-L314",
+          "version": "repo-lines-v1:sha256:4f5071f9cb6f014a4b2bc4a208f96e94982ee0c45d3927afe4446bcb36068f4c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzNGQ3OGVkOGNmZmUyNjQ1MDdjMDJjMWUwZDI4MTNmZmExYWI2NGEzNmUyYzQwZGNiNjE0MTVhZjZhOTBlNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2YmQ4NzEzYzhkZWJiODdiZGEwYTAxZTViMGU3NzM2YzhiZTA4N2EzMTYwZTliMTBjN2JkZjFiOGJmOTkwMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4ODlmNjdkYjBkNjNjNWI4OWQzOTE3YjRjYTczMzNlYWFkOTUyZWQyMDQxMzRkMmYxOWU5NzlmMmE2OWZlMWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE5OGFkNDBhNTliNWI2MzA2MmNmZGVjNTI3ZWE1ZGZjMzg1NGE4ODUxNGFmZDhlMmM3YWQ5OWY3MzhkOTQ0YTcifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-16T06:30:02.662Z"
+  }
+}
