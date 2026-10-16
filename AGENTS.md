@@ -25,6 +25,9 @@ service. Do not add an app, menu bar item, input audio stream, or kernel extensi
 - Maintain project documentation only in `openwiki/` through the OpenWiki page
   lifecycle. Keep README files as short entry points. Do not add a `docs/` tree
   or duplicate the wiki's architecture, operations, or validation pages.
+- Keep OpenWiki updates manual. Do not add or enable an automatic update
+  workflow. If a manual run generates a workflow or scheduling instructions,
+  remove them before commit.
 - Preserve the README layout inherited from `acg-box/vibe-mono`. Keep its
   `Support Me` section and all subsequent content identical to the template.
 
@@ -41,6 +44,6 @@ This repository has a generated `openwiki/` evidence index. It is optional just-
 - Treat source code and tests as authoritative. A brief's unknowns and review items are verification gaps, not automatic requirements.
 - Prefer the narrowest quiet validation that proves the changed behavior. Preserve complete failure output.
 
-The scheduled OpenWiki GitHub Actions workflow refreshes the repository wiki. Do not hand-edit generated OpenWiki pages unless explicitly asked; prefer updating source code/docs and letting OpenWiki regenerate.
+Update OpenWiki manually through its page lifecycle when documentation changes are needed. Do not hand-edit generated OpenWiki pages unless explicitly asked.
 
 <!-- OPENWIKI:END -->
