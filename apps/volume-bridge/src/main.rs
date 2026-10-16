@@ -1,5 +1,8 @@
 //! Headless VolumeBridge service and local diagnostic commands.
 
+mod installer;
+mod route;
+
 use std::{
 	env,
 	ffi::{CString, c_char, c_int},
@@ -9,7 +12,7 @@ use std::{
 	time::{Duration, Instant},
 };
 
-use volume_bridge::{self, Route};
+use crate::route::Route;
 
 static STOP: AtomicBool = AtomicBool::new(false);
 
@@ -118,7 +121,7 @@ fn run_loop() {
 			generation = next_generation;
 		}
 
-		let desired = if volume_bridge::should_relay(route) { state.target } else { 0 };
+		let desired = if route::should_relay(route) { state.target } else { 0 };
 
 		if running != desired {
 			// SAFETY: The target came from the configured UID and validated transport.
@@ -167,6 +170,9 @@ fn run_loop() {
 }
 
 fn execute(arguments: &[String]) -> Result<(), String> {
+	if arguments.get(1).is_some_and(|value| value == "package") {
+		return installer::execute(&arguments[2..]);
+	}
 	if arguments.get(1).is_some_and(|value| value == "--version") {
 		println!("{}", env!("CARGO_PKG_VERSION"));
 

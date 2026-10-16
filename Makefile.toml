@@ -268,3 +268,13 @@ dependencies = ["build-native"]
 [tasks.sign]
 args    = ["scripts/native.ts", "sign"]
 command = "node"
+
+[tasks.build-package]
+args         = ["scripts/release/sign.ts"]
+command      = "node"
+dependencies = ["build"]
+
+[tasks.build-package-local]
+args         = ["scripts/package.ts", "local"]
+command      = "node"
+dependencies = ["build"]

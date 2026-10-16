@@ -14,6 +14,13 @@ memory handle over XPC. Audio samples stay on this Mac. The service accepts driv
 connections only from an Apple-signed audio host. Status clients must match the
 service's own code-signing requirement. No microphone or loopback input is added.
 
+The driver retries registration every two seconds. If the service name does not
+exist yet, XPC invalidates that connection permanently. The driver releases it
+and creates a new connection on the next timer event. Connection replacement and
+activity messages use the same serial queue. The PCM callback does not access
+the connection. Loading the driver before the service is registered must recover
+without restarting the driver host.
+
 Client HAL API calls are forbidden inside the driver. The service is a separate
 HAL client and sends audio only to the configured physical LG device UID. It runs
 that output only while the proxy is the default output and the target is present.
@@ -21,10 +28,14 @@ Switching to another output stops the relay. Reconnecting a display does not rep
 the user's selected output. Sleep stops I/O; wake starts a fresh relay when
 the selected output still requires it.
 
-After a wake event, the service keeps the proxy available for up to 15 seconds
-while the physical display enumerates again. It does not select the proxy over
-another user-selected output. A disabled relay also stops writes to the shared
-ring, so sleep and output switching cannot fill it with unused audio.
+The HAL endpoint stays registered while the driver is loaded. Service restarts
+do not toggle the device's hidden or alive properties. The service stops the
+relay when the physical display is absent. After a wake event it allows up to
+15 seconds for that display to enumerate before it selects built-in speakers.
+It does not select the proxy over another user-selected output. A disabled relay
+also stops writes to the shared ring, so inactive routes do not fill the queue.
+The service enables writes only after the physical output has started. A device
+that is still waking cannot fill the queue before it can consume frames.
 
 The first prototype uses a 1,024-frame prefill (21.3 ms at 48 kHz) and a bounded
 queue. It drops new frames on a full ring and re-anchors a queue above 4,096

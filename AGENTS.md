@@ -4,6 +4,13 @@ The repository owns a macOS prototype with a HAL output driver and a headless
 service. Do not add an app, menu bar item, input audio stream, or kernel extension.
 
 - Use `cargo make build`, `cargo make check`, `cargo make test`, and `cargo make fmt`.
+- Use `cargo make build-package-local` for local package tests. Use
+  `cargo make build-package` only with the required Developer ID identities and
+  notary profile. Local packages are not public releases.
+- Rust owns installer transactions and recovery. Shell package entry points only
+  prepare execution context and call the compiled binary. Do not add a Node,
+  Python, or developer-tool dependency to the destination Mac.
+- Require an unlocked desktop and the original display for hardware acceptance.
 - Use host-managed tools and the repository's version files. Do not install tools
   or change global defaults to resolve a missing command.
 - Rust owns route and lifecycle policy. Native code binds libASPL and the Apple

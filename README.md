@@ -1,89 +1,73 @@
 # VolumeBridge
 
-Native macOS volume controls for a fixed-volume display output. VolumeBridge is
-a HAL audio driver and a headless background service. It has no app, menu bar
-item, input audio device, or kernel extension.
+**Package status: the 0.2.0 candidate is Developer ID signed, notarized, and stapled. Update, removal, and fresh-install checks pass on the tested Mac. No GitHub Release is published.**
 
-**Status: local prototype, verified on one Apple Silicon Mac.** See the
-[validation record](docs/validation.md) for the tested scope and remaining limits.
+Use native macOS volume controls with a fixed-volume LG display. VolumeBridge
+contains a HAL audio driver and a background service. It has no app or menu bar
+item. It does not add a microphone, input audio device, or kernel extension.
 
-The first target is an LG ULTRAGEAR+ connected to an Apple Silicon Mac by USB-C.
-macOS reports this connection as DisplayPort audio. The new output is named
-**LG ULTRAGEAR+ · VolumeBridge**. Select that output to use system volume and mute
-controls. The original LG output remains available.
+The current target is one LG ULTRAGEAR+ connected to an Apple Silicon Mac by
+USB-C. The output appears as **LG ULTRAGEAR+ · VolumeBridge**. The original LG
+output remains available. The audio path supports stereo float PCM at 48 kHz.
 
-VolumeBridge changes the software audio level. The installer first saves the
-monitor's hardware volume, mutes the bridge, sets a low software level, and
-calibrates the monitor to 100%. It verifies the hardware value before it unmutes.
-This prevents an old monitor setting from limiting the system slider's range.
-The first prototype supports stereo, 32-bit
-floating-point PCM at 48 kHz. It includes buffering and does not claim zero latency.
+## Install and remove
 
-## Build and check
+Open the installation `.pkg` in Finder and follow the macOS Installer. Keep the
+LG connected and stay signed in to your desktop. The package needs administrator
+authorization. It does not need Xcode, Rust, Node, Python, Homebrew, or a network
+connection on the destination Mac.
 
-Use the host Xcode toolchain, stable Rust with Clippy, cargo-make, cargo-nextest,
-nightly rustfmt, cargo-vstyle, CMake, and the Node/npm versions in this repository.
-Do not change global tool versions to build this project.
+The installer saves the original output and display volume. It mutes the bridge,
+sets low software volume, calibrates the monitor to 100%, and verifies the result
+before it unmutes. The first installation selects VolumeBridge. An update
+preserves the existing software volume and selected output. Audio pauses briefly
+while Core Audio restarts. No system security setting is changed.
+
+Keep the monitor's own volume at 100% and use the macOS volume keys or slider.
+After an OSD volume change or monitor reset, run the installation package again
+to recalibrate. The original LG output bypasses software attenuation.
+
+Open **Uninstall VolumeBridge.pkg** to remove it. Keep the same display connected.
+Removal restores the saved hardware volume before it restores the original output
+and removes the driver and service. If the display cannot be reached, removal
+stops before it changes the installation. A restoration receipt remains at
+`/Library/Logs/VolumeBridge-uninstall.json`.
+
+Packages with `-local` in the filename are development packages. They are not
+Developer ID signed or notarized and are not public release installers.
+
+## Build
+
+Build-time tools are the host Xcode toolchain, the repository's Rust and Node/npm
+versions, CMake, cargo-make, cargo-nextest, cargo-vstyle, and nightly rustfmt.
+These tools are not part of the installation payload.
 
 ```sh
 npm ci --ignore-scripts
 cargo make build
 cargo make check
 cargo make fmt
+VOLUMEBRIDGE_SIGN_ID='YOUR EXISTING CODE SIGNING IDENTITY' cargo make build-package-local
 ```
 
-Native artifacts are written to `target/native/`. The service and diagnostic CLI
-are written to `target/release/volume-bridge`.
+Local packages are written to `target/packages/local/`. The release workflow
+uses the shared ACG Developer ID certificates and notarization API key. It builds
+and checks the source before it supplies credentials to the signing process.
+See [release](docs/release.md) for the credential names and publication process.
 
-## Local installation
-
-Sign with an existing certificate in the local keychain:
-
-```sh
-VOLUMEBRIDGE_SIGN_ID='YOUR EXISTING SIGNING IDENTITY' cargo make sign
-mkdir -p work
-./target/release/volume-bridge devices > work/baseline.devices.json
-sudo node scripts/install.ts install
-```
-
-Installation restarts Core Audio and briefly interrupts sound. The service runs
-as the invoking user. Its launch definition is in `/Library/LaunchDaemons`; the
-driver is in `/Library/Audio/Plug-Ins/HAL`. No system security setting is changed.
-Keep machine-specific device identifiers and receipts out of Git.
-
-Connect the target LG before installation. Calibration must pass; an unsupported
-or unreadable DDC/CI interface fails preflight before installed files change.
-The first calibration starts system volume at approximately 2%. Increase it
-gradually. Updates preserve system volume if the monitor is still calibrated.
-Uninstall restores the saved hardware volume before it restores the output.
-
-Keep the monitor's own volume at 100% while using VolumeBridge. Use the output
-with the VolumeBridge suffix for playback. The original LG output bypasses
-software attenuation. A monitor reset or an OSD volume change requires another
-installation calibration. DDC calibration currently uses private Apple Silicon
-IOAV interfaces, which can change in macOS updates. The audio driver itself uses
-the HAL plugin API.
-
-```sh
-./target/release/volume-bridge devices
-./target/release/volume-bridge status
-```
-
-Remove the prototype and restore the recorded output:
-
-```sh
-sudo node scripts/install.ts uninstall
-```
-
-## Source and evidence
+## Evidence and scope
 
 - [Architecture](docs/architecture.md)
-- [Validation scope and results](docs/validation.md)
-- [Dependency evidence](docs/dependencies.md)
+- [Validation](docs/validation.md)
+- [Packaging and recovery](docs/packaging.md)
+- [Signing and releases](docs/release.md)
+- [Dependencies](docs/dependencies.md)
 - [Template adoption](docs/template-adoption.md)
 
-The repository was created with GitHub's template operation from
-[`acg-box/vibe-mono`](https://github.com/acg-box/vibe-mono).
+This remains a prototype. It has a bounded audio queue and does not claim zero
+latency. DDC calibration uses private Apple Silicon IOAV interfaces. Longer
+playback, other display models, and other macOS versions need separate acceptance.
 
-The project retains the template's GPL-3.0-only license. Vendored libASPL code
-retains its MIT and Apple sample-code notices. See `vendor/libaspl/UPSTREAM.md`.
+The public repository was created from
+[`acg-box/vibe-mono`](https://github.com/acg-box/vibe-mono). It retains the
+GPL-3.0-only license. Vendored code retains its own license notices.
