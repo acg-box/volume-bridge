@@ -7,11 +7,26 @@ pass the Developer ID signature checks for team `4N949UKQ55`. The payload uses
 hardened runtime and secure timestamps. Both product signatures have trusted
 timestamps and the Developer ID Installer certificate chain.
 
-The signing process successfully authenticated to Apple's notarization service
-with the shared Developer Team Key. Both initial packages received Accepted status,
+The final packages contain the reconnect fix from source revision
+`5b099058938b0d6063a1dc586488b690c20e7b16`. Both received Accepted status,
 matching notarization logs without issues, valid stapled tickets, and Gatekeeper
-acceptance. The later reconnect fix requires a new package build and submission.
-No public release or version tag has been published.
+acceptance. Credential-free GitHub macOS CI also passed at that revision. No public
+release or version tag has been published.
+
+| Final artifact | SHA-256 | Apple submission |
+| --- | --- | --- |
+| `VolumeBridge-0.2.0.pkg` | `2d6804b4ea09c88293a10ca6785b0ac999534b53fa841dbd00f6d2d40dd3e250` | `39d013d9-6505-4fc1-ae2c-ea0f19101568` |
+| `Uninstall-VolumeBridge-0.2.0.pkg` | `aa9d2a88354d6a2f11c6e5fd6e4ed5c3210f1de03b983820e64b096d4a67a02f` | `08259db7-d4a1-4339-98a3-0425d35d8301` |
+
+The final notarized packages passed an actual update, uninstall, and fresh install
+through `/usr/sbin/installer`, with an empty environment and system-only PATH.
+The update preserved output selections, volume, mute, and the original receipt.
+Removal restored hardware volume 5/100 and removed the runtime. Fresh installation
+selected the proxy at scalar 0.02126736, with mute off and verified hardware volume
+100/100. The original 5/100 receipt remained intact. Silent PCM then resumed
+callbacks without added underruns or dropped frames. Final readback confirmed the
+original output and system-effects route, volume 0.19140625, mute off, connected
+driver, and no active installation transaction.
 
 The release adapter passed `cargo make check`: seven Rust tests, two native
 tests, seven TypeScript tests, type checking, and lint. The new release tests
@@ -37,8 +52,8 @@ Core Audio plug-in-list processing. System logs also reported a load failure for
 Apple's `ParrotAudioPlugin.driver`. Its macOS signing authority, system package
 receipt, and binary hash match the protected macOS template. It is an OS component,
 not an additional user-installed application. It was not modified. The earlier
-third-party classification was incorrect; causality has not been established. This blocks
-unqualified installation acceptance for that initial candidate.
+third-party classification was incorrect; causality has not been established.
+That initial candidate was held until recovery and another complete package cycle.
 
 Recovery reset only the verified VolumeBridge driver host and Core Audio, then
 restored the service, original output, software volume 0.19140625, mute off, and
