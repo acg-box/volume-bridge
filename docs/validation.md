@@ -16,7 +16,24 @@ The release adapter passed `cargo make check`: seven Rust tests, two native
 tests, seven TypeScript tests, type checking, and lint. The new release tests
 cover source and version binding, annotated tags, main ancestry, asset tampering,
 and a publisher dry-run without network tools. These results do not establish
-GitHub release workflow acceptance.
+GitHub release workflow acceptance. The credential-free macOS CI run also passed
+at revision `b7382d6ada12311fc452dc61e77af26059bfa712`.
+
+An actual Developer ID package update preserved output selections, software
+volume, mute, and the original hardware-volume receipt. The signed uninstall
+restored the original hardware volume and output and removed the owned runtime.
+A subsequent fresh installation returned success but did not satisfy the
+immediate low-volume assertion. Its exact initial readback was not retained, so
+that result remains unclassified.
+
+A repeat cycle encountered 20-second Core Audio device-enumeration timeouts after
+removal. The desktop was unlocked. Automatic rollback retained its transaction
+when enumeration also timed out during recovery. The same query later succeeded
+once after a server restart, then timed out again. A bounded stack sample showed
+Core Audio plug-in-list processing. System logs also reported a load failure for
+another installed HAL driver; causality has not been established. This blocks
+installation acceptance for the signed candidate. Do not infer readiness from
+the successful earlier local-package cycles below.
 
 ## Local package validation for 0.2.0
 

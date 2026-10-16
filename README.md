@@ -1,6 +1,6 @@
 # VolumeBridge
 
-**Package status: local installation, removal, recovery, and sleep/wake checks pass on the tested Mac. No notarized release is published.**
+**Package status: Developer ID signing passes. Apple notarization and a repeated-installation recovery issue remain open. No public release is published.**
 
 Use native macOS volume controls with a fixed-volume LG display. VolumeBridge
 contains a HAL audio driver and a background service. It has no app or menu bar
