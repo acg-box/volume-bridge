@@ -1,25 +1,62 @@
 # Validation
 
-## Package work for 0.2.0
+## Local package validation for 0.2.0
 
-Status: package artifacts built; live installation acceptance is incomplete.
+Recorded on 2026-10-15 with macOS 27.2, an Apple Silicon Mac, and one LG
+ULTRAGEAR+ connected by USB-C. Artifact hashes are recorded below.
+
+Status: local installation, update, removal, rollback, native controls, and
+sleep/wake checks pass. Developer ID distribution remains pending.
+
 The destination uses only the bundled binary and macOS system utilities. Dynamic
 link inspection found only Apple system libraries. The build and repository
 checks pass with seven Rust tests, two native tests, and two TypeScript tests.
+Actual package operations ran through `/usr/sbin/installer` with an empty
+environment and only `/usr/bin:/bin:/usr/sbin:/sbin` in PATH. The Installer GUI
+also opened the installation package and rendered its welcome page. The complete
+package operations were checked through the system installer CLI.
+
+| Check | Evidence and result |
+| --- | --- |
+| Repair an incomplete prototype installation | The package installed version 0.2.0, loaded the driver, and connected the service. It preserved the selected built-in output and the original hardware-volume receipt of 5/100. Hardware calibration read back 100/100. |
+| Update | A second installation preserved the selected proxy, system-effects output, volume 0.19140625, and mute state. The original hardware-volume receipt remained 5/100. |
+| Uninstall | The removal package restored hardware volume 5/100 and the original LG output. The driver, runtime, launch plist, launch service, and transaction directory were absent. The proxy was absent from Core Audio. |
+| Repeated removal | Running the removal package again succeeded without an installed runtime. |
+| Fresh installation | After removal, installation selected the proxy, started at approximately 2% software volume, calibrated hardware to 100/100, and recorded the original hardware value of 5/100. |
+| Failed file copy | A test payload with no licenses directory caused a file-copy failure after the transaction began. Recovery restored the binary, driver, and receipt with identical SHA-256 hashes. All enumerated devices retained their output selections, volume, and mute. The service reconnected and the transaction directory was removed. |
+| Native controls | Sound Settings exposed the output slider and mute checkbox. Setting the slider to the first step and enabling mute in the UI read back as scalar 0.0625 and mute 1 through Core Audio. |
+| Output switching | With silent PCM active, built-in selection stopped relay callbacks. Selecting the proxy resumed callbacks. This run reported zero underruns, zero dropped producer frames, and two queue resynchronizations. |
+| Restart | After a user-initiated reboot, the driver and service started automatically, the proxy remained selected, and hardware volume read back 100/100. |
+| Sleep and wake | The final package completed a real sleep and automatic wake. The physical LG device received a new Core Audio ID. The relay resumed, the proxy stayed selected, and volume and mute were preserved. The run reported zero underruns, zero dropped producer frames, and two resynchronizations across the transition. During the next measured interval, callbacks continued and no counter increased except frame and callback counts. |
+
+The first sleep/wake session was interrupted by a user-initiated reboot. A later
+completed run exposed 6,656 dropped producer frames during the transition. The
+service had enabled writes before the physical device finished starting. It now
+enables writes only after `AudioDeviceStart` succeeds. The final run above used
+the corrected package and reported no dropped frames. The final package also
+passed another update, uninstall, and fresh installation cycle.
+
+Power settings match the pre-test snapshot, including the original
+`SleepDisabled` value. Test wake events are no longer scheduled. These silent-PCM
+measurements confirm control and callback recovery; they do not establish
+gap-free acoustic playback. The two transition resynchronizations discard
+buffered audio, as described in the architecture.
 
 The local packages contain payload code signed with an Apple Development identity.
-The product archives are unsigned and not notarized. Developer ID distribution
-trust has not been verified.
+The product archives are unsigned and not notarized. Developer ID Application,
+Developer ID Installer, and notarization credentials are not available on this
+host. No public release was published.
 
-A real Installer run with only system directories in PATH exposed an audio-device
-identity bug. Commands now resolve stable UIDs in the process that sets the
-property. Installation audio operations also use the desktop user session.
-Further testing encountered Core Audio enumeration timeouts while the desktop
-was locked. The original display volume was restored, the test driver was removed
-from the HAL load directory, and recovery evidence was retained outside Git.
-Unlock and complete installation, update, removal, recovery, and runtime checks
-before distributing a release. Do not infer successful installation from the
-package build or unit tests.
+| Artifact | SHA-256 |
+| --- | --- |
+| `VolumeBridge-0.2.0-local.pkg` | `a36bb181ae8ff0524bf61fe620aff8b3b1c233e1a6d3633c9fd885ab382cc666` |
+| `Uninstall-VolumeBridge-0.2.0-local.pkg` | `af7ef889255500383edeb0d6960fd4eaaf8a850b295fe48923c9fe408412f9ac` |
+
+Earlier package tests exposed process-local Core Audio device IDs and later
+encountered enumeration timeouts while the desktop was locked. Stable UID
+resolution, desktop-session commands, bounded commands, and stable HAL registration
+were included in the tested revision. The later successful package runs do not
+establish the cause of those earlier system audio timeouts.
 
 ## Prototype 0.1.0 evidence
 

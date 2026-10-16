@@ -389,11 +389,14 @@ extern "C" int bridge_set_running(uint32_t id, int running) {
   auto status = AudioDeviceCreateIOProcID(id, outputCallback, nullptr, &renderProc);
   if (status) { renderProc = nullptr; return status; }
   renderDevice = id; primed = false;
-  if (ring) ring->relayEnabled.store(1, std::memory_order_release);
   status = AudioDeviceStart(id, renderProc);
   if (status) {
-    if (ring) ring->relayEnabled.store(0, std::memory_order_release);
     AudioDeviceDestroyIOProcID(id, renderProc); renderProc=nullptr; renderDevice=0;
+  } else if (ring) {
+    // Starting a physical device can wait for it to finish waking. Accept
+    // producer frames only after that start succeeds, or the queue can fill
+    // before the physical output consumes any frames.
+    ring->relayEnabled.store(1, std::memory_order_release);
   }
   return status;
 }

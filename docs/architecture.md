@@ -27,6 +27,8 @@ relay when the physical display is absent. After a wake event it allows up to
 15 seconds for that display to enumerate before it selects built-in speakers.
 It does not select the proxy over another user-selected output. A disabled relay
 also stops writes to the shared ring, so inactive routes do not fill the queue.
+The service enables writes only after the physical output has started. A device
+that is still waking cannot fill the queue before it can consume frames.
 
 The first prototype uses a 1,024-frame prefill (21.3 ms at 48 kHz) and a bounded
 queue. It drops new frames on a full ring and re-anchors a queue above 4,096
