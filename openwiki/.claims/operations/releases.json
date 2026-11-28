@@ -1,28 +1,36 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3bf70026a15bbdbb37458449832b4f166276a11d85aa3e9c0b4a419f86bb504e",
+  "pageVersion": "sha256:b551da316f0217402907f55ba85fb56e3ebcd471a85d7c6746b2f5e7688b7390",
   "claims": [
     {
       "id": "claim_0af06848041b4816926c661f617ccc79",
-      "statement": "Release source validation requires a canonical remote, a direct annotated stable tag, matching event and checkout commits, main ancestry, and agreement among workspace, lockfile, and driver versions.",
+      "statement": "Release source validation requires a canonical remote, an annotated stable tag directly on the checkout commit, main ancestry, and agreement among workspace, lockfile, and driver versions.",
       "evidence": [
         {
-          "resource": "repo://scripts/release/contract.ts#L90-L132",
-          "version": "repo-lines-v1:sha256:0695049768596378f250adaa6e7140e770d113a53deb066108a793ba8a20c5ae:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2Y2FmYzE2NzQ5MjI3Yzc1MWExNjQ1MmNmZjM3OThkOTJmOTI1NWRhYTM4MWViY2I4NzcwNjMxZWUwODViZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MmZlMmVlZWFlYzQyMDExNWZhN2EyMGNhZjkzYzc0YWRiYzE3MWJiNDNiYzYxYmE5YmRhNTViMjk4YzZkNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5YTNkYzJkOGMwZmRkN2MzNzQ1OWFlNWUxNWIyZjg5N2FlMThiM2EwNjAzZDMxODQ5OGY5YmE1ODMxOTRhZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5YTU2MDBjMzdkNzIxZWI1Njc3OTcxY2IwMmMwMjA0YWExMzZiODVlZWZlODVhMTE4MGJiMTVkZTdkM2JiODgifQ"
+          "resource": "repo://scripts/release/contract.ts",
+          "version": "repo-file-v1:sha256:a2e65362e1d007b7bff365a5f480293df590bb3b8c5f5ec62f8e7c08c33bf554"
         },
         {
-          "resource": "repo://scripts/release/source.ts#L4-L16",
-          "version": "repo-lines-v1:sha256:bd8b6c5153a0e3cb66750da25bd6a648059c2dce7a947adc44e0547a1456358b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMjhhYmQwNTcxMjEyYTcxMzAxOTI3MGFkYTUwYjQyNWRkZjFlMjVmMjg3MGU4ZTE2ZjgxNDJhNDEyYjc2NmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OWQ0YjI0ODg5YWU2NzMzZDgwNDA1OTYyYTUxMjQ2ZmY5M2M5NTgxMGI5NjU0ZjA4M2U4ZjU2OTE3MDBmZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwYWVlODY5YzI5NWUyNDA5MWI0NmFkMDY5NTEzOTdkZDBlMWU5MmU5NzRkNzMxMDJmOGEyYjU1YjkzZTlkNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhNzZlZjRlOWUzNGNmNmQ2MDQ2NWZiYTQ4Y2ZlYjM2NTVlMGQzMjBmNTRjNGU5ZjcwNWMyZTI2MjhjOTYwYjQifQ"
+          "resource": "repo://scripts/release/source.ts",
+          "version": "repo-file-v1:sha256:ef25b61f8aa2e97dfa47609ecca846ed690a37bcb9990e5ac0709b3ab3154d78"
         }
       ]
     },
     {
       "id": "claim_da7736cbb97f4a8f812d57ab5ba5808d",
-      "statement": "The tag workflow separates Linux source validation, ARM64 macOS checks and signing, and a protected Linux publisher; only the publisher has contents write permission and only signing receives Apple secrets.",
+      "statement": "The Mac signer receives the Apple credentials. The asset writer binds the packages to the tagged checkout. The GitHub CLI publisher reads target/release-assets and verifies the draft and public downloads.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L1-L129",
-          "version": "repo-lines-v1:sha256:dc392f5b086526fe19c18da553eef40e0417031f281be9e18d842722133b2d03:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxMmVlZjkwMzBkMGM3MDI5MDEwYzQ2MzU2ODlmNTgzMjhkMTA5ZTZhODVlZDFhOTI0NWIyMGYzOTU1YjdkYjM5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1MTAzYjFiNTc4OTdlY2Q5MWU1YzZlNDE4OGE0ZTFlYzM3Y2E3OWFiNjY2NTdmMzllYzgyZDFhZjZhNjI3NjViIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+          "resource": "repo://scripts/release/assets.ts",
+          "version": "repo-file-v1:sha256:2993d5ba142cb3e6ef6a27933fadd8a90d9384a87e9ebda0b014aaa65c3f6a24"
+        },
+        {
+          "resource": "repo://scripts/release/publish.ts",
+          "version": "repo-file-v1:sha256:4aaefea9498f99c499e84563e81c2319efccc193b59a305b4db938bd7bb5fae9"
+        },
+        {
+          "resource": "repo://scripts/release/sign.ts",
+          "version": "repo-file-v1:sha256:6cf2aaff6a3b0c805008b2eb5633ce7e2305ef7c09373f05242c3438f2da124f"
         }
       ]
     },
@@ -31,7 +39,7 @@
       "statement": "The signing helper imports the expected Developer ID Application and Installer pair into a temporary keychain, preserves signing-keychain search visibility, and restores the original search list and default before cleanup.",
       "evidence": [
         {
-          "resource": "repo://scripts/release/macos.ts#L190-L318",
+          "resource": "repo://scripts/release/macos.ts#L188-L316",
           "version": "repo-lines-v1:sha256:d2c0eb623672721d1f18a062a19278c2851b7806fcacefe87d78e0dcd2f91e0e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJhZTdjY2I4OTdkYzk1ZWRkODA0MjI2OTU5NzhmOGZjMWFhZWFiYTYzMTYwNDZhZGRkNjY0YTRmYTFiNmRmNTZlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0YjBjMzYyMTg3MDA3NTRkNzJjZmI3NTY4ZWY5MWMwNDA3NTk5MjMyMjA3M2NhNThkNjNlYjVhMTZjMDc0OTgxIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
         }
       ]
@@ -41,8 +49,8 @@
       "statement": "Notarization binds each submission to its upload hash, requires matching Accepted status and log evidence without errors, then validates a stapled ticket, trusted package signature, and Gatekeeper install acceptance.",
       "evidence": [
         {
-          "resource": "repo://scripts/release/macos.ts#L79-L179",
-          "version": "repo-lines-v1:sha256:6d027373b7849425d37017ba65fd75d1b5d66062d5689c5fa14c816d3829495e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlZDNkMzA4YzRlN2NlNWY2MDFlNWQwNGU2ZGI0NmZjNzMwZTU3NzBhMDAxYzM4MGEwOWEwMDdjMTdiNDYyZDg0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJjMDM5YjA3NTI3MWYzYjYyYTYxYmVhOWNkYWJkZjc3OTVlNGFlNmMyNmQwNDgwNWQwMjc5YjU0NTcwZGY5Zjc1IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2Mjk0NGY3NWNkNmM5NzVjMWY4ZTViNzcyNjVlMDBlODY4YThiODEzOTUzNmI5OGMwMGUwZWI2Yzk5NWVkZmVhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0ZTczMmI0YjZkMjI1ZThmZGU4Yzk0OGEzMzA2MjZjOTU4M2Q3Yzg5N2FmMDZiZjU0NzBhMWRjYThiZDlmMTM1In0"
+          "resource": "repo://scripts/release/macos.ts#L79-L177",
+          "version": "repo-lines-v1:sha256:7b9d6d26a7f6c914d2b0a1cc222ec256f64483180608b3e16a9fecb7b47fb8d5:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkM2QzMDhjNGU3Y2U1ZjYwMWU1ZDA0ZTZkYjQ2ZmM3MzBlNTc3MGEwMDFjMzgwYTA5YTAwN2MxN2I0NjJkODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwMzliMDc1MjcxZjNiNjJhNjFiZWE5Y2RhYmRmNzc5NWU0YWU2YzI2ZDA0ODA1ZDAyNzliNTQ1NzBkZjlmNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYyOTQ0Zjc1Y2Q2Yzk3NWMxZjhlNWI3NzI2NWUwMGU4NjhhOGI4MTM5NTM2Yjk4YzAwZTBlYjZjOTk1ZWRmZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlNzMyYjRiNmQyMjVlOGZkZThjOTQ4YTMzMDYyNmM5NTgzZDdjODk3YWYwNmJmNTQ3MGExZGNhOGJkOWYxMzUifQ"
         }
       ]
     },
@@ -51,8 +59,8 @@
       "statement": "Release asset validation requires exactly two named package files and one manifest whose source, team, architecture, minimum OS, file sizes, and hashes agree.",
       "evidence": [
         {
-          "resource": "repo://scripts/release/contract.ts#L135-L208",
-          "version": "repo-lines-v1:sha256:11cc1b12ae774ee151362f291b4350aa0b24e62d75ef10e20ef65204285a0a41:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzMGI5NjNlODhkMzlhNjY3NzdkNWQxMmJiMWI2NjNiMTFiNjJhY2VmOTZlODhjYjcxNzgyZTBmMmM4M2EyNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmOTA3MmJjNTM3YWFlYWU1MzYyZGRmNDhmNTExZDI5MDQxMDQ4OGZhYjhlOGYyMzVjY2I3Y2FiMjQxNDcwMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+          "resource": "repo://scripts/release/contract.ts#L141-L212",
+          "version": "repo-lines-v1:sha256:6c890767fb6c5dc86e1e492a57adb72f3b7033d7924fcf973677e69fbe31d521:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzMGI5NjNlODhkMzlhNjY3NzdkNWQxMmJiMWI2NjNiMTFiNjJhY2VmOTZlODhjYjcxNzgyZTBmMmM4M2EyNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmOTA3MmJjNTM3YWFlYWU1MzYyZGRmNDhmNTExZDI5MDQxMDQ4OGZhYjhlOGYyMzVjY2I3Y2FiMjQxNDcwMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
     },
@@ -79,10 +87,28 @@
           "version": "repo-lines-v1:sha256:3545728b28b444693525fa421c9ed7bf09f166c9c1ee318f3f766f2ef9d14401:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NzE5NmVlNWRlNTY2YzFjNTY0MmY4ODIwMzE4NWMxNTcwYmExMzJmMTNkZjI0YWFiZWE5ZjhmMzk3ZjMzOTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiZTY5ZGFlNDYyYmIyZGJmODAxMTRiOGJmNzEyMzE0ZmZkZGEyZDJmNmZmYTkxZmI4ZmUwZmY5ZDVhZDdkY2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxODg3MGE4MDQwOWY4YzRjOTk0ODA3YWY4MjU5Y2MwNGJkMGM1Y2EyZTlmMWMzYjEzZGVmMTBiMTYyNzg2ZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1NzFiMzZlZmFkNzRiZGJiZWQwYzlkZjBmZDMzNThhMTg5YzliOWUxOWJjODk0YjBhNzVmMTMxMGRmYWY4YmYifQ"
         }
       ]
+    },
+    {
+      "id": "claim_951951028d2b460792d70117d1495233",
+      "statement": "The release code checks the UUID format of a notarization submission ID when it receives it, resumes a saved submission, or reads a release manifest.",
+      "evidence": [
+        {
+          "resource": "repo://scripts/release/contract.ts#L157-L184",
+          "version": "repo-lines-v1:sha256:916173168c365290fe04969cef73ba372d8c99751acdacd2b0fd8b04ee0d67f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyYWM2YzM3MGRkN2VmMDNkZTZlZmY1ZGIwYzlmZjE0N2M2MTUyYjVhZjlkYzlkZjFkMTEzOGRjZjI3NjI4MjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjOTQyOWEzYjNlY2ExZGQwOTZmMGI3NjE4NGQ4YjJkNjZiZmRkZDBjNGIwM2MzYmYyNGM0NThhNWFkZWMwNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjNDczZjFjZDFlOGI4NmFiODE2Mzg0MGJkZjYyOGM1MzMyZDIyNTdmZDM1MDAyZjk2ZDJiNjgyMWQ3YmE1NGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkNjc4NDgwYzcxZTNiNWEyODczMTYzN2IwNDYxNjA4NzMzZWU1MzNhYzM0YzY5MTQyODI3OTMzOTUyOGNlMWIifQ"
+        },
+        {
+          "resource": "repo://scripts/release/contract.ts#L55-L65",
+          "version": "repo-lines-v1:sha256:1da84e10d4951a5ebc493beae04baae6dc591524e749176df28c4dc5b7de240d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViZmYzYWYyNTg0Nzc0MWI4ZDBlMjcwNWUwM2U5NzhiNTZhNzVkZDdlNTM2YzYwMzM0NmY5NDA4MjlhMjFiYTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1OWMyNWZiZmZmMmJjMTQxOTUyZTBjZjk0ODBhZmFmMmFlMzk4MDdlZDU4NDdjYmUxOWU5MWUwMGFiMGIzN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3YzEyYWNmNzM1OWJmZGZlNmExMDI3MWMwOThjN2ViYTg4NWYyYWY2OTgzYWQ0YWQ0NWIxMWU5OTMzYTE2MTAifQ"
+        },
+        {
+          "resource": "repo://scripts/release/macos.ts#L87-L116",
+          "version": "repo-lines-v1:sha256:ff5577f6bd7572d3f554885cc44a597f7af7a2be6821a3ed3f400dd9eabeaaae:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2YmFiNTM0N2RkNDIwOWZiZjFiNDUyYmUxNGQ1NTZmZjY0ZDE5OWFiM2M2NDQ5YTk3MjFkZjNlYWNjNTI0N2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4ZTZkOWI5YzhjN2ZkN2MxMGFiNWYzYmJiNDI0ZjI4YzIxM2Y5ZmIxMzMwZjcxNmU4NzQ1N2IyMTVjZmJlNzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNjN2ZlMmQ0NzJlYzdmMWM2YTg1NzQwZWRiYzgwOGJlOWNiZGNjMDYwOTlkMjQ0NzhjNGM4MDM0MmQ4ZTdhYjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyYTgwOWJjNGQ5MjBlOTI4YTBjZGQ2MDYzOTNiOTYyOWU4YjIzYzE3N2QxYjczYzcwYzk3YjhkMjFhZTJkNWQifQ"
+        }
+      ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.2",
-    "at": "2026-10-16T06:30:02.662Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-28T15:36:45.406Z"
   }
 }

@@ -4,8 +4,8 @@ title: Audio path and native volume control
 description: How the HAL output applies native volume and mute controls, transfers PCM to the physical display, and limits queue growth.
 tags: [audio, core-audio, hal, volume, shared-memory]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-16T06:30:02.662Z
+  - by: openwiki/0.9.0
+    at: 2026-11-28T15:22:04.648Z
 sources:
   - id: openwiki-source-349ac7cf64b4e7ebc4729582
     resource: repo://apps/volume-bridge/driver/Driver.cpp
@@ -17,7 +17,7 @@ sources:
     resource: repo://apps/volume-bridge/native/Service.mm
   - id: openwiki-source-e7f8f050fe08414f61265f79
     resource: repo://apps/volume-bridge/tests/native/volume.cpp
-generated: { by: "codex", at: "2026-10-16T06:30:02.662Z" }
+generated: { by: "codex", at: "2026-11-28T15:22:04.648Z" }
 ---
 
 # Audio path and native volume control
@@ -56,24 +56,30 @@ sleep/wake decisions.
 
 ## The slider controls decibels
 
-The HAL scalar is a slider coordinate. It is not a direct sample multiplier.
-`SoftwareVolume::ApplyProcessing` uses the decibel value reported by the control:
+The HAL scalar is the slider position from 0 to 1. The control converts it to
+decibels and applies this gain to each sample.
 
 ```text
-gain = 0                         when raw volume is zero
+reported_dB = 64 * (scalar - 1)
+gain = 0                         when the slider is at zero
 gain = 10^(reported_dB / 20)      otherwise
 sample = clamp(sample * gain, -1, 1)
 ```
 
-The inherited control spans -96 to 0 dB. At maximum, gain is one. At zero,
-samples are exactly silent. libASPL applies the attached volume and mute controls
-to the stream. The driver stores the raw volume through libASPL storage and
-restores a bounded value when it initializes.
+The first of 16 keyboard steps is -60 dB. Each subsequent step adds 4 dB.
+Step 8 is -32 dB and step 16 is 0 dB (unity gain). At slider position zero
+the control reports its lower limit of -64 dB and outputs exact silence.
+Fractional slider positions follow the same decibel slope. libASPL applies
+the attached volume and mute controls to the stream.
+
+The driver saves the slider position in libASPL storage. When only an older
+raw setting exists, the driver restores the previous slider position by
+squaring the saved fraction of the old 0 to 96 range.
 
 The native volume test checks all 16 keyboard intervals. It checks monotonic
 gain, channel symmetry, exact silence, unity gain at maximum, and agreement
-between the reported decibels and measured sample gain. It also checks that the
-first step remains below -60 dB and the midpoint below -20 dB.
+between the reported decibels and measured sample gain. It also checks the
+scalar and decibel conversions at each step and a setting between two steps.
 
 Software gain cannot remove attenuation inside the monitor. Installation
 calibrates the monitor separately through DDC/CI, with a mute and low software
@@ -85,7 +91,8 @@ The original physical LG output bypasses this software attenuation.
 The shared protocol has version 2. Its ring holds 16,384 stereo frames. One writer
 owns the write cursor, and one reader owns the read cursor. Acquire/release
 atomics publish completed frame writes. A full ring drops new frames and updates
-the dropped-frame counter. Reads return only frames that are available.
+the dropped-frame counter. Reads return only frames that are available. A transfer
+uses one contiguous copy or two copies when it crosses the end of the ring.
 
 The render callback clears output buffers before it reads the ring. It waits for
 1,024 queued frames before playback, which is approximately 21.3 ms at 48 kHz.

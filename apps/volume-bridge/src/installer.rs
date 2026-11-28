@@ -12,6 +12,7 @@ use std::{
 	path::Path,
 };
 
+use crate::display;
 use calibration::Controls;
 use model::{InstallState, Snapshot};
 
@@ -49,7 +50,7 @@ impl Controls for Calibration<'_> {
 
 		if !self.snapshot.had_install
 			|| old.is_some_and(|device| {
-				device.uid == PROXY_UID || device.uid == self.state.target_uid
+				device.uid == PROXY_UID || device.uid == self.snapshot.target_uid
 			}) {
 			host::audio("select", PROXY_UID, None)?;
 		} else if let Some(old) = old {
@@ -65,14 +66,18 @@ pub(crate) fn execute(arguments: &[String]) -> std::result::Result<(), String> {
 }
 
 fn execute_inner(arguments: &[String]) -> Result<()> {
+	let payload = match arguments {
+		[action, payload] if action == "install" => Some(Path::new(payload)),
+		[action] if action == "uninstall" => None,
+		_ => return Err("usage: volume-bridge package install PAYLOAD | package uninstall".into()),
+	};
 	let _lock = host::root_lock()?;
 
 	transaction::recover()?;
 
-	match arguments {
-		[action, payload] if action == "install" => install(Path::new(payload)),
-		[action] if action == "uninstall" => uninstall(),
-		_ => Err("usage: volume-bridge package install PAYLOAD | package uninstall".into()),
+	match payload {
+		Some(path) => install(path),
+		None => uninstall(),
 	}
 }
 
@@ -125,7 +130,7 @@ fn prepare(payload: &Path) -> Result<(InstallState, Snapshot)> {
 		original_hardware_volume: Some(hardware),
 	});
 
-	if state.uid != uid || state.target_uid != target.uid {
+	if state.uid != uid || !display::same_uid(&state.target_uid, &target.uid) {
 		return Err("Use the original user account and display to update this installation.".into());
 	}
 
@@ -266,18 +271,16 @@ fn remove_installation(state: &InstallState) -> Result<()> {
 	host::hardware(&state.target_uid, state.original_hardware_volume)?;
 
 	let devices = host::devices()?;
-	let restore = devices
-		.iter()
-		.find(|device| device.uid == state.original_output_uid)
+	let restore = model::saved_output(&devices, &state.original_output_uid)
 		.or_else(|| devices.iter().find(|device| device.uid == "BuiltInSpeakerDevice"))
 		.ok_or("No output is available to restore.")?;
 
 	host::audio("select", &restore.uid, None)?;
 
 	if let Some(uid) = &state.original_system_output_uid
-		&& devices.iter().any(|device| &device.uid == uid)
+		&& let Some(system) = model::saved_output(&devices, uid)
 	{
-		host::audio("select-system", uid, None)?;
+		host::audio("select-system", &system.uid, None)?;
 	}
 
 	host::stop_service()?;

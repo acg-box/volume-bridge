@@ -93,6 +93,20 @@ await test('manifests bind both distinct packages to one source and Apple team',
     assert.throws(
       () =>
         validateManifest(
+          {
+            ...manifest,
+            packages: [
+              { ...manifest.packages[0], submissionId: '12345678-' + 'a'.repeat(27) },
+              manifest.packages[1],
+            ],
+          },
+          source,
+        ),
+      /submission ID/,
+    );
+    assert.throws(
+      () =>
+        validateManifest(
           { ...manifest, packages: [manifest.packages[0], manifest.packages[0]] },
           source,
         ),
@@ -162,6 +176,10 @@ await test('source validation rejects lightweight tags, mismatched events, versi
     git('update-ref', 'refs/remotes/origin/main', commit);
     git('tag', 'v0.2.0');
     assert.throws(() => validateSource('v0.2.0', commit, directory), /annotated/);
+    git('tag', '-d', 'v0.2.0');
+    git('tag', '-a', 'inner', '-m', 'Inner tag');
+    git('tag', '-a', 'v0.2.0', 'inner', '-m', 'Release');
+    assert.throws(() => validateSource('v0.2.0', commit, directory), /directly/);
     git('tag', '-d', 'v0.2.0');
     git('tag', '-a', 'v0.2.0', '-m', 'Release');
     assert.deepEqual(validateSource('v0.2.0', commit, directory), { ...source, commit });

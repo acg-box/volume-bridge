@@ -6,7 +6,7 @@ Native macOS volume control for a fixed-volume LG display, with a HAL driver and
 
 [![License](https://img.shields.io/badge/License-GPLv3%20only-blue.svg)](https://spdx.org/licenses/GPL-3.0-only.html)
 [![Docs](https://img.shields.io/badge/docs-OpenWiki-blue)](openwiki/quickstart.md)
-[![Release](https://github.com/acg-box/volume-bridge/actions/workflows/release.yml/badge.svg)](https://github.com/acg-box/volume-bridge/actions/workflows/release.yml)
+[![Release](https://img.shields.io/github/v/release/acg-box/volume-bridge)](https://github.com/acg-box/volume-bridge/releases)
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/acg-box/volume-bridge)](https://github.com/acg-box/volume-bridge/tags)
 [![GitHub last commit](https://img.shields.io/github/last-commit/acg-box/volume-bridge?color=red&style=plastic)](https://github.com/acg-box/volume-bridge)
 
@@ -61,7 +61,7 @@ Open the next installation package with the original display connected. See [upd
 
 ## Development
 
-Use the [build and test guide](openwiki/development/build-and-dependencies.md) for repository commands and dependencies. CI builds, signs, notarizes, and uploads release packages through the [release workflow](openwiki/operations/releases.md).
+Use the [build and test guide](openwiki/development/build-and-dependencies.md) for repository commands and dependencies. Follow the [release procedure](openwiki/operations/releases.md) to sign, notarize, and publish packages from a Mac.
 
 ### Architecture
 

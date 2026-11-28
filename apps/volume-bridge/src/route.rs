@@ -28,6 +28,13 @@ pub const fn should_relay(route: Route) -> bool {
 		&& !route.sleeping
 }
 
+/// Select the change required by the currently running physical output.
+pub fn relay_change(route: Route, running: u32) -> Option<u32> {
+	let desired = if should_relay(route) { route.target } else { 0 };
+
+	(desired != running).then_some(desired)
+}
+
 #[cfg(test)]
 mod tests {
 	use crate::route::{self, Route};
@@ -56,6 +63,18 @@ mod tests {
 		assert!(!route::should_relay(Route { target: 0, ..selected() }));
 		assert!(!route::should_relay(Route { source_active: false, ..selected() }));
 		assert!(!route::should_relay(Route { proxy: 0, selected: 0, ..selected() }));
+	}
+
+	#[test]
+	fn retries_after_a_failed_switch_or_driver_reattach() {
+		let original = selected();
+		let switched = Route { target: 9, ..original };
+
+		assert_eq!(route::relay_change(switched, original.target), Some(9));
+		// Both a failed switch and a new ring leave the native renderer stopped.
+		assert_eq!(route::relay_change(original, 0), Some(original.target));
+		assert_eq!(route::relay_change(original, original.target), None);
+		assert_eq!(route::relay_change(Route { connected: false, ..original }, 8), Some(0));
 	}
 
 	#[test]

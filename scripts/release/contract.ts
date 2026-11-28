@@ -53,6 +53,12 @@ export function text(value: unknown): string {
   return value;
 }
 
+export function notarySubmissionId(value: unknown): string {
+  if (typeof value !== 'string' || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(value))
+    throw new Error('Invalid notarization submission ID.');
+  return value;
+}
+
 export function stableVersion(value: string): string {
   if (value !== value.trim() || !/^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$/.test(value))
     throw new Error('A stable X.Y.Z version without leading zeroes is required.');
@@ -121,8 +127,8 @@ export function validateSource(tag: string, eventCommit?: string, directory = ro
   const ref = `refs/tags/${tag}`;
   if (git(directory, 'cat-file', '-t', ref) !== 'tag')
     throw new Error('An annotated tag is required.');
-  const annotation = git(directory, 'cat-file', '-p', ref);
-  if (!/^type commit$/m.test(annotation))
+  const tagHeader = git(directory, 'cat-file', '-p', ref).split('\n\n', 1)[0];
+  if (!tagHeader?.split('\n').includes('type commit'))
     throw new Error('The annotated tag must point directly to a commit.');
   const commit = git(directory, 'rev-parse', `${ref}^{commit}`);
   if (git(directory, 'rev-parse', 'HEAD') !== commit || (eventCommit && eventCommit !== commit))
@@ -161,14 +167,12 @@ export function validateManifest(value: unknown, source: Source): Manifest {
       throw new Error('Invalid package identity or size.');
     for (const key of ['sha256', 'uploadSha256'])
       if (!/^[a-f0-9]{64}$/.test(text(entry[key]))) throw new Error('Invalid package digest.');
-    if (!/^[a-f0-9]{8}-[a-f0-9-]{27}$/i.test(text(entry.submissionId)))
-      throw new Error('Invalid notarization submission ID.');
     return {
       name,
       bytes: entry.bytes,
       sha256: text(entry.sha256),
       uploadSha256: text(entry.uploadSha256),
-      submissionId: text(entry.submissionId),
+      submissionId: notarySubmissionId(entry.submissionId),
     };
   });
   if (

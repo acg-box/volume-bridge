@@ -1,5 +1,6 @@
 //! Headless VolumeBridge service and local diagnostic commands.
 
+mod display;
 mod installer;
 mod route;
 
@@ -26,7 +27,7 @@ struct Snapshot {
 	sleeping: u32,
 	driver_connected: u32,
 	source_active: u32,
-	reserved: u32,
+	running_target: u32,
 	wake_count: u64,
 	driver_generation: u64,
 	output_callbacks: u64,
@@ -82,8 +83,7 @@ fn serve(target: &str) -> Result<(), String> {
 }
 
 fn run_loop() {
-	let mut running = 0;
-	let mut generation = (0, 0);
+	let mut wake_count = 0;
 	let mut last_present: Option<Instant> = None;
 	let mut wake_deadline: Option<Instant> = None;
 	let mut previous_state = None;
@@ -95,7 +95,11 @@ fn run_loop() {
 		if state.target != 0 {
 			last_present = Some(Instant::now());
 		}
-		if state.wake_count != generation.0 {
+
+		let woke = state.wake_count != wake_count;
+
+		if woke {
+			wake_count = state.wake_count;
 			wake_deadline = Some(Instant::now() + Duration::from_secs(15));
 		}
 
@@ -111,28 +115,23 @@ fn run_loop() {
 			source_active: state.source_active != 0,
 			sleeping: state.sleeping != 0,
 		};
-		let next_generation = (state.wake_count, state.driver_generation);
-
-		if generation != next_generation {
+		let running = if woke {
 			// SAFETY: Stop waits for the native I/O callback to finish.
 			unsafe { bridge_set_running(0, 0) };
 
-			running = 0;
-			generation = next_generation;
-		}
+			0
+		} else {
+			state.running_target
+		};
 
-		let desired = if route::should_relay(route) { state.target } else { 0 };
-
-		if running != desired {
+		if let Some(desired) = route::relay_change(route, running) {
 			// SAFETY: The target came from the configured UID and validated transport.
 			let status = unsafe { bridge_set_running(desired, i32::from(desired != 0)) };
 
 			if status == 0 {
-				running = desired;
-
 				eprintln!(
-					"relay target={running} wake={} generation={}",
-					generation.0, generation.1
+					"relay target={desired} wake={wake_count} generation={}",
+					state.driver_generation
 				);
 			} else {
 				eprintln!("relay start failed: {status}");

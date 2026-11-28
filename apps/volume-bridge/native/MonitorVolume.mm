@@ -1,4 +1,5 @@
 #include "MonitorVolume.hpp"
+#include "Service.h"
 #include <CoreFoundation/CoreFoundation.h>
 #include <IOKit/IOKitLib.h>
 #include <array>
@@ -24,13 +25,13 @@ bool matches(CFTypeRef service, const char* targetUID) {
     memcpy(&uuidBytes, bytes + 8, sizeof(uuidBytes));
     // Core Audio masks the four EDID serial bytes on this output. Respect that
     // UID form, but still reject ambiguous matches before a DDC write.
-    if (strlen(targetUID) == 36 && !strncmp(targetUID + 8, "-0000-0000-", 11)) {
+    if (strlen(targetUID) >= 36 && !strncmp(targetUID + 8, "-0000-0000-", 11)) {
       uuidBytes.byte4 = uuidBytes.byte5 = uuidBytes.byte6 = uuidBytes.byte7 = 0;
     }
     auto uuid = CFUUIDCreateFromUUIDBytes(kCFAllocatorDefault, uuidBytes);
     auto string = CFUUIDCreateString(kCFAllocatorDefault, uuid);
     char uid[64]{};
-    result = CFStringGetCString(string, uid, sizeof(uid), kCFStringEncodingUTF8) && !strcmp(uid, targetUID);
+    result = CFStringGetCString(string, uid, sizeof(uid), kCFStringEncodingUTF8) && bridge_same_display_uid(uid, targetUID);
     CFRelease(string); CFRelease(uuid);
   }
   CFRelease(edid);

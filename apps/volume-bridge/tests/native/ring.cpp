@@ -19,6 +19,14 @@ int main() {
     for (int i=0;i<777*2;++i) assert(input[i]==output[i]);
   }
   assert(ring->pop(output.data(),1)==0);
+  // A partial read that spans the end of the ring leaves the output tail alone.
+  ring->written.store(bridge::Capacity - 1);
+  ring->read.store(bridge::Capacity - 1);
+  assert(ring->push(input.data(), 3) == 3);
+  std::fill(output.begin(), output.end(), -1.0f);
+  assert(ring->pop(output.data(), 4) == 3);
+  assert(std::equal(input.begin(), input.begin() + 6, output.begin()));
+  assert(output[6] == -1.0f && output[7] == -1.0f);
   constexpr uint32_t count = 100000;
   std::thread producer([&] {
     for (uint32_t i=0;i<count;++i) {

@@ -1,30 +1,31 @@
 ---
 type: operations
 title: Signed package releases
-description: The tag-driven CI contract for Developer ID signing, notarization, protected draft publication, provenance, and recovery.
+description: Publish a signed and notarized package from the tagged checkout on an Apple Silicon Mac.
 tags: [release, github-actions, signing, notarization, packaging]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-16T06:30:02.662Z
+  - by: openwiki/0.9.0
+    at: 2026-11-28T15:36:45.406Z
 sources:
-  - id: openwiki-source-4d1d392666be6dfdd7a91a2e
-    resource: repo://.github/workflows/release.yml
+  - id: openwiki-source-8d09f1841cdf2cefe9712c29
+    resource: repo://scripts/release/assets.ts
   - id: openwiki-source-c57ff1a8ecf10bead6141c8d
     resource: repo://scripts/release/contract.ts
   - id: openwiki-source-42abc3b6b8a5d20903e60297
     resource: repo://scripts/release/macos.ts
   - id: openwiki-source-d158ddf042e350865ab6ed7e
     resource: repo://scripts/release/publish.ts
+  - id: openwiki-source-7c647add8f4bb7140f52d395
+    resource: repo://scripts/release/sign.ts
   - id: openwiki-source-58698e61f4d6301a548ead2f
     resource: repo://scripts/release/source.ts
-generated: { by: "codex", at: "2026-10-16T06:30:02.662Z" }
+generated: { by: "codex", at: "2026-11-28T15:36:45.406Z" }
 ---
 
 # Signed package releases
 
-GitHub Actions builds and uploads the distribution packages. The release adapter
-produces macOS product archives for the driver and background service. It does
-not use Sparkle or distribute an application UI.
+Build the driver and service on the release Mac. Sign and notarize both product
+archives, verify their bytes, and publish them to GitHub Releases.
 
 ## Release unit and source identity
 
@@ -35,13 +36,13 @@ Every public release contains exactly three uploaded assets:
 - `VolumeBridge-X.Y.Z-release.json`
 
 The JSON binds both package names, byte lengths, final SHA-256 hashes, upload
-hashes, and Apple submission IDs to one source commit and version. It also records
+hashes, and Apple submission IDs to one source commit and version. The signer and
+manifest validator check the UUID format of each submission ID. The JSON also records
 Apple team `4N949UKQ55`, ARM64 architecture, and the macOS 14.0 minimum. The manifest
 is a provenance record; Apple signatures and stapled tickets provide package trust.
 
 Use an annotated stable `vX.Y.Z` tag that points directly to a commit reachable
-from canonical `acg-box/volume-bridge` main. The event, checkout, tag, and expected
-cross-job commit must agree. The workspace version, Cargo.lock package version,
+from canonical `acg-box/volume-bridge` main. The checked-out commit must match the tag. The workspace version, Cargo.lock package version,
 and both driver version fields must match the tag. Leading zeroes, prerelease
 suffixes, lightweight tags, and tag objects that point to another tag are rejected.
 
@@ -49,37 +50,11 @@ A new version must advance every other remote stable tag and public stable
 release. Never move or reuse a remote tag for different source. Source fixes
 after a tag push require a new version, even if publication failed.
 
-## Workflow boundaries
+## Release credentials
 
-```mermaid
-flowchart LR
-    T[Annotated tag] --> S[Linux source validation]
-    S --> B[ARM64 macOS checks and build]
-    B --> N[Sign, notarize, staple, verify]
-    N --> A[Validated asset triplet]
-    A --> R[Protected release review]
-    R --> P[Linux draft publisher]
-    P --> V[Public download verification]
-```
-
-The source and package jobs have read-only repository permission. Checks and the
-unsigned build finish before the signing step receives Apple credentials. The
-package job requires an ARM64 macOS 26 runner and carries the source job's commit
-and version into its own validation.
-
-Only the Linux publisher has `contents: write`. It depends on both earlier jobs,
-uses the `release` environment, and receives only the artifact, public source
-metadata, and the ephemeral GitHub workflow token. It does not receive Apple
-credentials. The workflow serializes releases and does not cancel an active one.
-
-Keep the repository's `release` environment protected. The configured review
-policy uses reviewer `acgxv`, permits self-review, and restricts deployments to
-`v*` tags. The source validator enforces the narrower stable-version syntax.
-Keep this environment free of signing secrets. Obtain authorization for the exact
-release version before pushing its tag; review publication after package evidence
-is complete. Do not weaken environment rules to finish a release.
-
-## Shared credentials
+Run checks and the unsigned build before starting the signer. Inject the
+release credentials only into the signing process. The publisher uses the
+operator's authenticated GitHub CLI session with release write access.
 
 The signing step consumes these organization-secret names:
 
@@ -93,9 +68,6 @@ The signing step consumes these organization-secret names:
 | `ACG_MACOS_NOTARY_API_ISSUER_ID` | Team Key issuer ID. |
 | `ACG_MACOS_NOTARY_API_PRIVATE_KEY_P8` | Team Key private key in PEM format. |
 
-Grant the repository effective access to the shared organization secrets. Do not
-create repository or environment secrets with the same names. Keep recovery copies
-in the owner's protected secret store. The legacy `APPLE_*` secrets are not used.
 The notary key uses the Developer role. The signer derives identity labels from
 the imported certificates; no identity-label secret or persistent publication
 token is required.
@@ -132,7 +104,7 @@ stapled bytes in the release manifest.
 The publisher validates the exact local asset triplet before any GitHub write.
 It creates or reuses a private draft for the candidate tag and replaces only that
 draft's assets. It downloads them again and compares their sizes, GitHub digests,
-bytes, and source manifest to the validated CI artifact.
+bytes, and source manifest to the validated local packages and manifest.
 
 GitHub can give draft browser URLs an opaque `untagged-` slug. Draft verification
 therefore downloads through authenticated asset IDs. After publication, every
@@ -148,17 +120,20 @@ bytes rather than comparing them with a fresh signed build.
 
 ## Operator procedure
 
-1. Complete review and merge the intended source into main. Confirm authorization
-   for the exact version and tag.
-2. Fetch canonical main and remote tags. Check version advance and all four
-   product version fields.
-3. Create the annotated tag at the intended commit. Run
-   `node scripts/release/source.ts vX.Y.Z` before pushing that exact tag.
-4. Inspect source, native build, signing, and notarization results. Approve the
-   protected publisher only after those results pass.
-5. Verify the successful workflow, public release, latest status, and downloaded
-   artifact triplet. Inspect package signatures, stapled tickets, and Gatekeeper
-   acceptance on macOS. Record hardware acceptance separately.
+1. Merge the intended source into main. Fetch canonical main and remote tags.
+   Confirm the exact version, the version fields, and the annotated tag target.
+2. On the release Mac, run `npm ci --ignore-scripts`, `cargo make check`, and
+   `cargo make build` from that checkout.
+3. Create the annotated tag, verify it with `node scripts/release/source.ts vX.Y.Z`,
+   and push the verified tag.
+4. Run `node scripts/release/sign.ts` with the seven signing credentials injected
+   into that process. Inspect the notarization results for both packages.
+5. Run `node scripts/release/assets.ts` to create `target/release-assets/`.
+   Run `node scripts/release/publish.ts` to verify the draft downloads, publish
+   the release, and verify the public downloads and latest release ID.
+6. On the destination Mac, verify the downloaded packages with
+   `pkgutil --check-signature`, `xcrun stapler validate`, and
+   `spctl --assess --type install`. Record hardware acceptance separately.
 
 The local publisher check makes no GitHub requests:
 
@@ -169,8 +144,7 @@ node scripts/release/publish.ts --dry-run DIRECTORY VolumeBridge-X.Y.Z-release.j
 ## Recovery
 
 An interrupted notarization retains the exact packages and JSON receipts under
-`target/packages/release/`. Failed CI packaging retains a `notarization-recovery`
-artifact for seven days. Preserve source identity, package bytes, upload hashes,
+`target/packages/release/`. Preserve source identity, package bytes, upload hashes,
 and submission IDs together.
 
 At the same source revision, with matching built inputs, use the credential-injected

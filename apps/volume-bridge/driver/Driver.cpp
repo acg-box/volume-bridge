@@ -18,13 +18,20 @@ class PersistentVolume final : public SoftwareVolume {
   explicit PersistentVolume(std::shared_ptr<aspl::Context> context)
       : SoftwareVolume(context), storage_(context), context_(std::move(context)) {}
   void restore() {
-    const auto saved = storage_.ReadInt("volume.raw");
-    SetRawValue(saved.second ? static_cast<SInt32>(std::clamp<SInt64>(saved.first, 0, 96)) : 60);
+    const auto saved = storage_.ReadFloat("volume.scalar");
+    if (saved.second && std::isfinite(saved.first)) {
+      SetScalarValue(saved.first);
+      return;
+    }
+    // Earlier drivers saved 0..96 with a squared raw-to-slider conversion.
+    const auto legacy = storage_.ReadInt("volume.raw");
+    const float fraction = std::clamp<SInt64>(legacy.second ? legacy.first : 60, 0, 96) / 96.0f;
+    SetScalarValue(fraction * fraction);
   }
  protected:
   OSStatus SetRawValueImpl(SInt32 value) override {
     const auto status = aspl::VolumeControl::SetRawValueImpl(value);
-    if (status == noErr && context_->Host.load()) storage_.WriteInt("volume.raw", value);
+    if (status == noErr && context_->Host.load()) storage_.WriteFloat("volume.scalar", GetScalarValue());
     return status;
   }
  private:

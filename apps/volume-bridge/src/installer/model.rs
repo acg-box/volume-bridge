@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
 
-use crate::installer::{PROXY_UID, Result};
+use crate::{
+	display,
+	installer::{PROXY_UID, Result},
+};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(super) struct Device {
@@ -14,6 +17,11 @@ pub(super) struct Device {
 	pub system_default: bool,
 	pub volume: f32,
 	pub mute: u32,
+}
+impl Device {
+	fn is_supported_display(&self) -> bool {
+		self.name == "LG ULTRAGEAR+" && self.channels == 2 && self.transport == 1_685_090_932
+	}
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -62,9 +70,7 @@ pub(super) struct HardwareVolume {
 }
 
 pub(super) fn target(devices: &[Device]) -> Result<&Device> {
-	let mut matches = devices.iter().filter(|device| {
-		device.name == "LG ULTRAGEAR+" && device.channels == 2 && device.transport == 1_685_090_932
-	});
+	let mut matches = devices.iter().filter(|device| device.is_supported_display());
 	let device = matches.next().ok_or("Connect the LG ULTRAGEAR+ display before installation.")?;
 
 	if matches.next().is_some() {
@@ -74,9 +80,40 @@ pub(super) fn target(devices: &[Device]) -> Result<&Device> {
 	Ok(device)
 }
 
+pub(super) fn saved_output<'a>(devices: &'a [Device], uid: &str) -> Option<&'a Device> {
+	let mut matches = devices.iter().filter(|device| {
+		device.uid == uid || (device.is_supported_display() && display::same_uid(&device.uid, uid))
+	});
+	let device = matches.next()?;
+
+	matches.next().is_none().then_some(device)
+}
+
 #[cfg(test)]
 mod tests {
-	use crate::installer::model::InstallState;
+	use crate::installer::model::{self, Device, InstallState};
+
+	#[test]
+	fn restore_the_saved_output_only_when_unambiguous() {
+		let uid = "11111111-2222-3333-4444-555555555555";
+		let mut devices = vec![Device {
+			id: 2,
+			uid: format!("{uid}_00000002"),
+			name: "LG ULTRAGEAR+".into(),
+			channels: 2,
+			transport: 1_685_090_932,
+			default: false,
+			system_default: false,
+			volume: 0.0,
+			mute: 0,
+		}];
+
+		assert_eq!(model::saved_output(&devices, uid).map(|device| device.id), Some(2));
+
+		devices.push(Device { id: 3, uid: uid.into(), ..devices[0].clone() });
+
+		assert!(model::saved_output(&devices, uid).is_none());
+	}
 
 	#[test]
 	fn the_existing_prototype_receipt_remains_readable() {

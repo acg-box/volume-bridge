@@ -15,7 +15,7 @@ import {
   validateSource,
 } from './contract.ts';
 import type { Manifest, Source } from './contract.ts';
-import { workflowSource } from './source.ts';
+import { releaseSource } from './source.ts';
 
 const endpoint = `repos/${repository}`;
 function gh(args: string[], input?: unknown): string {
@@ -242,5 +242,5 @@ if (import.meta.main && process.argv[2] === '--dry-run') {
 } else if (import.meta.main) {
   if (process.argv.length !== 2)
     throw new Error('Usage: publish.ts [--dry-run DIRECTORY MANIFEST]');
-  publish(workflowSource(), resolve(root, 'artifacts'));
+  publish(releaseSource(), resolve(root, 'target/release-assets'));
 }
