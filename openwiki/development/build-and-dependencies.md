@@ -4,8 +4,8 @@ title: Build, tests, and dependencies
 description: Repository-owned build and validation commands, tool selection, native linkage, dependency provenance, and documentation ownership.
 tags: [build, testing, dependencies, rust, typescript, provenance]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-16T06:30:02.662Z
+  - by: openwiki/0.9.0
+    at: 2026-11-28T15:22:04.648Z
 sources:
   - id: openwiki-source-164e2da859b5277df81c7d94
     resource: repo://.github/workflows/ci.yml
@@ -15,11 +15,13 @@ sources:
     resource: repo://apps/volume-bridge/CMakeLists.txt
   - id: openwiki-source-c8b1a2a9f2113ec43d4066da
     resource: repo://Makefile.toml
+  - id: openwiki-source-5093b074f16e0b77479219b2
+    resource: repo://package-lock.json
   - id: openwiki-source-5b54a58d1b51cd490b0e7162
     resource: repo://package.json
   - id: openwiki-source-faabd6d6bc9acd8ff6590dc8
     resource: repo://vendor/libaspl/UPSTREAM.md
-generated: { by: "codex", at: "2026-10-16T06:30:02.662Z" }
+generated: { by: "codex", at: "2026-11-28T15:22:04.648Z" }
 ---
 
 # Build, tests, and dependencies
@@ -55,8 +57,9 @@ and the CI process. A local package is not a distribution release.
 ## Tools and native linkage
 
 `rust-toolchain.toml` selects stable Rust, the minimal profile, and Clippy. Rust
-formatting explicitly uses nightly rustfmt. The Node and npm versions are 26.8.1
-and 11.19.0. Package metadata and the npm lockfile select the TypeScript tool graph.
+formatting explicitly uses nightly rustfmt. The project uses Node 26.13.1 and
+its bundled npm 11.20.0. Direct npm development dependencies allow patch
+updates within one minor version. The lockfile selects exact packages.
 Do not change host defaults or install replacement tools to bypass a missing
 repository prerequisite.
 
@@ -79,15 +82,12 @@ policy.
 ## CI checks
 
 Pull requests and `main` pushes run the checked-in macOS 26 workflow with read-only
-repository permission. It installs cargo-make 0.37.24 and cargo-nextest 0.9.143,
+repository permission. It installs cargo-make 0.37.24 and cargo-nextest 0.9.152,
 then runs `npm ci --ignore-scripts`, `cargo make check`, and `cargo make build`.
 It does not receive release credentials.
 
 The workflow builds vibe-style from Git revision
-`3f39ce57b54def2cdd95a330faae299f5eb55014`. That version requires Git metadata which
-its crates.io archive does not contain. Keep the checked-in command when changing
-runner setup; replacing it with a registry install reintroduces the observed
-build failure.
+`dea96c3de39354f1b42da1a52a37812e525c6f52` (v0.2.9).
 
 ## Dependency ownership and licenses
 
@@ -104,11 +104,9 @@ control destructor out of line and put stream-format field initializers in SDK
 order. The [upstream receipt](../../vendor/libaspl/UPSTREAM.md) records these changes
 and preserves license provenance.
 
-The npm override selects `tinypool ~2.1.2` under oxfmt. The dependency review on
-2026-10-15 recorded zero npm audit findings after that correction and no OSV
-record for the resolved Rust dependencies. These are dated observations, not a
-current security assessment. Their original scope and limitations are retained
-in the [historical dependency record](https://github.com/acg-box/volume-bridge/blob/c8245e621c5e50ce92786d3dfc7ae7c78d66dcca/docs/dependencies.md).
+oxfmt 0.80.0 selects tinypool 2.2.0 directly. The lockfile records its registry
+archive and integrity digest. Earlier dependency decisions are in the
+[historical dependency record](https://github.com/acg-box/volume-bridge/blob/c8245e621c5e50ce92786d3dfc7ae7c78d66dcca/docs/dependencies.md).
 
 The package builder copies the project license, Rust dependency license files,
 and the three libASPL license notices into the installation payload. The project

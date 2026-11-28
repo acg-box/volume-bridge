@@ -1,7 +1,13 @@
-use std::{fs, path::Path, thread, time::Duration};
+use std::{
+	fs,
+	path::{Path, PathBuf},
+	thread,
+	time::Duration,
+};
 
 use crate::installer::{
-	DRIVER, LAUNCH_FILE, PROXY_UID, ROOT, Result, TRANSACTION, host, model::Snapshot,
+	DRIVER, LAUNCH_FILE, PROXY_UID, ROOT, Result, TRANSACTION, host,
+	model::{self, Snapshot},
 };
 
 const OWNED: [(&str, &str); 3] =
@@ -11,9 +17,7 @@ const MARKER: &str = "VolumeBridge installation transaction v1";
 pub(super) fn begin(snapshot: &Snapshot) -> Result<()> {
 	let transaction = Path::new(TRANSACTION);
 
-	fs::create_dir(transaction)?;
-	host::mkdir(transaction, 0o700)?;
-	fs::write(transaction.join("owner"), MARKER)?;
+	create(transaction)?;
 
 	for (path, backup) in OWNED {
 		if Path::new(path).exists() {
@@ -45,7 +49,7 @@ pub(super) fn recover() -> Result<()> {
 }
 
 pub(super) fn finish() -> Result<()> {
-	host::remove(Path::new(TRANSACTION))
+	retire(Path::new(TRANSACTION))
 }
 
 pub(super) fn restore_audio(snapshot: &Snapshot) -> Result<()> {
@@ -58,14 +62,14 @@ pub(super) fn restore_audio(snapshot: &Snapshot) -> Result<()> {
 		host::mute(previous.mute != 0)?;
 	}
 	if let Some(previous) = snapshot.devices.iter().find(|device| device.default)
-		&& devices.iter().any(|device| device.uid == previous.uid)
+		&& let Some(current) = model::saved_output(&devices, &previous.uid)
 	{
-		host::audio("select", &previous.uid, None)?;
+		host::audio("select", &current.uid, None)?;
 	}
 	if let Some(previous) = snapshot.devices.iter().find(|device| device.system_default)
-		&& devices.iter().any(|device| device.uid == previous.uid)
+		&& let Some(current) = model::saved_output(&devices, &previous.uid)
 	{
-		host::audio("select-system", &previous.uid, None)?;
+		host::audio("select-system", &current.uid, None)?;
 	}
 
 	Ok(())
@@ -103,4 +107,75 @@ pub(super) fn rollback(snapshot: &Snapshot) -> Result<()> {
 	}
 
 	restore_audio(snapshot)
+}
+
+// mktemp creates a private directory on the same volume as the journal.
+fn staging_directory(transaction: &Path) -> Result<PathBuf> {
+	let template = transaction.with_extension("XXXXXXXX");
+
+	Ok(host::capture(
+		Path::new("/usr/bin/mktemp"),
+		&["-d", template.to_str().ok_or("Invalid transaction path.")?],
+	)?
+	.into())
+}
+
+fn create(transaction: &Path) -> Result<()> {
+	if transaction.try_exists()? {
+		return Err("An installation transaction already exists.".into());
+	}
+
+	let staging = staging_directory(transaction)?;
+	let result =
+		fs::write(staging.join("owner"), MARKER).and_then(|()| fs::rename(&staging, transaction));
+
+	if result.is_err() {
+		host::remove(&staging)?;
+	}
+
+	Ok(result?)
+}
+
+fn retire(transaction: &Path) -> Result<()> {
+	let staging = staging_directory(transaction)?;
+	// Remove the journal and backups from recovery as one unit before cleanup.
+	let result = fs::rename(transaction, &staging);
+
+	host::remove(&staging)?;
+
+	Ok(result?)
+}
+
+#[cfg(test)]
+mod tests {
+	use std::{env, fs, os::unix::fs::PermissionsExt as _};
+
+	use crate::installer::{
+		Result,
+		transaction::{self, MARKER},
+	};
+
+	#[test]
+	fn publishes_and_retires_a_complete_private_directory() -> Result<()> {
+		let root = transaction::staging_directory(&env::temp_dir().join("VolumeBridge-test"))?;
+		let active = root.join("transaction");
+
+		transaction::create(&active)?;
+
+		assert_eq!(fs::read_to_string(active.join("owner"))?, MARKER);
+		assert_eq!(fs::metadata(&active)?.permissions().mode() & 0o777, 0o700);
+
+		fs::write(active.join("journal.json"), "{}")?;
+
+		assert!(transaction::create(&active).is_err());
+		assert!(active.join("journal.json").exists());
+
+		transaction::retire(&active)?;
+
+		assert!(fs::read_dir(&root)?.next().is_none());
+
+		fs::remove_dir(root)?;
+
+		Ok(())
+	}
 }

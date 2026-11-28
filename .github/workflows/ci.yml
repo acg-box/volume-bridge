@@ -22,20 +22,21 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .node-version
           package-manager-cache: false
-      - uses: actions-rust-lang/setup-rust-toolchain@166cdcfd11aee3cb47222f9ddb555ce30ddb9659 # v1.17.0
+      - uses: actions-rust-lang/setup-rust-toolchain@a188e68d0fd2bd36ad51dccb2b07ba6e75105f30 # v2.0.1
         with:
           cache: false
           rustflags: ''
-      - uses: taiki-e/install-action@c44f6b046f1c29ae5918b1e0bfdbb2f1813836fd # v2.84.1
+          build-warnings: ''
+      - uses: taiki-e/install-action@073e1fd0bc889c9aee68dbaaa927cde1b5653a83 # v2.90.11
         with:
-          tool: cargo-make@0.37.24,cargo-nextest@0.9.143
+          tool: cargo-make@0.37.24,cargo-nextest@0.9.152
       - name: Install the repository lint tool
-        # v0.2.5 needs Git metadata that its crates.io archive does not contain.
-        run: cargo install --locked --git https://github.com/acg-box/vibe-style --rev 3f39ce57b54def2cdd95a330faae299f5eb55014 vibe-style
+        # Build v0.2.9 from the pinned release commit.
+        run: cargo install --locked --git https://github.com/acg-box/vibe-style --rev dea96c3de39354f1b42da1a52a37812e525c6f52 vibe-style
       - name: Check and build without release credentials
         run: |
           npm ci --ignore-scripts

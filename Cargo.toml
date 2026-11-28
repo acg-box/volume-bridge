@@ -6,10 +6,9 @@ resolver = "3"
 authors     = ["acgxv <xv@acg.box>"]
 description = "Native macOS volume control through a HAL driver and headless service."
 edition     = "2024"
-homepage    = "https://github.com/acg-box/volume-bridge"
 license     = "GPL-3.0-only"
 repository  = "https://github.com/acg-box/volume-bridge"
-version     = "0.2.2"
+version     = "0.2.3"
 
 [workspace.dependencies]
 serde      = { version = "~1.0", features = ["derive"] }

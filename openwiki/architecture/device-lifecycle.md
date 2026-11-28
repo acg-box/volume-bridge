@@ -4,18 +4,20 @@ title: Device routing, reconnects, and sleep
 description: Rust routing decisions, authenticated XPC attachment, output switching, and recovery after service restarts or sleep.
 tags: [routing, xpc, sleep, wake, lifecycle]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-16T06:30:02.662Z
+  - by: openwiki/0.9.0
+    at: 2026-11-28T15:22:04.648Z
 sources:
   - id: openwiki-source-349ac7cf64b4e7ebc4729582
     resource: repo://apps/volume-bridge/driver/Driver.cpp
   - id: openwiki-source-6efb4901588b16a31d00a974
     resource: repo://apps/volume-bridge/native/Service.mm
+  - id: openwiki-source-1bef25bc2e131823dd1d9d12
+    resource: repo://apps/volume-bridge/src/display.rs
   - id: openwiki-source-69a3b23c1cfb118e7aa59f45
     resource: repo://apps/volume-bridge/src/main.rs
   - id: openwiki-source-a2038a92fe0c7f97a6aab8d9
     resource: repo://apps/volume-bridge/src/route.rs
-generated: { by: "codex", at: "2026-10-16T06:30:02.662Z" }
+generated: { by: "codex", at: "2026-11-28T15:22:04.648Z" }
 ---
 
 # Device routing, reconnects, and sleep
@@ -28,11 +30,13 @@ at 200 ms.
 
 ## Device identity and route selection
 
-The native adapter resolves the physical output from its saved UID. It also
-requires the Core Audio DisplayPort transport value and manufacturer `GSM`.
-This is an API filter, not a description of the cable connector. The recorded
-hardware setup uses USB-C. Core Audio device numbers are temporary; saved
-installation state uses UIDs instead.
+The native adapter requires exactly one output with the saved display identity,
+the Core Audio DisplayPort transport, and manufacturer `GSM`. On this USB-C
+display, Core Audio can append an underscore and eight hexadecimal digits to
+the EDID UUID when the port changes. The service compares the UUID in that
+case. Other UID formats require an exact match. If two outputs match, the
+service stops the relay. The installer saves UIDs because Core Audio device
+numbers can change.
 
 The route runs only when all these conditions hold:
 
@@ -72,9 +76,11 @@ a new connection. This handles a driver that starts before its launchd service
 exists, as well as later service replacement.
 
 Connection replacement, timer messages, and activity notifications use one
-serial dispatch queue. PCM callbacks do not access the connection. The controller
-also tracks the driver generation token. A changed generation stops the previous
-render session before it starts a new one.
+serial dispatch queue. PCM callbacks do not access the connection. The service
+stops the previous output before it adopts a new ring. If the peer disconnects
+before adoption, the service discards the pending mapping. The controller reads
+the running output from each native snapshot. After a failed device start or a
+ring replacement, it retries when the selected route still needs audio.
 
 ## Sleep, wake, and fallback
 

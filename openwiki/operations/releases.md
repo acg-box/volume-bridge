@@ -4,8 +4,8 @@ title: Signed package releases
 description: The tag-driven CI contract for Developer ID signing, notarization, protected draft publication, provenance, and recovery.
 tags: [release, github-actions, signing, notarization, packaging]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-16T06:30:02.662Z
+  - by: openwiki/0.9.0
+    at: 2026-11-28T15:22:04.648Z
 sources:
   - id: openwiki-source-4d1d392666be6dfdd7a91a2e
     resource: repo://.github/workflows/release.yml
@@ -17,7 +17,7 @@ sources:
     resource: repo://scripts/release/publish.ts
   - id: openwiki-source-58698e61f4d6301a548ead2f
     resource: repo://scripts/release/source.ts
-generated: { by: "codex", at: "2026-10-16T06:30:02.662Z" }
+generated: { by: "codex", at: "2026-11-28T15:22:04.648Z" }
 ---
 
 # Signed package releases
@@ -35,7 +35,8 @@ Every public release contains exactly three uploaded assets:
 - `VolumeBridge-X.Y.Z-release.json`
 
 The JSON binds both package names, byte lengths, final SHA-256 hashes, upload
-hashes, and Apple submission IDs to one source commit and version. It also records
+hashes, and Apple submission IDs to one source commit and version. The signer and
+manifest validator check the UUID format of each submission ID. The JSON also records
 Apple team `4N949UKQ55`, ARM64 architecture, and the macOS 14.0 minimum. The manifest
 is a provenance record; Apple signatures and stapled tickets provide package trust.
 

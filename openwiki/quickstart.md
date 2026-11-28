@@ -4,18 +4,22 @@ title: VolumeBridge quickstart
 description: Choose the installation, architecture, development, release, or validation guide for the native macOS volume bridge.
 tags: [quickstart, navigation, macos, volume]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-16T06:30:02.662Z
+  - by: openwiki/0.9.0
+    at: 2026-11-28T14:42:36.284Z
 sources:
   - id: openwiki-source-589635d050c1ba0499df0c29
     resource: repo://apps/volume-bridge/CMakeLists.txt
+  - id: openwiki-source-81bffa88a98604584a809277
+    resource: repo://apps/volume-bridge/native/MonitorVolume.mm
+  - id: openwiki-source-1bef25bc2e131823dd1d9d12
+    resource: repo://apps/volume-bridge/src/display.rs
   - id: openwiki-source-b9eb96831aff16413593f200
     resource: repo://apps/volume-bridge/src/installer.rs
   - id: openwiki-source-230e78ed9b8e418643313281
     resource: repo://apps/volume-bridge/src/installer/calibration.rs
   - id: openwiki-source-51d9de9b25d94d95ce636d7e
     resource: repo://scripts/package.ts
-generated: { by: "codex", at: "2026-10-16T06:30:02.662Z" }
+generated: { by: "codex", at: "2026-11-28T14:42:36.284Z" }
 ---
 
 # VolumeBridge quickstart
@@ -52,7 +56,8 @@ Installation saves the original hardware volume, mutes the bridge, sets a low
 software volume, and verifies hardware calibration before unmuting. Leave the
 monitor's own volume at 100 and control volume through macOS. Use the separate
 removal package to restore the saved monitor volume and remove the driver and
-service. Keep the original display connected for removal.
+service. Keep the original display connected for removal. You can use another
+USB-C port on the Mac.
 
 The package compatibility target is Apple Silicon and macOS 14 or later. Recorded
 hardware acceptance covers one LG ULTRAGEAR+ connected by USB-C to one Mac. This

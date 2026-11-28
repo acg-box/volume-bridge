@@ -3,7 +3,7 @@ import { randomBytes } from 'node:crypto';
 import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { basename, join } from 'node:path';
-import { appleTeamId, record, secretNames, sha256, text } from './contract.ts';
+import { appleTeamId, notarySubmissionId, record, secretNames, sha256, text } from './contract.ts';
 import type { PackageEvidence } from './contract.ts';
 
 export function capture(program: string, args: string[], sensitive = false): string {
@@ -90,7 +90,7 @@ export async function notarize(
   let complete = false;
   if (existsSync(receipt)) {
     const saved = record(JSON.parse(readFileSync(receipt, 'utf8')) as unknown);
-    submissionId = text(saved.submissionId);
+    submissionId = notarySubmissionId(saved.submissionId);
     uploadSha256 = text(saved.uploadSha256);
     complete = typeof saved.sha256 === 'string';
     if (sha256(file) !== (complete ? saved.sha256 : uploadSha256))
@@ -107,9 +107,7 @@ export async function notarize(
         ),
       ) as unknown,
     );
-    submissionId = text(submission.id);
-    if (!/^[a-f0-9-]{36}$/i.test(submissionId))
-      throw new Error('Apple did not return a submission ID.');
+    submissionId = notarySubmissionId(submission.id);
     writeFileSync(receipt, JSON.stringify({ uploadSha256, submissionId }, null, 2));
     console.log(`Notarization submitted: ${basename(file)} (${submissionId})`);
   }

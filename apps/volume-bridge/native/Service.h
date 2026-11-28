@@ -1,4 +1,5 @@
 #pragma once
+#include <stdbool.h>
 #include <stdint.h>
 #ifdef __cplusplus
 extern "C" {
@@ -11,7 +12,7 @@ typedef struct {
   uint32_t sleeping;
   uint32_t driver_connected;
   uint32_t source_active;
-  uint32_t reserved;
+  uint32_t running_target;
   uint64_t wake_count;
   uint64_t driver_generation;
   uint64_t output_callbacks;
@@ -24,6 +25,7 @@ typedef struct {
   uint64_t source_peak_million;
   uint64_t output_peak_million;
 } BridgeSnapshot;
+bool bridge_same_display_uid(const char* left, const char* right);
 int bridge_initialize(const char* target_uid);
 BridgeSnapshot bridge_snapshot(void);
 void bridge_wait(uint32_t milliseconds);

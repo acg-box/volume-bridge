@@ -4,20 +4,28 @@ title: Validation evidence and acceptance limits
 description: Dated local and CI evidence, the distinction between source tests and hardware acceptance, and the remaining prototype limits.
 tags: [validation, acceptance, audio, packaging, provenance]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-16T06:30:02.662Z
+  - by: openwiki/0.9.0
+    at: 2026-11-28T15:22:04.648Z
 sources:
+  - id: openwiki-source-1bef25bc2e131823dd1d9d12
+    resource: repo://apps/volume-bridge/src/display.rs
   - id: openwiki-source-230e78ed9b8e418643313281
     resource: repo://apps/volume-bridge/src/installer/calibration.rs
   - id: openwiki-source-d908193ec290bdb670b55b4b
     resource: repo://apps/volume-bridge/src/installer/model.rs
+  - id: openwiki-source-7d4fa9bbbd6184e70a1b7c3d
+    resource: repo://apps/volume-bridge/src/installer/transaction.rs
+  - id: openwiki-source-a2038a92fe0c7f97a6aab8d9
+    resource: repo://apps/volume-bridge/src/route.rs
   - id: openwiki-source-e99dc82d69978d42762837da
     resource: repo://apps/volume-bridge/tests/native/ring.cpp
+  - id: openwiki-source-e7f8f050fe08414f61265f79
+    resource: repo://apps/volume-bridge/tests/native/volume.cpp
   - id: openwiki-source-f1a02f6a4473b265a9e84ccc
     resource: repo://scripts/release/contract.test.ts
   - id: openwiki-source-02f15f3b05f2f30c315723ef
     resource: repo://scripts/release/publish.test.ts
-generated: { by: "codex", at: "2026-10-16T06:30:02.662Z" }
+generated: { by: "codex", at: "2026-11-28T15:22:04.648Z" }
 ---
 
 # Validation evidence and acceptance limits
@@ -36,12 +44,14 @@ and the manifest attached to the exact version.
 
 | Tests | Contract exercised |
 | --- | --- |
-| Native ring test | Full-ring drop accounting, wraparound, empty reads, and ordered concurrent producer/consumer transfer. |
-| Native volume test | All keyboard intervals, monotonic gain, channel symmetry, silence at zero, unity at maximum, and agreement with reported decibels. |
-| Rust route tests | Relay selection, missing driver/target/source, and sleep predicates. |
+| Native ring test | Full-ring drop accounting, wraparound, partial reads that preserve the output tail, empty reads, and ordered concurrent producer/consumer transfer. |
+| Native volume test | All 16 keyboard steps from -60 to 0 dB in 4 dB increments, scalar and decibel conversions, channel symmetry, silence at zero, unity at maximum, and agreement between sample gain and reported decibels. |
+| Rust route tests | Relay selection, retry with a stopped renderer after a switch or reconnect, missing driver/target/source, and sleep predicates. |
 | Rust calibration tests | Mute and low gain before hardware maximum, volume preservation on calibrated updates, and no unmute after a hardware error. |
 | Rust receipt test | Read compatibility with the original prototype receipt. |
-| Release contract tests | Stable versions, source and tag binding, main ancestry, manifest identity, tampered bytes, extra assets, and a local dry-run without network tools. |
+| Rust transaction test | Creation and retirement of a private transaction directory in temporary storage. |
+| Display identity and output restoration tests | Matching across port suffixes, rejection of unrelated or malformed UIDs, and rejection of ambiguous saved outputs. |
+| Release contract tests | Stable versions, direct annotated tags, main ancestry, manifest identity, submission UUIDs, tampered bytes, extra assets, and a local dry-run without network tools. |
 | Publisher regression test | Temporary draft URLs, canonical public URLs, uploaded state, metadata digests, and downloaded bytes. CLI fixtures permit downloads only. |
 
 At the draft-URL correction, `cargo make check` passed seven Rust tests, two native

@@ -4,22 +4,28 @@ title: Installation, calibration, and removal
 description: Install and remove the native packages, understand hardware-volume calibration, and recover a failed Rust-owned installation transaction.
 tags: [installation, calibration, recovery, uninstall, privileges]
 verified:
-  - by: openwiki/0.7.2
-    at: 2026-10-16T06:30:02.662Z
+  - by: openwiki/0.9.0
+    at: 2026-11-28T15:22:04.648Z
 sources:
   - id: openwiki-source-81bffa88a98604584a809277
     resource: repo://apps/volume-bridge/native/MonitorVolume.mm
+  - id: openwiki-source-1bef25bc2e131823dd1d9d12
+    resource: repo://apps/volume-bridge/src/display.rs
   - id: openwiki-source-b9eb96831aff16413593f200
     resource: repo://apps/volume-bridge/src/installer.rs
   - id: openwiki-source-230e78ed9b8e418643313281
     resource: repo://apps/volume-bridge/src/installer/calibration.rs
   - id: openwiki-source-5452c999636e6e9a3f7b9e9c
     resource: repo://apps/volume-bridge/src/installer/host.rs
+  - id: openwiki-source-d908193ec290bdb670b55b4b
+    resource: repo://apps/volume-bridge/src/installer/model.rs
   - id: openwiki-source-7d4fa9bbbd6184e70a1b7c3d
     resource: repo://apps/volume-bridge/src/installer/transaction.rs
+  - id: openwiki-source-e7f8f050fe08414f61265f79
+    resource: repo://apps/volume-bridge/tests/native/volume.cpp
   - id: openwiki-source-51d9de9b25d94d95ce636d7e
     resource: repo://scripts/package.ts
-generated: { by: "codex", at: "2026-10-16T06:30:02.662Z" }
+generated: { by: "codex", at: "2026-11-28T15:22:04.648Z" }
 ---
 
 # Installation, calibration, and removal
@@ -75,12 +81,15 @@ The installer takes an exclusive process lock and attempts recovery of any known
 unfinished transaction first. It verifies both payload code signatures, finds the
 desktop user and supported LG, and reads hardware volume before replacing files.
 Existing owned paths without a valid installation receipt stop the operation.
-An update requires the original account and display.
+An update requires the original account and display. You can connect the
+display to a different USB-C port.
 
 The first installation saves the original output routes and monitor volume.
 Later updates keep that first receipt instead of replacing it with calibrated
 hardware volume. Before changes, the transaction copies the existing runtime,
-driver, and launch configuration and saves the current audio snapshot.
+driver, and launch configuration and saves the current audio snapshot. The
+installer creates its ownership marker in a private directory and renames that
+directory into place before it starts the backups.
 
 Calibration uses this order:
 
@@ -92,14 +101,15 @@ Calibration uses this order:
 4. Set hardware volume to 100 if required and verify the readback.
 5. Restore the previous mute state, then perform the final hardware-volume check.
 
-The control can quantize a requested 0.02 to approximately 0.02126736. See the
-[volume curve](../architecture/audio-and-control.md) for scalar and decibel behavior.
+The initial setting of 0.02 is below the first full keyboard step (0.0625).
+See the [volume curve](../architecture/audio-and-control.md) for slider positions
+and their gain in decibels.
 Keep the monitor's OSD volume at 100 and use the macOS slider or keyboard keys.
 After an OSD change or monitor reset, rerun the installation package to recalibrate.
 
-The DDC helper matches the configured UID to LG EDID identity. It supports the
-Core Audio form with masked EDID serial bytes but still requires exactly one
-match. It uses private Apple Silicon IOAV interfaces and DDC/CI VCP 0x62 outside
+The DDC helper matches the configured UID to LG EDID identity. It handles
+masked EDID serial bytes and the Core Audio port suffix. Calibration requires
+exactly one match. It uses private Apple Silicon IOAV interfaces and DDC/CI VCP 0x62 outside
 the render callback. Failed or ambiguous matching cannot proceed to a hardware
 write. Failed readback stops calibration before unmute.
 
@@ -113,11 +123,16 @@ If an operation fails, rollback mutes the proxy and restores the snapshot's
 hardware volume before any output can receive unattenuated audio. It then restores
 backed-up files, restarts the service and Core Audio as required, and restores
 software volume, mute, and the output routes that are still available.
+Rollback and removal resolve a saved LG output to its current UID when exactly
+one supported output matches.
 
 If recovery cannot reach the display or complete another required step, it retains
 the transaction and reports the error. Keep the original display connected and
 rerun the package. Do not delete a retained transaction to hide the failure. The
-next package invocation attempts recovery before starting a new operation.
+next valid package operation attempts recovery before it starts new work. After
+completion or a successful rollback, the installer renames the active directory
+before it deletes the backups. An interruption during deletion cannot expose a
+partially deleted backup as an active transaction.
 
 ## Removal
 

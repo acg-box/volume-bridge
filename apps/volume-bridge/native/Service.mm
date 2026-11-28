@@ -84,6 +84,11 @@ AudioDeviceID resolveDevice(const char* identifier) {
   }
   return kAudioObjectUnknown;
 }
+bool parseNumber(const char* text, double maximum, double& value) {
+  char* end = nullptr;
+  value = strtod(text, &end);
+  return end != text && *end == '\0' && std::isfinite(value) && value >= 0 && value <= maximum;
+}
 AudioDeviceID defaultOutput() {
   AudioDeviceID id = 0;
   readProperty(kAudioObjectSystemObject, kAudioHardwarePropertyDefaultOutputDevice, id);
@@ -110,20 +115,22 @@ NSDictionary* snapshotObject(const BridgeSnapshot& s) {
 BridgeSnapshot observe() {
   BridgeSnapshot s{};
   s.default_output = defaultOutput();
+  unsigned matchingTargets = 0;
   for (auto id : devices()) {
     if (outputChannels(id) == 0) continue;
     const auto uid = textProperty(id, kAudioDevicePropertyDeviceUID);
     if (uid == bridge::DeviceUID) s.proxy = id;
-    if (uid == targetUID) {
-      UInt32 transport = 0;
-      readProperty(id, kAudioDevicePropertyTransportType, transport);
-      const auto manufacturer = textProperty(id, kAudioObjectPropertyManufacturer);
-      if (transport == kAudioDeviceTransportTypeDisplayPort && manufacturer == "GSM") s.target = id;
-    }
     UInt32 transport = 0;
     readProperty(id, kAudioDevicePropertyTransportType, transport);
+    if (transport == kAudioDeviceTransportTypeDisplayPort &&
+        bridge_same_display_uid(uid.c_str(), targetUID.c_str()) &&
+        textProperty(id, kAudioObjectPropertyManufacturer) == "GSM") {
+      ++matchingTargets;
+      s.target = id;
+    }
     if (transport == kAudioDeviceTransportTypeBuiltIn) s.builtin = id;
   }
+  if (matchingTargets != 1) s.target = 0;
   s.sleeping = sleeping.load(); s.driver_connected = connected.load(); s.wake_count = wakes.load();
   s.driver_generation = providerToken;
   s.output_callbacks = callbacks.load(); s.output_frames = rendered.load();
@@ -168,7 +175,12 @@ void acceptPeer(xpc_connection_t peer) {
   xpc_connection_set_event_handler(peer, ^(xpc_object_t event) {
     if (xpc_get_type(event) == XPC_TYPE_ERROR) {
       std::lock_guard lock(ipcMutex);
-      if (provider == peer) { connected.store(false); xpc_release(provider); provider = nullptr; dispatch_semaphore_signal(changed); }
+      if (provider == peer) {
+        connected.store(false);
+        if (pendingRing) { munmap(pendingRing, pendingBytes); pendingRing = nullptr; pendingBytes = 0; }
+        xpc_release(provider); provider = nullptr;
+        dispatch_semaphore_signal(changed);
+      }
       return;
     }
     if (xpc_get_type(event) != XPC_TYPE_DICTIONARY) return;
@@ -217,25 +229,25 @@ void acceptPeer(xpc_connection_t peer) {
 }
 OSStatus outputCallback(AudioDeviceID, const AudioTimeStamp*, const AudioBufferList*,
   const AudioTimeStamp*, AudioBufferList* output, const AudioTimeStamp*, void*) {
-  uint32_t frames = 0;
+  uint32_t frames = UINT32_MAX;
   for (UInt32 b = 0; b < output->mNumberBuffers; ++b) {
     auto& buffer = output->mBuffers[b];
     if (buffer.mData) memset(buffer.mData, 0, buffer.mDataByteSize);
-    if (buffer.mNumberChannels && buffer.mData) frames = buffer.mDataByteSize / (sizeof(float) * buffer.mNumberChannels);
+    if (buffer.mNumberChannels && buffer.mData)
+      frames = std::min(frames, static_cast<uint32_t>(buffer.mDataByteSize / sizeof(float) / buffer.mNumberChannels));
   }
   callbacks.fetch_add(1, std::memory_order_relaxed);
   if (!ring || !frames || frames > bridge::Capacity || sleeping.load() || !connected.load()) return noErr;
   auto queued = ring->queued();
   if (!primed) { if (queued < bridge::Prefill) return noErr; primed = true; }
   if (queued > bridge::MaxQueued) { ring->discard(); primed = false; resyncs.fetch_add(1); return noErr; }
-  memset(scratch.data(), 0, frames * bridge::Channels * sizeof(float));
   const auto count = ring->pop(scratch.data(), frames);
   if (count < frames) { underruns.fetch_add(1); primed = false; }
   float peak = 0;
   uint32_t channelBase = 0;
   for (UInt32 b = 0; b < output->mNumberBuffers; ++b) {
     auto& buffer = output->mBuffers[b];
-    if (!buffer.mData) continue;
+    if (!buffer.mData) { channelBase += buffer.mNumberChannels; continue; }
     auto* destination = static_cast<float*>(buffer.mData);
     for (uint32_t f = 0; f < count; ++f) {
       for (uint32_t c = 0; c < buffer.mNumberChannels; ++c) {
@@ -363,7 +375,8 @@ extern "C" BridgeSnapshot bridge_snapshot() {
     ring = pendingRing; ringBytes = pendingBytes; pendingRing = nullptr; pendingBytes = 0;
     ring->discard(); connected.store(true);
   }
-  const auto state = observe();
+  auto state = observe();
+  state.running_target = renderDevice;
   if (!renderProc && ring && state.default_output != state.proxy) ring->discard();
   return state;
 }
@@ -443,36 +456,37 @@ extern "C" int bridge_command(int argc, const char* const* argv) {
       }
       return monitorVolumeCommand(argv[2], value);
     }
-    if (argc >= 2 && !strcmp(argv[1], "devices")) { listDevices(); return 0; }
-    if (argc >= 2 && !strcmp(argv[1], "status")) return requestStatus();
+    if (argc == 2 && !strcmp(argv[1], "devices")) { listDevices(); return 0; }
+    if (argc == 2 && !strcmp(argv[1], "status")) return requestStatus();
     if (argc == 3 && !strcmp(argv[1], "select-system")) {
       const auto id = resolveDevice(argv[2]);
       if (!outputChannels(id)) return kAudioHardwareBadDeviceError;
       auto address = property(kAudioHardwarePropertyDefaultSystemOutputDevice);
       return AudioObjectSetPropertyData(kAudioObjectSystemObject, &address, 0, nullptr, sizeof(id), &id);
     }
-    if (argc >= 3 && !strcmp(argv[1], "select")) return bridge_select(resolveDevice(argv[2]));
-    if (argc >= 4 && (!strcmp(argv[1],"volume") || !strcmp(argv[1],"mute"))) {
-      const auto id = resolveDevice(argv[2]);
+    if (argc == 3 && !strcmp(argv[1], "select")) return bridge_select(resolveDevice(argv[2]));
+    if (argc == 4 && (!strcmp(argv[1],"volume") || !strcmp(argv[1],"mute"))) {
       const bool isVolume = !strcmp(argv[1],"volume");
       auto address = property(isVolume ? kAudioHardwareServiceDeviceProperty_VirtualMainVolume : kAudioDevicePropertyMute, kAudioObjectPropertyScopeOutput);
       if (isVolume) {
-        Float32 value = strtof(argv[3],nullptr); if (!std::isfinite(value) || value<0 || value>1) return 2;
-        return AudioObjectSetPropertyData(id,&address,0,nullptr,sizeof(value),&value);
+        double parsed = 0;
+        if (!parseNumber(argv[3], 1, parsed)) return 2;
+        Float32 value = static_cast<Float32>(parsed);
+        return AudioObjectSetPropertyData(resolveDevice(argv[2]),&address,0,nullptr,sizeof(value),&value);
       }
+      if (strcmp(argv[3],"0") && strcmp(argv[3],"1")) return 2;
       UInt32 value = strcmp(argv[3],"0") ? 1 : 0;
-      return AudioObjectSetPropertyData(id,&address,0,nullptr,sizeof(value),&value);
+      return AudioObjectSetPropertyData(resolveDevice(argv[2]),&address,0,nullptr,sizeof(value),&value);
     }
-    if (argc >= 4 && !strcmp(argv[1], "tone")) {
+    if ((argc == 4 || argc == 5) && !strcmp(argv[1], "tone")) {
+      double seconds = 0, amplitude = 0.01;
+      if (!parseNumber(argv[3], 120, seconds) || seconds == 0) return 2;
+      if (argc == 5 && !parseNumber(argv[4], 0.05, amplitude)) return 2;
       const auto id = resolveDevice(argv[2]);
-      const double seconds = strtod(argv[3],nullptr);
-      if (!std::isfinite(seconds) || seconds<=0 || seconds>120) return 2;
       AudioStreamBasicDescription format{};
       if (!readProperty(id,kAudioDevicePropertyStreamFormat,format,kAudioObjectPropertyScopeOutput) ||
           !(format.mFormatFlags & kAudioFormatFlagIsFloat) || format.mBitsPerChannel != 32) return 2;
-      Tone tone; tone.rate = format.mSampleRate;
-      if (argc >= 5) tone.amplitude = strtof(argv[4],nullptr);
-      if (!std::isfinite(tone.amplitude) || tone.amplitude<0 || tone.amplitude>0.05) return 2;
+      Tone tone; tone.rate = format.mSampleRate; tone.amplitude = static_cast<float>(amplitude);
       AudioDeviceIOProcID proc = nullptr;
       auto status = AudioDeviceCreateIOProcID(id,toneCallback,&tone,&proc); if(status) return status;
       status = AudioDeviceStart(id,proc);

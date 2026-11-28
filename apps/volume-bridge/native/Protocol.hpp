@@ -34,10 +34,11 @@ struct alignas(64) Ring {
     const auto r = read.load(std::memory_order_acquire);
     const auto queued = w - r;
     const auto count = static_cast<uint32_t>(std::min<uint64_t>(frames, Capacity - std::min<uint64_t>(Capacity, queued)));
-    for (uint32_t f = 0; f < count; ++f) {
-      const auto slot = ((w + f) % Capacity) * Channels;
-      samples[slot] = source[f * Channels];
-      samples[slot + 1] = source[f * Channels + 1];
+    if (count) {
+      const auto offset = static_cast<uint32_t>(w % Capacity);
+      const auto first = std::min(count, Capacity - offset);
+      std::copy_n(source, first * Channels, samples + offset * Channels);
+      if (first < count) std::copy_n(source + first * Channels, (count - first) * Channels, samples);
     }
     written.store(w + count, std::memory_order_release);
     dropped.fetch_add(frames - count, std::memory_order_relaxed);
@@ -49,10 +50,11 @@ struct alignas(64) Ring {
     const auto r = read.load(std::memory_order_relaxed);
     const auto w = written.load(std::memory_order_acquire);
     const auto count = static_cast<uint32_t>(std::min<uint64_t>(frames, w - r));
-    for (uint32_t f = 0; f < count; ++f) {
-      const auto slot = ((r + f) % Capacity) * Channels;
-      destination[f * Channels] = samples[slot];
-      destination[f * Channels + 1] = samples[slot + 1];
+    if (count) {
+      const auto offset = static_cast<uint32_t>(r % Capacity);
+      const auto first = std::min(count, Capacity - offset);
+      std::copy_n(samples + offset * Channels, first * Channels, destination);
+      if (first < count) std::copy_n(samples, (count - first) * Channels, destination + first * Channels);
     }
     read.store(r + count, std::memory_order_release);
     return count;

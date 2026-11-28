@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:2bd04f4fa9b37bddb516d7ec1363d7be1bcead85064ccdc113ac95261966516f",
+  "pageVersion": "sha256:812cd9ea8c20066fd93223f53b8f11135bd277b2dccd2cc30bb8d2e4a8de77dc",
   "claims": [
     {
       "id": "claim_f71b1b9fcf2b4034b1b5c616aa9e6fde",
@@ -35,8 +35,8 @@
       "statement": "Installation verifies both payload signatures, reads hardware volume before replacement, requires the original account and target for updates, and retains the first saved hardware-volume receipt.",
       "evidence": [
         {
-          "resource": "repo://apps/volume-bridge/src/installer.rs#L79-L136",
-          "version": "repo-lines-v1:sha256:542fa5d3ba1b07d85fb159ab9249d91a85a389ba39fb0c740f9f20b52ab5926c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwYmM3NzdlMzAwOTE1YTBhZDZjODZlZTJkMTY4Nzg2YjhmYTgwMmExNDg0ZDE3Y2MyOWU5MzRlZTY4ODhiNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MGY5ZGU3MDRhNDBmNWVkMDcwODIzYmEyOTYzYzQwOGFkZDQwZmM1YThkZGM1OWEzMTU5OGM4MWQzMjE5NjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5MmRmMmNhNjcxNTc1ZTA0MjFlMTczNmUzODMxNTYwMzQwMTJkOWI5NjBiMDE0MmJhYWQ0ZTVmNTE1NDJjMGUifQ"
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L101-L142",
+          "version": "repo-lines-v1:sha256:0dbaa8f16afdfced0200c8e40e6d3752836d6dfbe401ba73774e85ce9ac856c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3YWQ4ODAxM2QwNTYwYTM5N2UxZTQyOGU5MDE1MWZhNzk2ZDQzYmQ3ZWUyMTNkNmU4YzMzZGVjZWUwNzkwYTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhYTg4YmRjYTBhM2I1YTQwYTJmM2UwMmM4Njg2ZWQ3NzFmYzkxODRjZDgzMTYyMGJhYmQ1NjJlMDYxNTVmM2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4NGY5ZDZhNjBmZTIzYTkwN2Q5YjQ3YjU1M2FmYzdmNjAwMTgxZjJhOWM0M2M3NWQ3Y2E0Njk5MzIzYjExOWEifQ"
         }
       ]
     },
@@ -45,12 +45,12 @@
       "statement": "Calibration mutes first, chooses low gain for a fresh or uncalibrated installation, changes hardware volume only when required, and restores mute only after a successful hardware operation.",
       "evidence": [
         {
-          "resource": "repo://apps/volume-bridge/src/installer.rs#L209-L230",
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L214-L235",
           "version": "repo-lines-v1:sha256:9dd79a3627c36c0f0c4e61cabbbb5638201ef8ab2735ec22b29a5e36c346dc50:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4Yjk0YjMyYmY3MjY5NjBjZTg1NzQ0Y2U4ZDY2YmExMmNiYzY2OWIyOWYwMWYxMTIyMWU1NWE3MDc4MGI4MTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmMTIyNGQzOTRmMDEzNjNjYzA1YmIyN2YwMTRmNmVkZTE3Y2NiZDNiMGZiMDdmNWVmY2M3YWUwMDFjNWU0Y2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmNDUwYTI5ZGEzZDEwMDhlNTczYWU4MjYzNmRjMDZkM2YyNzNmOTA5ZTllNDk5ZjU0MWZmN2U0NWVkOTNkYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3YjQ1OWUwOWE1Y2YxYTY5MTgxNGM4Mjk1MDZiNzE0ZDkwZWFjOGFhMWE2MzhlYmI3ZDk0MjUyYTM2ZjUwNzgifQ"
         },
         {
-          "resource": "repo://apps/volume-bridge/src/installer.rs#L34-L60",
-          "version": "repo-lines-v1:sha256:acd4866663359038f5e417973c6954a4d5ab3cf72991d7eaef861732d334d3cf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZmNlYzU0OTU1ZDIxMTdkNmFiYjQ3ZGRmZmE3MjE5NjQ1MjgyMDgwMDI3MzJmNTk3NzU0N2IzOTI1YTMwNmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4ZmYwYzk5NzJmYjRmZmNiZWNkYjA1ZTE3MTI4NjI5ZmNkZTIwMzRiNTU1NmRjZmZmYzczNWExM2U4Y2EwYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlOTAwNTA1NDAzYTRjNjhhOTI0ZDQyMTUxMTJjYzcwZDAwNzgwNzNkMTE0OWI2MmY1YzRmM2MwZmFlMDVlNTMifQ"
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L35-L61",
+          "version": "repo-lines-v1:sha256:af5cc04e775e01564bf240eab2ef4fde24980c411ee50dc6c8e8e22047ca7911:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZmNlYzU0OTU1ZDIxMTdkNmFiYjQ3ZGRmZmE3MjE5NjQ1MjgyMDgwMDI3MzJmNTk3NzU0N2IzOTI1YTMwNmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM4ZmYwYzk5NzJmYjRmZmNiZWNkYjA1ZTE3MTI4NjI5ZmNkZTIwMzRiNTU1NmRjZmZmYzczNWExM2U4Y2EwYTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlOTAwNTA1NDAzYTRjNjhhOTI0ZDQyMTUxMTJjYzcwZDAwNzgwNzNkMTE0OWI2MmY1YzRmM2MwZmFlMDVlNTMifQ"
         },
         {
           "resource": "repo://apps/volume-bridge/src/installer/calibration.rs#L10-L26",
@@ -60,33 +60,41 @@
     },
     {
       "id": "claim_3b1ef2f7f7fc471982a8d6207b54dc8c",
-      "statement": "DDC calibration matches LG EDID identity to the target UID, rejects non-unique matches, uses VCP 0x62, and requires readback of the requested hardware value.",
+      "statement": "DDC calibration matches the target UID to LG EDID identity across a port change, requires a unique display and verifies the requested VCP 0x62 value by readback.",
       "evidence": [
         {
-          "resource": "repo://apps/volume-bridge/native/MonitorVolume.mm#L17-L37",
-          "version": "repo-lines-v1:sha256:b1c2f0ecddcdf0f4fb1d137b5f7f57550c4144dfe56272d3b7564edcd8326843:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzMWQyOTcwM2FmNzQzMTVkZWRhM2M3Y2U5MzdlM2NhNzRhNDVmMmVkYjhjZTE5NjY5MGMzMjMwMDI1MDRlNzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhOGM2MDMzYjk1MmI5MGI0ZmFmMDk3MGQzMDk4MWE4MDk2NmM1NzJlYWZhNGE1NTQyYmNiYjEzMGY0NGNjOTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNjE0ZjljMmM5MThjN2U3YTk3ODljNzkyZmNlOTRlYjAwZDg4ZWU4OGQzNDFmYmFkZDhhYTZkM2MzYjdhZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNzFlN2E3NjBiNzA4MzlmNjhmYmZiODViMjZiYjgyYmVmZGZkYjBmMjUxMzAxNTZkZmZmMDFiYjkxZmY5ODMifQ"
+          "resource": "repo://apps/volume-bridge/native/MonitorVolume.mm#L18-L38",
+          "version": "repo-lines-v1:sha256:cdaec372286e16acad42f64788415c40fe4dda64a688d6abb0e8be497940848e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzMWQyOTcwM2FmNzQzMTVkZWRhM2M3Y2U5MzdlM2NhNzRhNDVmMmVkYjhjZTE5NjY5MGMzMjMwMDI1MDRlNzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhOGM2MDMzYjk1MmI5MGI0ZmFmMDk3MGQzMDk4MWE4MDk2NmM1NzJlYWZhNGE1NTQyYmNiYjEzMGY0NGNjOTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNjE0ZjljMmM5MThjN2U3YTk3ODljNzkyZmNlOTRlYjAwZDg4ZWU4OGQzNDFmYmFkZDhhYTZkM2MzYjdhZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkNzFlN2E3NjBiNzA4MzlmNjhmYmZiODViMjZiYjgyYmVmZGZkYjBmMjUxMzAxNTZkZmZmMDFiYjkxZmY5ODMifQ"
         },
         {
-          "resource": "repo://apps/volume-bridge/native/MonitorVolume.mm#L46-L99",
-          "version": "repo-lines-v1:sha256:1e0f606ba36057c698ee58a16ae220b2cdc3e039f1aea77ee170e121f87413c9:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNGFhYWY5NTYyZGE3OGYyNDhkZDI1NTE2MTgxNzljZTIwMGM2ZWYzZDExMmU5M2EwNmViMmMxODhmNzkwY2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5NThiZDI2YTc1NWZkZDM2NGYxYjIxNGY5OTNkYTY4OTc1ZTY3MDM5ODM5ODBlMDE0ZTUzMjAwYjAzZDZjYmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkYzdkMDMwZDY0ZmIxZmVkYmExMDk5N2U3NDNiYWYwNjA4NWE2ZmZjNjQ0MGJmNjYyYzNhMjIwODdjNGRlZjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+          "resource": "repo://apps/volume-bridge/native/MonitorVolume.mm#L46-L100",
+          "version": "repo-lines-v1:sha256:25126f88350c1c8dbf687287dca6cab50327db3b6f10aa7af8056e19351f6ed7:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5NThiZDI2YTc1NWZkZDM2NGYxYjIxNGY5OTNkYTY4OTc1ZTY3MDM5ODM5ODBlMDE0ZTUzMjAwYjAzZDZjYmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImExZDAzZTNmOGMwMDRhOTZjOTBiZDA3YTk2YTAwMjBmYjIwYjYxZGFlOTM5MDliNDkzMDNlMzkxYmQ3NmUzOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/src/display.rs#L3-L24",
+          "version": "repo-lines-v1:sha256:dbde312460cb76fbd50233e84ac637eca046b58e31a56b3284f912f0b63b5c2c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5MDVlNDgwZDZkZGEyZTZjODhjYjdhNDNhNTZlNmM5ZWEzMDk5ZTE2YmI1ODNhMDVmZTYzZjE0Zjk0NDEwZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhYzVmNTc2NTM2N2RiZWViZGVlYWQ2NmJlMGExZDgyODIzY2Q0OTExMjE3ZGNjNDY2NTUzMmYxY2VhNWU1MzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1NTg3ZmExZjY5Y2Y5ODdlZDg4ZjYzMGVlYTdlOWZjM2Y4M2IwZDkwODg2MTg4NjcwNzQ3MWEwNGU4ZWU3OGYifQ"
         }
       ]
     },
     {
       "id": "claim_a8446043190c4bf48b398497f7e403e7",
-      "statement": "Transactions back up the owned runtime, driver, and launch file; rollback restores hardware before files and audio state, and a failed rollback leaves the transaction for the next invocation.",
+      "statement": "Transactions back up the owned runtime, driver, and launch file. Rollback restores hardware before files and audio state. A failed rollback leaves the transaction for the next valid package operation.",
       "evidence": [
         {
-          "resource": "repo://apps/volume-bridge/src/installer.rs#L153-L166",
-          "version": "repo-lines-v1:sha256:e005cc021a17f54efd9f57f8f12ee2fd075b597ec5c4c523a5fe2262f8d17b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkMjU4ZmYxMTM0YjFiNjZkM2VhZjdkNGRhNGM4Mjg3NjExOTg3NDBlMDRkN2Q1ZTM3OTZjYzYwYjM4NzlhMzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4N2ZmMTEzYjNiMzkyNWI3OGRkYTY0MTQzZGRlMjAxMDlhZjRiMjg2Y2M1NTkwYTFjYzY5ZGY0MTcyYWJjNzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxYmUzNWQzZWU5ZGFiM2Y3ZGFhOTkxY2RkN2ViYzNjYmJjYjQzYzIxYTFiNTE0ZmM3MDQ5NDNiZTFjOTY3ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwODc3YjUxNTEzMTA5ZDQyNGFmMWVmNzIxNGUwNWVjZmQwNzQyZjQxNjdlNjhhNDA2OTFhMWNkMzg4ODNlNmIifQ"
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L159-L174",
+          "version": "repo-lines-v1:sha256:8f9256b19735358617383434ba8fc509d3b5805985e5444ea6d7b23483718247:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxNzlmOThjMDVlYzI5YWQ3MjdmMjU4Mzc4NzUyMzUzNmRlNTBjYTc1OTNjOWVhNDM0ZjMwNTg3MjZjYjY2YWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiMjIyYTlmYTI0OTk3Yjc5ODYxNGZkNjE3MWQ5MzBmMGQxZDk0YzdjMTBjMWU5YjRlMzEzNDkxMzE5OTU2MzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMmMxOTc3ZDMwOWE5ZGI2YjA2ZGNkZjg4OWI0YjQ1YTE1ZTNmZGU5ZWMyNTY3MDBjNDcxODdkZjEyNTI1OWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiMzg0YzQzNTg1YzEyMTk5MTU5MzczMjgzM2Q3NDFhMjlhYTMxMWU5NGZkOGY5NjU3NWQyMWM0YmRlNzYxZjcifQ"
         },
         {
-          "resource": "repo://apps/volume-bridge/src/installer.rs#L67-L75",
-          "version": "repo-lines-v1:sha256:934cc42ed87ab0cb80978d8506f57e4b7b9aa026097eab30b5360e1b8d24d96d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTY5ODk5MWI2ODlkOGUzMTEyNDZlMWYxOWM5N2E2MTJiYTYyOWIwMTAwNGIxMWIwYWVjMGVlMjdkYmM1MTE4YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGIxY2MzMTU0ZDA0NGVjODY3NjdhNDQxOTE3Mzk1MDU4YmVkZmEyMmQ3YTliN2M0NGRmODBmZTY2OWMyOTRlYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTJkNDQwZWQ3NDRlMGM3ZGI3ZGRiZjBkODg1M2YxNWVmMWZhZDkxYTFmYWM2NDBjY2RjMmFkZWRkYjlmMDU0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjI5NjQwNzljM2M1YzgxNTIwZWYzM2EyYjlkMmUxNWExYjg0ZDcyODBkYjg1OTBkY2Q2NTc0N2UzZTAxMmE0MCJ9"
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L68-L85",
+          "version": "repo-lines-v1:sha256:c799a3adc990a2e8e5ae74a18ff2a2275192d787fca1c3fb9848b4db1872c224:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2OTg5OTFiNjg5ZDhlMzExMjQ2ZTFmMTljOTdhNjEyYmE2MjliMDEwMDRiMTFiMGFlYzBlZTI3ZGJjNTExOGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3ZWNmMzcxNmExZGVlYjBjZGFhMmQ0NjY5NTUwNjAwMDEzMDlkZGY2Y2U2ZjUzMDJlMzFjMmM1MDhlMDhmM2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEyZDQ0MGVkNzQ0ZTBjN2RiN2RkYmYwZDg4NTNmMTVlZjFmYWQ5MWExZmFjNjQwY2NkYzJhZGVkZGI5ZjA1NDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3MjI0ODNjMGM4MWVhZjA4YjViNzE1ODAxODA1ZjdiM2IyZTgwNGNlZmRlZjJjNTY0NjE0ZWE2NWU0ZTQ4ZmUifQ"
         },
         {
-          "resource": "repo://apps/volume-bridge/src/installer/transaction.rs#L7-L105",
-          "version": "repo-lines-v1:sha256:2a27543cc4fea539cf5e279f57f0016cc3a91f081fedfeb213465b54fba8b614:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwM2IzNzM1YmNkZTAzMGI5ODUwNzNlNzE3NTIwMWY5MzdkODU0YWQ2YTljNDA1MWFiMmMyMjliNGM2OTEyYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5Y2UyY2M2ZWQ4YWU3Y2Y3OGI3N2JhZjkxMjFhNGRmODM5N2I3MjU0Y2E3OTAzNDk1YjY3YjVjOTk0NzE0YTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwYWI0NGZiYTU3MDUwYWQzZjhiZjc5YzMyYWYzOWE0MGQyMWU4YTE5OGM5ZGJlYjE3YTExYWVmOTU4ZmExZDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+          "resource": "repo://apps/volume-bridge/src/installer/transaction.rs#L13-L50",
+          "version": "repo-lines-v1:sha256:5d7be7ac5bfc7625d457f5c085fd4b0d3f3faec28b31e8470e2b3e581a4aea55:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwM2IzNzM1YmNkZTAzMGI5ODUwNzNlNzE3NTIwMWY5MzdkODU0YWQ2YTljNDA1MWFiMmMyMjliNGM2OTEyYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlNjkwMGE4NjFkZjRmOTUwYTgwMTcwZjViODYwZmI1N2JmNjY5NTc4MTk5ZjZlY2QwMTMwZGFlY2Q3NzU5MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE4Yzg4M2M2MmIyZWIyYTUzZDc0M2I1Mzg4Y2VkY2Q3ZjNiNDNkMjZkNWI4OGI2MzE2YmEzYjNhMTRjZDQ1NjEifQ"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/src/installer/transaction.rs#L76-L110",
+          "version": "repo-lines-v1:sha256:b9344ecd3afe0db8621b051118135707881b68c0f1ebc7056540fd215fe9ebb4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEwNDE4OGUyYzMxZGYxNjk5ZmUzZDdmYTM0YTRhOGI1NTA1ZWY3MmQxMzNkNWQ1NmIyOWQ5YWFkZTE4OGRmNTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0YjJhN2VlZjY3ZmRlMTQzZjgxZTY4NDJmYmQ1ZDM3YmQ3NzQ3ZWEyMDYyNmVkZjBhZWEzODA3ZGNjMzFkYWEifQ"
         }
       ]
     },
@@ -95,14 +103,60 @@
       "statement": "Removal restores the saved hardware volume and available original routes before removing the runtime, driver, and launch file, and leaves a restoration receipt in /Library/Logs/VolumeBridge-uninstall.json.",
       "evidence": [
         {
-          "resource": "repo://apps/volume-bridge/src/installer.rs#L233-L292",
-          "version": "repo-lines-v1:sha256:f2c1f75a165c26f2aa2c2eecf4a0526c6fc34f1ac7390e42d6c6c31481620ddf:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0NGRhOTBhMDliMDZlNDMxZWJmYjg0MWUyMWY1MDc5YmFkZTMzZjE5ZGEyODMzMGExNGY2OTE5NWZhNzIxYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlNWFlMGY1YmU1MGRmYmE2NGIyYjFkZmZkY2Q0ZDRkZjAwMzBkYjgxNzRlMmU4ZGYzNDZlNTdiMTJhOTEyYzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxYmUzNWQzZWU5ZGFiM2Y3ZGFhOTkxY2RkN2ViYzNjYmJjYjQzYzIxYTFiNTE0ZmM3MDQ5NDNiZTFjOTY3ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L238-L296",
+          "version": "repo-lines-v1:sha256:cc269a60678491684b522d8b26b41018c0a41cb6c95111d69d4542bdf850276d:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0NGRhOTBhMDliMDZlNDMxZWJmYjg0MWUyMWY1MDc5YmFkZTMzZjE5ZGEyODMzMGExNGY2OTE5NWZhNzIxYWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkxYmUzNWQzZWU5ZGFiM2Y3ZGFhOTkxY2RkN2ViYzNjYmJjYjQzYzIxYTFiNTE0ZmM3MDQ5NDNiZTFjOTY3ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3b1022ec69b44101a75cd147a02ba950",
+      "statement": "Rollback and removal can restore a saved LG audio output after its Core Audio port suffix changes when exactly one supported device matches.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/src/installer.rs#L273-L284",
+          "version": "repo-lines-v1:sha256:33a0d1c012fcd651a77208522a6d9310432b94c850b4802cb5cfddf85371f0d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjODkyOGRkZTY4M2I0OGRhYzI2MDcxODFlZTExMWY5Yjc0ZTY5ZjVkNzZiYmI1ZDJjZTc5MWE3ZTRhM2RiNWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjNjg4NDA2YmY0M2JjYWFjZmZhMTU3ZmU4MDc0Y2MyMTdlYmVjZDE1ZDdmYzM0ZjcxMjBmMTgzNWYyNWU3ZTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkMTg0NmMwZTIzYjllN2QwYjIwZjJhMWRiZDMyNDA1NDBlNjYyMjY0NDg2MmQ2M2Q3ZDM4MjkyZWQ1NTRjMjgifQ"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/src/installer/model.rs#L83-L90",
+          "version": "repo-lines-v1:sha256:480f2a3fc5c646ebec1bd1a0cbaf1c5734e743db4e857c10462b1c0b3c074f04:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWNkNDFhMDhlZjU5NTc2NzU4YmQ1YWQ5ZTZmMGM0NWNjZjA5Yzk3ZDUwYzUzZjRmYmU1OTY0ODhiNDM3ODI1YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQwZmY0ZTJkNWQwMjZiMmJhMTgyNGRmZDU1ZmQ4NGIzNjYxNDJmOWU1MTU2YzVkMDA5YzMxY2Y0NDM2ODAyMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2JjOThkNmIwZGM0OTJjNTAxNmRmMTA4MDVhM2E1NGViOWMxODRhNWE2MTM3ZTdmNGJlY2ZhMGMyMjA1NTBkMCJ9"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/src/installer/transaction.rs#L64-L73",
+          "version": "repo-lines-v1:sha256:f951ad6685a6dd8d2bfac8527583e9085ea9400df925c55f17c93486a7878fc3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZDk0MDVhMDIzM2ExNjZlNThlNTJhMzFiMWE4NzliZTkzZDkwMmYyM2I4NDc1MDNmYTk4ZTRkODM1ZWYwNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkOTBjZGViYjY5ZTg4MjEzNzVhZmYwZWU1YjEwMGVhMTBkYzNmNmNiOTI0YWMyOWI0OWEwOWU3YmM4ZTQ4MWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjYjA4ODVkMTI0YmFjMzU0NGJkNmM1NTQ0NDU2OTA4MTI1MWNhM2ZlNGZlNzQzNTQ0ODZjYzU0Mzg4OGY0ZjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0849f3c07dbb49a49bbb646987256d8a",
+      "statement": "The 0.02 initial software setting is below the first full keyboard step at 1/16.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/src/installer/calibration.rs#L10-L21",
+          "version": "repo-lines-v1:sha256:c6171cc677dccd6877efbe6bcee6ef069e1344f772583d4d2cbd242eee93ea04:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkODdmM2FiMGEwYTc2M2Q4ZGQ5ZDQ4MWM0MTY3NTg2MzE3YWQ1ZGJkNmUyMWEyZjQxOTM1ZTgyM2ZhZTkzMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhY2MxYTUyNWNhNmZlMmMxODJiYjYxOTczYWU0NWM4YjMwNjQ2YTRjZTAzNzc3N2ZkNDc0OWU1N2NmYWJmMzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1ZWYyYzQ3ZGI3NmJkM2EwMzA1NDllOWY5M2IxYzYzNjQxODU2ZTg4NGNkZGM3YjJmMjAwODQ0MjI0NGFlMWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhmNjA1MWM5NDg4MTAyZDIxNWI0ZjdhNzVjYTkxMmE0Mzc3OTUwMTQwMWUwZDZhNGJlMmM5YzkyNmI1M2E5NzUifQ"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/tests/native/volume.cpp#L10-L17",
+          "version": "repo-lines-v1:sha256:2766b8723362a2127958f2f25d6ac2b5190d30c3170b70b2192a2f2bfabf842d:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjU5MjQ2ZTk3ZGYyMTk4OWU5Zjg3Mjg2YjY2ZWU5OWQ5NDdlNTQ0MTU5Y2M3ZDY2ZjhkMTQ3MDFkNzVjODhlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTc3ZGI2YzRlOGVkZGQzY2ZkNTQwMjhlOTU0MDJlMjI3NjYyNmI0NzNhZmRiMDkyNWE2YTVjMDllNDU4ZGY1ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2Y0MDY2ODU1YjhmOWIwMWVmYzE0ZDA1NTBkYWEyMzE4MzQ1N2ZmZDg2MDU0OGExN2FjNzgwM2UwZTcyYzQwNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjU0N2I3NDY4MzNmYmVkNTQzYzg0ODI4MjUyZTZmMTVhYjY1NDdmNWNmY2VjZWZmZTRkZGFjMjM3NDMyMmQxMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1bbd42c626e44b8788319c370d4bb89c",
+      "statement": "The installer publishes its transaction directory with its ownership marker already present. It retires the directory by renaming it before deleting the backups.",
+      "evidence": [
+        {
+          "resource": "repo://apps/volume-bridge/src/installer/transaction.rs#L113-L148",
+          "version": "repo-lines-v1:sha256:ff5c514bd3783919c09970c13274f6e3335e04f1ad87fcc472c9707db1b9f61d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliNmZlZDcxMzQ5ZWE1ODViNGE2ZDZmMGViYWYzMzVmMGMxYTExYjdhNDViMDMxY2ZlMzc5ZGQ4ZWFjMWZmYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUwNjEzOGVkOGFhM2QyOTVkZWVhYjBiZDZlYTY1NGE0YTBhZTQ0NTRkYzBlZmI2NDJiMzZiYjI2NGEyN2RlM2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM4Yjg1ZWI4YTYxZjljYTRmZWFmZWU3YTYxNGQwMWNkMGEwODNmZmZkZTVkMGE1YjRkZThkN2E3Mjk0MWQ0YzEifQ"
+        },
+        {
+          "resource": "repo://apps/volume-bridge/src/installer/transaction.rs#L17-L30",
+          "version": "repo-lines-v1:sha256:a114546e2aa398927ca577466e655881ee35b8534ae9f416f3d219b5f9df8140:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1OTRjMTFlNGI2N2RmZTQ2NDhjMTA2ZWNlMTI2ZTkwMTM3NDA0OGYwZmNkMjU0MzkyZDBmMmE4NWM1OWZlYjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkMDJkNDQ3OGQ4YjliMTcxOTFhOTBlODE2ODdhMzRlMjY3ZDhkM2NlNzM2ZDliNjliMmZlZTVkMWFjZWU0NDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyMThmZjI5YTNhNmU5YThmMDI0ZjdjYjI1MjZkOTc2YmU1NDUxYmRhMGI3ODM3ZDNmNzc1YmE5ODA4MTRjNzEifQ"
         }
       ]
     }
   ],
   "verification": {
-    "by": "openwiki/0.7.2",
-    "at": "2026-10-16T06:30:02.662Z"
+    "by": "openwiki/0.9.0",
+    "at": "2026-11-28T15:22:04.648Z"
   }
 }
