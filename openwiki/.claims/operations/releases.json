@@ -1,28 +1,36 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:027fb27cafedbef29bc12b6d8d61984a92cb46b33fae3d624b463563278ba3e8",
+  "pageVersion": "sha256:b551da316f0217402907f55ba85fb56e3ebcd471a85d7c6746b2f5e7688b7390",
   "claims": [
     {
       "id": "claim_0af06848041b4816926c661f617ccc79",
-      "statement": "Release source validation requires a canonical remote, a direct annotated stable tag, matching event and checkout commits, main ancestry, and agreement among workspace, lockfile, and driver versions.",
+      "statement": "Release source validation requires a canonical remote, an annotated stable tag directly on the checkout commit, main ancestry, and agreement among workspace, lockfile, and driver versions.",
       "evidence": [
         {
-          "resource": "repo://scripts/release/contract.ts#L96-L138",
-          "version": "repo-lines-v1:sha256:6e106504c68cc2bae5d16add0b63cf403152ba7b04cf51ed6b966f0934de7d86:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2Y2FmYzE2NzQ5MjI3Yzc1MWExNjQ1MmNmZjM3OThkOTJmOTI1NWRhYTM4MWViY2I4NzcwNjMxZWUwODViZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MmZlMmVlZWFlYzQyMDExNWZhN2EyMGNhZjkzYzc0YWRiYzE3MWJiNDNiYzYxYmE5YmRhNTViMjk4YzZkNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5YTNkYzJkOGMwZmRkN2MzNzQ1OWFlNWUxNWIyZjg5N2FlMThiM2EwNjAzZDMxODQ5OGY5YmE1ODMxOTRhZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5YTU2MDBjMzdkNzIxZWI1Njc3OTcxY2IwMmMwMjA0YWExMzZiODVlZWZlODVhMTE4MGJiMTVkZTdkM2JiODgifQ"
+          "resource": "repo://scripts/release/contract.ts",
+          "version": "repo-file-v1:sha256:a2e65362e1d007b7bff365a5f480293df590bb3b8c5f5ec62f8e7c08c33bf554"
         },
         {
-          "resource": "repo://scripts/release/source.ts#L4-L16",
-          "version": "repo-lines-v1:sha256:bd8b6c5153a0e3cb66750da25bd6a648059c2dce7a947adc44e0547a1456358b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiMjhhYmQwNTcxMjEyYTcxMzAxOTI3MGFkYTUwYjQyNWRkZjFlMjVmMjg3MGU4ZTE2ZjgxNDJhNDEyYjc2NmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OWQ0YjI0ODg5YWU2NzMzZDgwNDA1OTYyYTUxMjQ2ZmY5M2M5NTgxMGI5NjU0ZjA4M2U4ZjU2OTE3MDBmZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYwYWVlODY5YzI5NWUyNDA5MWI0NmFkMDY5NTEzOTdkZDBlMWU5MmU5NzRkNzMxMDJmOGEyYjU1YjkzZTlkNTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhNzZlZjRlOWUzNGNmNmQ2MDQ2NWZiYTQ4Y2ZlYjM2NTVlMGQzMjBmNTRjNGU5ZjcwNWMyZTI2MjhjOTYwYjQifQ"
+          "resource": "repo://scripts/release/source.ts",
+          "version": "repo-file-v1:sha256:ef25b61f8aa2e97dfa47609ecca846ed690a37bcb9990e5ac0709b3ab3154d78"
         }
       ]
     },
     {
       "id": "claim_da7736cbb97f4a8f812d57ab5ba5808d",
-      "statement": "The tag workflow separates Linux source validation, ARM64 macOS checks and signing, and a protected Linux publisher; only the publisher has contents write permission and only signing receives Apple secrets.",
+      "statement": "The Mac signer receives the Apple credentials. The asset writer binds the packages to the tagged checkout. The GitHub CLI publisher reads target/release-assets and verifies the draft and public downloads.",
       "evidence": [
         {
-          "resource": "repo://.github/workflows/release.yml#L1-L130",
-          "version": "repo-lines-v1:sha256:b6e31c5d30858b5c91302f528795468203a88d151bfa36cae418fa4b4487b21e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxMmVlZjkwMzBkMGM3MDI5MDEwYzQ2MzU2ODlmNTgzMjhkMTA5ZTZhODVlZDFhOTI0NWIyMGYzOTU1YjdkYjM5IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI1MTAzYjFiNTc4OTdlY2Q5MWU1YzZlNDE4OGE0ZTFlYzM3Y2E3OWFiNjY2NTdmMzllYzgyZDFhZjZhNjI3NjViIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+          "resource": "repo://scripts/release/assets.ts",
+          "version": "repo-file-v1:sha256:2993d5ba142cb3e6ef6a27933fadd8a90d9384a87e9ebda0b014aaa65c3f6a24"
+        },
+        {
+          "resource": "repo://scripts/release/publish.ts",
+          "version": "repo-file-v1:sha256:4aaefea9498f99c499e84563e81c2319efccc193b59a305b4db938bd7bb5fae9"
+        },
+        {
+          "resource": "repo://scripts/release/sign.ts",
+          "version": "repo-file-v1:sha256:6cf2aaff6a3b0c805008b2eb5633ce7e2305ef7c09373f05242c3438f2da124f"
         }
       ]
     },
@@ -101,6 +109,6 @@
   ],
   "verification": {
     "by": "openwiki/0.9.0",
-    "at": "2026-11-28T15:22:04.648Z"
+    "at": "2026-11-28T15:36:45.406Z"
   }
 }

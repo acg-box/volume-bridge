@@ -20,9 +20,3 @@ updates:
           - 'oxlint'
           - 'oxlint-tsgolint'
           - 'typescript'
-  - package-ecosystem: 'github-actions'
-    directory: '/'
-    schedule:
-      interval: 'daily'
-      time: '00:00'
-    labels: []

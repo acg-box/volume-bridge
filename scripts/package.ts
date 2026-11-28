@@ -66,7 +66,7 @@ if (resume) {
   if (original.version !== version)
     throw new Error('Cannot resume packages from a different product version.');
   // Resume the exact signed bytes; do not relabel them with the current checkout.
-  // The asset writer separately binds the retained source to the workflow source.
+  // The asset writer separately binds the retained source to the annotated tag.
   console.log(`Retaining original package source: ${String(original.commit)}`);
 } else {
   if (!local && existsSync(stage))

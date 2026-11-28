@@ -1,3 +1,3 @@
 # Files
 
-- [Signed package releases](releases.md) - The tag-driven CI contract for Developer ID signing, notarization, protected draft publication, provenance, and recovery.
+- [Signed package releases](releases.md) - Publish a signed and notarized package from the tagged checkout on an Apple Silicon Mac.

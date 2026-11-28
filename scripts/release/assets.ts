@@ -9,9 +9,9 @@ import {
   validateAssets,
   validateManifest,
 } from './contract.ts';
-import { workflowSource } from './source.ts';
+import { releaseSource } from './source.ts';
 
-const source = workflowSource();
+const source = releaseSource();
 const stage = resolve(root, 'target/packages/release');
 const output = resolve(root, 'target/release-assets');
 const original = record(JSON.parse(readFileSync(resolve(stage, 'source.json'), 'utf8')) as unknown);

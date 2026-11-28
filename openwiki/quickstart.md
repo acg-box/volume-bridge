@@ -5,7 +5,7 @@ description: Choose the installation, architecture, development, release, or val
 tags: [quickstart, navigation, macos, volume]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-28T14:42:36.284Z
+    at: 2026-11-28T15:36:45.406Z
 sources:
   - id: openwiki-source-589635d050c1ba0499df0c29
     resource: repo://apps/volume-bridge/CMakeLists.txt
@@ -19,7 +19,7 @@ sources:
     resource: repo://apps/volume-bridge/src/installer/calibration.rs
   - id: openwiki-source-51d9de9b25d94d95ce636d7e
     resource: repo://scripts/package.ts
-generated: { by: "codex", at: "2026-11-28T14:42:36.284Z" }
+generated: { by: "codex", at: "2026-11-28T15:36:45.406Z" }
 ---
 
 # VolumeBridge quickstart
@@ -78,8 +78,7 @@ OpenWiki job and submit the source Claims through the lifecycle tools. Keep
 generated indexes and provenance under OpenWiki ownership. README files route
 readers here rather than duplicating the detailed guides.
 
-For a release, merge the intended source, obtain authorization for the exact
-version, and push its validated annotated tag. CI owns the build, signatures,
-notarization, uploads, and public-file verification. Follow the
-[release procedure](operations/releases.md); a successful local package test is
-not evidence of a public release.
+For a release, merge the intended source and confirm the exact version. Use the
+release Mac to validate the annotated tag, sign and notarize the packages, and
+verify the draft and public downloads. Follow the
+[release procedure](operations/releases.md).

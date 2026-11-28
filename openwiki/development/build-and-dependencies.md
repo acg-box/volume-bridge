@@ -5,10 +5,10 @@ description: Repository-owned build and validation commands, tool selection, nat
 tags: [build, testing, dependencies, rust, typescript, provenance]
 verified:
   - by: openwiki/0.9.0
-    at: 2026-11-28T15:22:04.648Z
+    at: 2026-11-28T15:36:45.406Z
 sources:
-  - id: openwiki-source-164e2da859b5277df81c7d94
-    resource: repo://.github/workflows/ci.yml
+  - id: openwiki-source-79b37831c9c81206da1d88ec
+    resource: repo://.github/dependabot.yml
   - id: openwiki-source-9ec1a584061158fcfc6acaae
     resource: repo://apps/volume-bridge/build.rs
   - id: openwiki-source-589635d050c1ba0499df0c29
@@ -21,7 +21,7 @@ sources:
     resource: repo://package.json
   - id: openwiki-source-faabd6d6bc9acd8ff6590dc8
     resource: repo://vendor/libaspl/UPSTREAM.md
-generated: { by: "codex", at: "2026-11-28T15:22:04.648Z" }
+generated: { by: "codex", at: "2026-11-28T15:36:45.406Z" }
 ---
 
 # Build, tests, and dependencies
@@ -52,7 +52,7 @@ cargo make check
 | `cargo make build-package` | Build and invoke the credential-injected release signer. |
 
 Use [signed package releases](../operations/releases.md) for release credentials
-and the CI process. A local package is not a distribution release.
+and the manual publication procedure.
 
 ## Tools and native linkage
 
@@ -79,15 +79,11 @@ The [audio architecture](../architecture/audio-and-control.md) explains why the
 HAL and Apple SDK interfaces remain native while Rust owns route and installer
 policy.
 
-## CI checks
+## Local checks and dependency updates
 
-Pull requests and `main` pushes run the checked-in macOS 26 workflow with read-only
-repository permission. It installs cargo-make 0.37.24 and cargo-nextest 0.9.152,
-then runs `npm ci --ignore-scripts`, `cargo make check`, and `cargo make build`.
-It does not receive release credentials.
-
-The workflow builds vibe-style from Git revision
-`dea96c3de39354f1b42da1a52a37812e525c6f52` (v0.2.9).
+Run `cargo make check` and `cargo make build` on the development Mac before
+a release. Dependabot checks Cargo and npm daily and groups updates to the
+TypeScript toolchain.
 
 ## Dependency ownership and licenses
 
